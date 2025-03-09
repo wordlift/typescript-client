@@ -53,12 +53,14 @@ jobs:
           node-version: '22'
 
       - name: Install OpenAPI Generator CLI
-        run: npm install -g @openapitools/openapi-generator-cli
+        run: npm install -g @openapitools/openapi-generator-cli@"5.4.0"
 
       - name: Generate TypeScript Client
         run: |
           # Remove existing files.
           rm -fr wordlift-client
+          # See https://github.com/OpenAPITools/openapi-generator/issues/14763#issuecomment-1572266906
+          openapi-generator-cli version-manager set 5.4.0
           openapi-generator-cli generate \
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
