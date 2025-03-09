@@ -48,8 +48,24 @@ jobs:
           openapi-generator-cli generate \
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
-            -o ./generated-client \
-            --additional-properties=packageName=wordlift_client
+            -o ./wordlift-client \
+            --additional-properties=packageName=wordlift-client
+
+      - name: Set VERSION from packageVersion
+        run: |
+          VERSION=$(jq -r '.packageVersion' config.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Commit and Push Changes
+        env:
+          VERSION: ${{ env.version }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a $VERSION -m "Release version $VERSION"
+          git add .
+          git commit -m "Update client to version $VERSION [skip ci]"
+          git push --follow-tags origin main
 
 #  publish:
 #    name: Publish to npm

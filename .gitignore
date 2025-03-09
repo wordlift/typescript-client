@@ -3,6 +3,7 @@
 !.bin/
 !.github/
 !api/
+!wordlift-client/
 !.gitignore
 !config.json
 !requirements.pinned.txt
