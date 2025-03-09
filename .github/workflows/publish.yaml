@@ -32,7 +32,7 @@ jobs:
         run: python3 ./.bin/json_merge_generator.py
 
       - name: Bump version in config.json
-        run: python3 ./utils/bump.py
+        run: python3 ./.bin/bump.py
 
       # Merge the YAML files
       - name: Merge the yaml files
