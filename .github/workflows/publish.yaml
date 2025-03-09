@@ -57,7 +57,7 @@ jobs:
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
             -o ./wordlift-client \
-            --additional-properties=npmName=@wordlift/client,npmVersion=$VERSION
+            --additional-properties=npmName=@wordlift/client,npmVersion=$VERSION,author=WordLift,repositoryUrl=https://github.com/wordlift/typescript-client.git
         env:
           VERSION: ${{ env.VERSION }}
 
