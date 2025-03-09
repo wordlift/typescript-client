@@ -1,0 +1,50 @@
+{
+  "inputs": [
+    {
+      "inputFile": "./api/embeddings.yaml"
+    },
+    {
+      "inputFile": "./api/middleware.yaml"
+    },
+    {
+      "inputFile": "./api/analysis.yaml"
+    },
+    {
+      "inputFile": "./api/sitemap-generator.yaml"
+    },
+    {
+      "inputFile": "./api/agent.yaml"
+    },
+    {
+      "inputFile": "./api/long-tail.yaml"
+    },
+    {
+      "inputFile": "./api/fact-check.yaml"
+    },
+    {
+      "inputFile": "./api/classification.yaml"
+    },
+    {
+      "inputFile": "./api/events.yaml"
+    },
+    {
+      "inputFile": "./api/graphql.yaml"
+    },
+    {
+      "inputFile": "./api/manager.yaml"
+    },
+    {
+      "inputFile": "./api/summarizer.yaml"
+    },
+    {
+      "inputFile": "./api/inspector.yaml"
+    },
+    {
+      "inputFile": "./api/content-generation.yaml"
+    },
+    {
+      "inputFile": "./api/seo-score.yaml"
+    }
+  ],
+  "output": "./wordliftApiSpec.yaml"
+}
