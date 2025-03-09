@@ -1,0 +1,40 @@
+diff --git a/wordliftApiSpec.yaml b/wordliftApiSpec.yaml
+index abedf0b..4ac95f1 100644
+--- a/wordliftApiSpec.yaml
++++ b/wordliftApiSpec.yaml
+@@ -801,7 +801,7 @@ paths:
+         - Web Asyncs metadata
+       summary: Get by id
+       description: Get a Web Async operation by its id.
+-      operationId: get1
++      operationId: getWebAsync
+       parameters:
+         - name: id
+           in: path
+@@ -1730,7 +1730,7 @@ paths:
+       description: >
+         The service will return a Web Data URI only for existing datasets. The
+         Web Data URI is not guaranteed to exist (i.e. it may return 404).
+-      operationId: get2
++      operationId: getDataUri
+       parameters:
+         - description: The Web Page URL.
+           in: query
+@@ -3032,7 +3032,7 @@ paths:
+       description: >-
+         Inspect a URL to perform a variety of tasks defined by the list of
+         applied filters.
+-      operationId: get3
++      operationId: getInspect
+       parameters:
+         - name: u
+           in: query
+@@ -3471,7 +3471,7 @@ paths:
+       tags:
+         - Content Generation Records
+     put:
+-      operationId: updateRecord
++      operationId: updateContentGenerationRecord
+       parameters:
+         - description: The Content Generation id.
+           in: path

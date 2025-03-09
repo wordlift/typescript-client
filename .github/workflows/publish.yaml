@@ -38,6 +38,10 @@ jobs:
       - name: Merge the yaml files
         run: npx openapi-merge-cli --config ./openapi-merge.json
 
+      - name: Patch generated files
+        run: |
+          git apply -p1 .patches/1-fix-operation-id.patch
+
       - name: Set VERSION from packageVersion
         run: |
           VERSION=$(jq -r '.packageVersion' config.json)
@@ -53,6 +57,8 @@ jobs:
 
       - name: Generate TypeScript Client
         run: |
+          # Remove existing files.
+          rm -fr wordlift-client
           openapi-generator-cli generate \
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
