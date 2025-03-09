@@ -2,6 +2,7 @@
 
 !.bin/
 !.github/
+!api/
 !.gitignore
 !config.json
 !requirements.pinned.txt
