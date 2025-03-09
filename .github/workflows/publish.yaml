@@ -31,9 +31,17 @@ jobs:
       - name: Merge OpenAPI files
         run: python3 ./.bin/json_merge_generator.py
 
+      - name: Bump version in config.json
+        run: python3 ./utils/bump.py
+
       # Merge the YAML files
       - name: Merge the yaml files
         run: npx openapi-merge-cli --config ./openapi-merge.json
+
+      - name: Set VERSION from packageVersion
+        run: |
+          VERSION=$(jq -r '.packageVersion' config.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Set Up Node.js
         uses: actions/setup-node@v4
@@ -49,12 +57,9 @@ jobs:
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
             -o ./wordlift-client \
-            --additional-properties=packageName=wordlift-client
-
-      - name: Set VERSION from packageVersion
-        run: |
-          VERSION=$(jq -r '.packageVersion' config.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+            --additional-properties=npmName=wordlift-client,npmVersion=$VERSION
+        env:
+          VERSION: ${{ env.VERSION }}
 
       - name: Commit and Push Changes
         env:
@@ -76,9 +81,9 @@ jobs:
 #        uses: actions/checkout@v4
 #
 #      - name: Set Up Node.js
-#        uses: actions/setup-node@v3
+#        uses: actions/setup-node@v4
 #        with:
-#          node-version: '20'
+#          node-version: '22'
 #          registry-url: 'https://registry.npmjs.org'
 #
 #      - name: Install Dependencies
