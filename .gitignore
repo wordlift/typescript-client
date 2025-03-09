@@ -4,3 +4,4 @@
 !.github/
 !.gitignore
 !config.json
+!requirements.pinned.txt
