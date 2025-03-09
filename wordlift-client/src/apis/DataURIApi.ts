@@ -15,7 +15,7 @@
 
 import * as runtime from '../runtime';
 
-export interface Get2Request {
+export interface GetDataUriRequest {
     u: string;
 }
 
@@ -28,11 +28,11 @@ export class DataURIApi extends runtime.BaseAPI {
      * The service will return a Web Data URI only for existing datasets. The Web Data URI is not guaranteed to exist (i.e. it may return 404). 
      * Get the Web Data URI for a Web Page URL.
      */
-    async get2Raw(requestParameters: Get2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async getDataUriRaw(requestParameters: GetDataUriRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters['u'] == null) {
             throw new runtime.RequiredError(
                 'u',
-                'Required parameter "u" was null or undefined when calling get2().'
+                'Required parameter "u" was null or undefined when calling getDataUri().'
             );
         }
 
@@ -62,8 +62,8 @@ export class DataURIApi extends runtime.BaseAPI {
      * The service will return a Web Data URI only for existing datasets. The Web Data URI is not guaranteed to exist (i.e. it may return 404). 
      * Get the Web Data URI for a Web Page URL.
      */
-    async get2(requestParameters: Get2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.get2Raw(requestParameters, initOverrides);
+    async getDataUri(requestParameters: GetDataUriRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getDataUriRaw(requestParameters, initOverrides);
     }
 
 }

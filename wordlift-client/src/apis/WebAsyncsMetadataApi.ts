@@ -22,7 +22,7 @@ import {
     WebAsyncToJSON,
 } from '../models/index';
 
-export interface Get1Request {
+export interface GetWebAsyncRequest {
     id: string;
 }
 
@@ -35,11 +35,11 @@ export class WebAsyncsMetadataApi extends runtime.BaseAPI {
      * Get a Web Async operation by its id.
      * Get by id
      */
-    async get1Raw(requestParameters: Get1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebAsync>> {
+    async getWebAsyncRaw(requestParameters: GetWebAsyncRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebAsync>> {
         if (requestParameters['id'] == null) {
             throw new runtime.RequiredError(
                 'id',
-                'Required parameter "id" was null or undefined when calling get1().'
+                'Required parameter "id" was null or undefined when calling getWebAsync().'
             );
         }
 
@@ -65,8 +65,8 @@ export class WebAsyncsMetadataApi extends runtime.BaseAPI {
      * Get a Web Async operation by its id.
      * Get by id
      */
-    async get1(requestParameters: Get1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebAsync> {
-        const response = await this.get1Raw(requestParameters, initOverrides);
+    async getWebAsync(requestParameters: GetWebAsyncRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<WebAsync> {
+        const response = await this.getWebAsyncRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -22,9 +22,9 @@ import {
     InspectResponseToJSON,
 } from '../models/index';
 
-export interface Get3Request {
+export interface GetInspectRequest {
     u: string;
-    f: Get3FEnum;
+    f: GetInspectFEnum;
     classes?: Array<string>;
 }
 
@@ -37,18 +37,18 @@ export class InspectorApi extends runtime.BaseAPI {
      * Inspect a URL to perform a variety of tasks defined by the list of applied filters.
      * Inspect
      */
-    async get3Raw(requestParameters: Get3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InspectResponse>> {
+    async getInspectRaw(requestParameters: GetInspectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InspectResponse>> {
         if (requestParameters['u'] == null) {
             throw new runtime.RequiredError(
                 'u',
-                'Required parameter "u" was null or undefined when calling get3().'
+                'Required parameter "u" was null or undefined when calling getInspect().'
             );
         }
 
         if (requestParameters['f'] == null) {
             throw new runtime.RequiredError(
                 'f',
-                'Required parameter "f" was null or undefined when calling get3().'
+                'Required parameter "f" was null or undefined when calling getInspect().'
             );
         }
 
@@ -86,8 +86,8 @@ export class InspectorApi extends runtime.BaseAPI {
      * Inspect a URL to perform a variety of tasks defined by the list of applied filters.
      * Inspect
      */
-    async get3(requestParameters: Get3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InspectResponse> {
-        const response = await this.get3Raw(requestParameters, initOverrides);
+    async getInspect(requestParameters: GetInspectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InspectResponse> {
+        const response = await this.getInspectRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -96,7 +96,7 @@ export class InspectorApi extends runtime.BaseAPI {
 /**
  * @export
  */
-export const Get3FEnum = {
+export const GetInspectFEnum = {
     Validator: 'validator',
     ContentAnalysis: 'content-analysis',
     MockLanguageDetection: 'mock-language-detection',
@@ -113,4 +113,4 @@ export const Get3FEnum = {
     Xmltei: 'xmltei',
     Classify: 'classify'
 } as const;
-export type Get3FEnum = typeof Get3FEnum[keyof typeof Get3FEnum];
+export type GetInspectFEnum = typeof GetInspectFEnum[keyof typeof GetInspectFEnum];

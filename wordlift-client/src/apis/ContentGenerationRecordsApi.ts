@@ -50,7 +50,7 @@ export interface ListRecordsAsEventsRequest {
     contentGenerationId: number;
 }
 
-export interface UpdateRecordRequest {
+export interface UpdateContentGenerationRecordRequest {
     contentGenerationId: number;
     recordId: number;
     request3: Request3;
@@ -204,25 +204,25 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
     /**
      * Update
      */
-    async updateRecordRaw(requestParameters: UpdateRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Record>> {
+    async updateContentGenerationRecordRaw(requestParameters: UpdateContentGenerationRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Record>> {
         if (requestParameters['contentGenerationId'] == null) {
             throw new runtime.RequiredError(
                 'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling updateRecord().'
+                'Required parameter "contentGenerationId" was null or undefined when calling updateContentGenerationRecord().'
             );
         }
 
         if (requestParameters['recordId'] == null) {
             throw new runtime.RequiredError(
                 'recordId',
-                'Required parameter "recordId" was null or undefined when calling updateRecord().'
+                'Required parameter "recordId" was null or undefined when calling updateContentGenerationRecord().'
             );
         }
 
         if (requestParameters['request3'] == null) {
             throw new runtime.RequiredError(
                 'request3',
-                'Required parameter "request3" was null or undefined when calling updateRecord().'
+                'Required parameter "request3" was null or undefined when calling updateContentGenerationRecord().'
             );
         }
 
@@ -250,8 +250,8 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
     /**
      * Update
      */
-    async updateRecord(requestParameters: UpdateRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Record> {
-        const response = await this.updateRecordRaw(requestParameters, initOverrides);
+    async updateContentGenerationRecord(requestParameters: UpdateContentGenerationRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Record> {
+        const response = await this.updateContentGenerationRecordRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
