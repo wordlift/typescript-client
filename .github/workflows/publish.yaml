@@ -60,7 +60,7 @@ jobs:
           # Remove existing files.
           rm -fr wordlift-client
           # See https://github.com/OpenAPITools/openapi-generator/issues/14763#issuecomment-1572266906
-          openapi-generator-cli version-manager set 5.4.0
+          openapi-generator-cli version-manager set 6.6.0
           openapi-generator-cli generate \
             -i ./wordliftApiSpec.yaml \
             -g typescript-fetch \
