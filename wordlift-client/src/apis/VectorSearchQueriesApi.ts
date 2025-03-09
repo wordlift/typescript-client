@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   PageVectorSearchQueryResponseItem,
   VectorSearchQueryRequest,
-} from '../models/index';
+} from '../models';
 import {
     PageVectorSearchQueryResponseItemFromJSON,
     PageVectorSearchQueryResponseItemToJSON,
     VectorSearchQueryRequestFromJSON,
     VectorSearchQueryRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateQueryRequest {
     vectorSearchQueryRequest: VectorSearchQueryRequest;
@@ -38,11 +38,8 @@ export class VectorSearchQueriesApi extends runtime.BaseAPI {
      * Create
      */
     async createQueryRaw(requestParameters: CreateQueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageVectorSearchQueryResponseItem>> {
-        if (requestParameters['vectorSearchQueryRequest'] == null) {
-            throw new runtime.RequiredError(
-                'vectorSearchQueryRequest',
-                'Required parameter "vectorSearchQueryRequest" was null or undefined when calling createQuery().'
-            );
+        if (requestParameters.vectorSearchQueryRequest === null || requestParameters.vectorSearchQueryRequest === undefined) {
+            throw new runtime.RequiredError('vectorSearchQueryRequest','Required parameter requestParameters.vectorSearchQueryRequest was null or undefined when calling createQuery.');
         }
 
         const queryParameters: any = {};
@@ -52,7 +49,7 @@ export class VectorSearchQueriesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -60,7 +57,7 @@ export class VectorSearchQueriesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: VectorSearchQueryRequestToJSON(requestParameters['vectorSearchQueryRequest']),
+            body: VectorSearchQueryRequestToJSON(requestParameters.vectorSearchQueryRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PageVectorSearchQueryResponseItemFromJSON(jsonValue));

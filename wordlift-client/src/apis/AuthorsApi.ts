@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   AuthorRequest,
-} from '../models/index';
+} from '../models';
 import {
     AuthorRequestFromJSON,
     AuthorRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateAuthorRequest {
     authorRequest: AuthorRequest;
@@ -36,11 +36,8 @@ export class AuthorsApi extends runtime.BaseAPI {
      * Create
      */
     async createAuthorRaw(requestParameters: CreateAuthorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['authorRequest'] == null) {
-            throw new runtime.RequiredError(
-                'authorRequest',
-                'Required parameter "authorRequest" was null or undefined when calling createAuthor().'
-            );
+        if (requestParameters.authorRequest === null || requestParameters.authorRequest === undefined) {
+            throw new runtime.RequiredError('authorRequest','Required parameter requestParameters.authorRequest was null or undefined when calling createAuthor.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class AuthorsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class AuthorsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AuthorRequestToJSON(requestParameters['authorRequest']),
+            body: AuthorRequestToJSON(requestParameters.authorRequest),
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {

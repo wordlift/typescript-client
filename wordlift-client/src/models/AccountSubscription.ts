@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,8 +54,10 @@ export interface AccountSubscription {
 /**
  * Check if a given object implements the AccountSubscription interface.
  */
-export function instanceOfAccountSubscription(value: object): value is AccountSubscription {
-    return true;
+export function instanceOfAccountSubscription(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AccountSubscriptionFromJSON(json: any): AccountSubscription {
@@ -63,35 +65,33 @@ export function AccountSubscriptionFromJSON(json: any): AccountSubscription {
 }
 
 export function AccountSubscriptionFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountSubscription {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'email': json['email'] == null ? undefined : json['email'],
-        'firstName': json['first_name'] == null ? undefined : json['first_name'],
-        'lastName': json['last_name'] == null ? undefined : json['last_name'],
-        'orderId': json['order_id'] == null ? undefined : json['order_id'],
-        'sku': json['sku'] == null ? undefined : json['sku'],
+        'email': !exists(json, 'email') ? undefined : json['email'],
+        'firstName': !exists(json, 'first_name') ? undefined : json['first_name'],
+        'lastName': !exists(json, 'last_name') ? undefined : json['last_name'],
+        'orderId': !exists(json, 'order_id') ? undefined : json['order_id'],
+        'sku': !exists(json, 'sku') ? undefined : json['sku'],
     };
 }
 
-export function AccountSubscriptionToJSON(json: any): AccountSubscription {
-    return AccountSubscriptionToJSONTyped(json, false);
-}
-
-export function AccountSubscriptionToJSONTyped(value?: AccountSubscription | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AccountSubscriptionToJSON(value?: AccountSubscription | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'email': value['email'],
-        'first_name': value['firstName'],
-        'last_name': value['lastName'],
-        'order_id': value['orderId'],
-        'sku': value['sku'],
+        'email': value.email,
+        'first_name': value.firstName,
+        'last_name': value.lastName,
+        'order_id': value.orderId,
+        'sku': value.sku,
     };
 }
 

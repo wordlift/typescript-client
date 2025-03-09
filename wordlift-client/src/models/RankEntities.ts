@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Entity1 } from './Entity1';
 import {
     Entity1FromJSON,
     Entity1FromJSONTyped,
     Entity1ToJSON,
-    Entity1ToJSONTyped,
 } from './Entity1';
 
 /**
@@ -44,8 +43,10 @@ export interface RankEntities {
 /**
  * Check if a given object implements the RankEntities interface.
  */
-export function instanceOfRankEntities(value: object): value is RankEntities {
-    return true;
+export function instanceOfRankEntities(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function RankEntitiesFromJSON(json: any): RankEntities {
@@ -53,29 +54,27 @@ export function RankEntitiesFromJSON(json: any): RankEntities {
 }
 
 export function RankEntitiesFromJSONTyped(json: any, ignoreDiscriminator: boolean): RankEntities {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'rank': json['rank'] == null ? undefined : json['rank'],
-        'entities': json['entities'] == null ? undefined : ((json['entities'] as Array<any>).map(Entity1FromJSON)),
+        'rank': !exists(json, 'rank') ? undefined : json['rank'],
+        'entities': !exists(json, 'entities') ? undefined : ((json['entities'] as Array<any>).map(Entity1FromJSON)),
     };
 }
 
-export function RankEntitiesToJSON(json: any): RankEntities {
-    return RankEntitiesToJSONTyped(json, false);
-}
-
-export function RankEntitiesToJSONTyped(value?: RankEntities | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RankEntitiesToJSON(value?: RankEntities | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'rank': value['rank'],
-        'entities': value['entities'] == null ? undefined : ((value['entities'] as Array<any>).map(Entity1ToJSON)),
+        'rank': value.rank,
+        'entities': value.entities === undefined ? undefined : ((value.entities as Array<any>).map(Entity1ToJSON)),
     };
 }
 

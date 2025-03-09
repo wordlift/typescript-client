@@ -12,35 +12,31 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
+import type { Annotation } from './Annotation';
+import {
+    AnnotationFromJSON,
+    AnnotationFromJSONTyped,
+    AnnotationToJSON,
+} from './Annotation';
 import type { Entity } from './Entity';
 import {
     EntityFromJSON,
     EntityFromJSONTyped,
     EntityToJSON,
-    EntityToJSONTyped,
 } from './Entity';
 import type { Image } from './Image';
 import {
     ImageFromJSON,
     ImageFromJSONTyped,
     ImageToJSON,
-    ImageToJSONTyped,
 } from './Image';
 import type { Topic } from './Topic';
 import {
     TopicFromJSON,
     TopicFromJSONTyped,
     TopicToJSON,
-    TopicToJSONTyped,
 } from './Topic';
-import type { Annotation } from './Annotation';
-import {
-    AnnotationFromJSON,
-    AnnotationFromJSONTyped,
-    AnnotationToJSON,
-    AnnotationToJSONTyped,
-} from './Annotation';
 
 /**
  * Response
@@ -89,8 +85,10 @@ export interface Response {
 /**
  * Check if a given object implements the Response interface.
  */
-export function instanceOfResponse(value: object): value is Response {
-    return true;
+export function instanceOfResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ResponseFromJSON(json: any): Response {
@@ -98,37 +96,35 @@ export function ResponseFromJSON(json: any): Response {
 }
 
 export function ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): Response {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'entities': json['entities'] == null ? undefined : (mapValues(json['entities'], EntityFromJSON)),
-        'annotations': json['annotations'] == null ? undefined : (mapValues(json['annotations'], AnnotationFromJSON)),
-        'images': json['images'] == null ? undefined : ((json['images'] as Array<any>).map(ImageFromJSON)),
-        'languages': json['languages'] == null ? undefined : json['languages'],
-        'topics': json['topics'] == null ? undefined : ((json['topics'] as Array<any>).map(TopicFromJSON)),
-        'content': json['content'] == null ? undefined : json['content'],
+        'entities': !exists(json, 'entities') ? undefined : (mapValues(json['entities'], EntityFromJSON)),
+        'annotations': !exists(json, 'annotations') ? undefined : (mapValues(json['annotations'], AnnotationFromJSON)),
+        'images': !exists(json, 'images') ? undefined : ((json['images'] as Array<any>).map(ImageFromJSON)),
+        'languages': !exists(json, 'languages') ? undefined : json['languages'],
+        'topics': !exists(json, 'topics') ? undefined : ((json['topics'] as Array<any>).map(TopicFromJSON)),
+        'content': !exists(json, 'content') ? undefined : json['content'],
     };
 }
 
-export function ResponseToJSON(json: any): Response {
-    return ResponseToJSONTyped(json, false);
-}
-
-export function ResponseToJSONTyped(value?: Response | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ResponseToJSON(value?: Response | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'entities': value['entities'] == null ? undefined : (mapValues(value['entities'], EntityToJSON)),
-        'annotations': value['annotations'] == null ? undefined : (mapValues(value['annotations'], AnnotationToJSON)),
-        'images': value['images'] == null ? undefined : ((value['images'] as Array<any>).map(ImageToJSON)),
-        'languages': value['languages'],
-        'topics': value['topics'] == null ? undefined : ((value['topics'] as Array<any>).map(TopicToJSON)),
-        'content': value['content'],
+        'entities': value.entities === undefined ? undefined : (mapValues(value.entities, EntityToJSON)),
+        'annotations': value.annotations === undefined ? undefined : (mapValues(value.annotations, AnnotationToJSON)),
+        'images': value.images === undefined ? undefined : ((value.images as Array<any>).map(ImageToJSON)),
+        'languages': value.languages,
+        'topics': value.topics === undefined ? undefined : ((value.topics as Array<any>).map(TopicToJSON)),
+        'content': value.content,
     };
 }
 

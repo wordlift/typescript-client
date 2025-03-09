@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Model } from './Model';
 import {
     ModelFromJSON,
     ModelFromJSONTyped,
     ModelToJSON,
-    ModelToJSONTyped,
 } from './Model';
 
 /**
@@ -68,14 +67,16 @@ export interface PageModel {
 /**
  * Check if a given object implements the PageModel interface.
  */
-export function instanceOfPageModel(value: object): value is PageModel {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPageModel(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PageModelFromJSON(json: any): PageModel {
@@ -83,7 +84,7 @@ export function PageModelFromJSON(json: any): PageModel {
 }
 
 export function PageModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageModel {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PageModelFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function PageModelToJSON(json: any): PageModel {
-    return PageModelToJSONTyped(json, false);
-}
-
-export function PageModelToJSONTyped(value?: PageModel | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PageModelToJSON(value?: PageModel | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(ModelToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(ModelToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 

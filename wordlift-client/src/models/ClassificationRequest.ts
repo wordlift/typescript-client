@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface ClassificationRequest {
 /**
  * Check if a given object implements the ClassificationRequest interface.
  */
-export function instanceOfClassificationRequest(value: object): value is ClassificationRequest {
-    return true;
+export function instanceOfClassificationRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ClassificationRequestFromJSON(json: any): ClassificationRequest {
@@ -45,29 +47,27 @@ export function ClassificationRequestFromJSON(json: any): ClassificationRequest 
 }
 
 export function ClassificationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClassificationRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'classes': json['classes'] == null ? undefined : json['classes'],
-        'text': json['text'] == null ? undefined : json['text'],
+        'classes': !exists(json, 'classes') ? undefined : json['classes'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
     };
 }
 
-export function ClassificationRequestToJSON(json: any): ClassificationRequest {
-    return ClassificationRequestToJSONTyped(json, false);
-}
-
-export function ClassificationRequestToJSONTyped(value?: ClassificationRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ClassificationRequestToJSON(value?: ClassificationRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'classes': value['classes'],
-        'text': value['text'],
+        'classes': value.classes,
+        'text': value.text,
     };
 }
 

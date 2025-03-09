@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { LocationInner } from './LocationInner';
 import {
     LocationInnerFromJSON,
     LocationInnerFromJSONTyped,
     LocationInnerToJSON,
-    LocationInnerToJSONTyped,
 } from './LocationInner';
 
 /**
@@ -50,11 +49,13 @@ export interface ValidationError {
 /**
  * Check if a given object implements the ValidationError interface.
  */
-export function instanceOfValidationError(value: object): value is ValidationError {
-    if (!('loc' in value) || value['loc'] === undefined) return false;
-    if (!('msg' in value) || value['msg'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    return true;
+export function instanceOfValidationError(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "loc" in value;
+    isInstance = isInstance && "msg" in value;
+    isInstance = isInstance && "type" in value;
+
+    return isInstance;
 }
 
 export function ValidationErrorFromJSON(json: any): ValidationError {
@@ -62,7 +63,7 @@ export function ValidationErrorFromJSON(json: any): ValidationError {
 }
 
 export function ValidationErrorFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationError {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -73,20 +74,18 @@ export function ValidationErrorFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function ValidationErrorToJSON(json: any): ValidationError {
-    return ValidationErrorToJSONTyped(json, false);
-}
-
-export function ValidationErrorToJSONTyped(value?: ValidationError | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ValidationErrorToJSON(value?: ValidationError | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'loc': ((value['loc'] as Array<any>).map(LocationInnerToJSON)),
-        'msg': value['msg'],
-        'type': value['type'],
+        'loc': ((value.loc as Array<any>).map(LocationInnerToJSON)),
+        'msg': value.msg,
+        'type': value.type,
     };
 }
 

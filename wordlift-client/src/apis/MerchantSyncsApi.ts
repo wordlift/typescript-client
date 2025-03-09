@@ -18,7 +18,7 @@ import type {
   MerchantSync,
   PageMerchantSync,
   ProblemDetail,
-} from '../models/index';
+} from '../models';
 import {
     MerchantSyncFromJSON,
     MerchantSyncToJSON,
@@ -26,7 +26,7 @@ import {
     PageMerchantSyncToJSON,
     ProblemDetailFromJSON,
     ProblemDetailToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateSyncRequest {
     merchantId: number;
@@ -53,11 +53,8 @@ export class MerchantSyncsApi extends runtime.BaseAPI {
      * Start
      */
     async createSyncRaw(requestParameters: CreateSyncRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MerchantSync>> {
-        if (requestParameters['merchantId'] == null) {
-            throw new runtime.RequiredError(
-                'merchantId',
-                'Required parameter "merchantId" was null or undefined when calling createSync().'
-            );
+        if (requestParameters.merchantId === null || requestParameters.merchantId === undefined) {
+            throw new runtime.RequiredError('merchantId','Required parameter requestParameters.merchantId was null or undefined when calling createSync.');
         }
 
         const queryParameters: any = {};
@@ -65,11 +62,11 @@ export class MerchantSyncsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{merchantId}/syncs`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters['merchantId']))),
+            path: `/merchants/{merchantId}/syncs`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters.merchantId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -90,18 +87,12 @@ export class MerchantSyncsApi extends runtime.BaseAPI {
      * Get by id
      */
     async getMerchantSyncRaw(requestParameters: GetMerchantSyncRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MerchantSync>> {
-        if (requestParameters['merchantId'] == null) {
-            throw new runtime.RequiredError(
-                'merchantId',
-                'Required parameter "merchantId" was null or undefined when calling getMerchantSync().'
-            );
+        if (requestParameters.merchantId === null || requestParameters.merchantId === undefined) {
+            throw new runtime.RequiredError('merchantId','Required parameter requestParameters.merchantId was null or undefined when calling getMerchantSync.');
         }
 
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getMerchantSync().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMerchantSync.');
         }
 
         const queryParameters: any = {};
@@ -109,11 +100,11 @@ export class MerchantSyncsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{merchantId}/syncs/{id}`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters['merchantId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/merchants/{merchantId}/syncs/{id}`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters.merchantId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -135,35 +126,32 @@ export class MerchantSyncsApi extends runtime.BaseAPI {
      * List
      */
     async listMerchantSyncsRaw(requestParameters: ListMerchantSyncsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageMerchantSync>> {
-        if (requestParameters['merchantId'] == null) {
-            throw new runtime.RequiredError(
-                'merchantId',
-                'Required parameter "merchantId" was null or undefined when calling listMerchantSyncs().'
-            );
+        if (requestParameters.merchantId === null || requestParameters.merchantId === undefined) {
+            throw new runtime.RequiredError('merchantId','Required parameter requestParameters.merchantId was null or undefined when calling listMerchantSyncs.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['sort'] != null) {
-            queryParameters['sort'] = requestParameters['sort'];
+        if (requestParameters.sort !== undefined) {
+            queryParameters['sort'] = requestParameters.sort;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{merchantId}/syncs`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters['merchantId']))),
+            path: `/merchants/{merchantId}/syncs`.replace(`{${"merchantId"}}`, encodeURIComponent(String(requestParameters.merchantId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A language model.
  * @export
@@ -48,9 +48,11 @@ export interface Model {
 /**
  * Check if a given object implements the Model interface.
  */
-export function instanceOfModel(value: object): value is Model {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
+export function instanceOfModel(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+
+    return isInstance;
 }
 
 export function ModelFromJSON(json: any): Model {
@@ -58,32 +60,30 @@ export function ModelFromJSON(json: any): Model {
 }
 
 export function ModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Model {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'systemPrompt': json['system_prompt'] == null ? undefined : json['system_prompt'],
-        'tokenMargin': json['token_margin'] == null ? undefined : json['token_margin'],
+        'systemPrompt': !exists(json, 'system_prompt') ? undefined : json['system_prompt'],
+        'tokenMargin': !exists(json, 'token_margin') ? undefined : json['token_margin'],
     };
 }
 
-export function ModelToJSON(json: any): Model {
-    return ModelToJSONTyped(json, false);
-}
-
-export function ModelToJSONTyped(value?: Omit<Model, 'id'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ModelToJSON(value?: Model | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'name': value['name'],
-        'system_prompt': value['systemPrompt'],
-        'token_margin': value['tokenMargin'],
+        'name': value.name,
+        'system_prompt': value.systemPrompt,
+        'token_margin': value.tokenMargin,
     };
 }
 

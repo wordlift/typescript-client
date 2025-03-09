@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   BotifyCrawlImportRequest,
   WebPage,
-} from '../models/index';
+} from '../models';
 import {
     BotifyCrawlImportRequestFromJSON,
     BotifyCrawlImportRequestToJSON,
     WebPageFromJSON,
     WebPageToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateBotifyCrawlImportRequest {
     botifyCrawlImportRequest: BotifyCrawlImportRequest;
@@ -39,11 +39,8 @@ export class BotifyCrawlImportsApi extends runtime.BaseAPI {
      * Create
      */
     async createBotifyCrawlImportRaw(requestParameters: CreateBotifyCrawlImportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WebPage>>> {
-        if (requestParameters['botifyCrawlImportRequest'] == null) {
-            throw new runtime.RequiredError(
-                'botifyCrawlImportRequest',
-                'Required parameter "botifyCrawlImportRequest" was null or undefined when calling createBotifyCrawlImport().'
-            );
+        if (requestParameters.botifyCrawlImportRequest === null || requestParameters.botifyCrawlImportRequest === undefined) {
+            throw new runtime.RequiredError('botifyCrawlImportRequest','Required parameter requestParameters.botifyCrawlImportRequest was null or undefined when calling createBotifyCrawlImport.');
         }
 
         const queryParameters: any = {};
@@ -53,7 +50,7 @@ export class BotifyCrawlImportsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -61,7 +58,7 @@ export class BotifyCrawlImportsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BotifyCrawlImportRequestToJSON(requestParameters['botifyCrawlImportRequest']),
+            body: BotifyCrawlImportRequestToJSON(requestParameters.botifyCrawlImportRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WebPageFromJSON));

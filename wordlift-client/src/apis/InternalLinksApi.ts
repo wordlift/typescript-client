@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   InternalLink,
   InternalLinkRequest,
-} from '../models/index';
+} from '../models';
 import {
     InternalLinkFromJSON,
     InternalLinkToJSON,
     InternalLinkRequestFromJSON,
     InternalLinkRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateInternalLinkRequest {
     internalLinkRequest: InternalLinkRequest;
@@ -43,11 +43,8 @@ export class InternalLinksApi extends runtime.BaseAPI {
      * Create
      */
     async createInternalLinkRaw(requestParameters: CreateInternalLinkRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters['internalLinkRequest'] == null) {
-            throw new runtime.RequiredError(
-                'internalLinkRequest',
-                'Required parameter "internalLinkRequest" was null or undefined when calling createInternalLink().'
-            );
+        if (requestParameters.internalLinkRequest === null || requestParameters.internalLinkRequest === undefined) {
+            throw new runtime.RequiredError('internalLinkRequest','Required parameter requestParameters.internalLinkRequest was null or undefined when calling createInternalLink.');
         }
 
         const queryParameters: any = {};
@@ -57,7 +54,7 @@ export class InternalLinksApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -65,7 +62,7 @@ export class InternalLinksApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InternalLinkRequestToJSON(requestParameters['internalLinkRequest']),
+            body: InternalLinkRequestToJSON(requestParameters.internalLinkRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
@@ -85,11 +82,8 @@ export class InternalLinksApi extends runtime.BaseAPI {
      * Suggest
      */
     async createInternalLinkSuggestionRaw(requestParameters: CreateInternalLinkSuggestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<InternalLink>>> {
-        if (requestParameters['internalLinkRequest'] == null) {
-            throw new runtime.RequiredError(
-                'internalLinkRequest',
-                'Required parameter "internalLinkRequest" was null or undefined when calling createInternalLinkSuggestion().'
-            );
+        if (requestParameters.internalLinkRequest === null || requestParameters.internalLinkRequest === undefined) {
+            throw new runtime.RequiredError('internalLinkRequest','Required parameter requestParameters.internalLinkRequest was null or undefined when calling createInternalLinkSuggestion.');
         }
 
         const queryParameters: any = {};
@@ -99,7 +93,7 @@ export class InternalLinksApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -107,7 +101,7 @@ export class InternalLinksApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InternalLinkRequestToJSON(requestParameters['internalLinkRequest']),
+            body: InternalLinkRequestToJSON(requestParameters.internalLinkRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InternalLinkFromJSON));

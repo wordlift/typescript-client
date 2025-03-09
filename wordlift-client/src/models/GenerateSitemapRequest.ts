@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface GenerateSitemapRequest {
 /**
  * Check if a given object implements the GenerateSitemapRequest interface.
  */
-export function instanceOfGenerateSitemapRequest(value: object): value is GenerateSitemapRequest {
-    return true;
+export function instanceOfGenerateSitemapRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function GenerateSitemapRequestFromJSON(json: any): GenerateSitemapRequest {
@@ -45,29 +47,27 @@ export function GenerateSitemapRequestFromJSON(json: any): GenerateSitemapReques
 }
 
 export function GenerateSitemapRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): GenerateSitemapRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'query': json['query'] == null ? undefined : json['query'],
-        'operationName': json['operationName'] == null ? undefined : json['operationName'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
+        'operationName': !exists(json, 'operationName') ? undefined : json['operationName'],
     };
 }
 
-export function GenerateSitemapRequestToJSON(json: any): GenerateSitemapRequest {
-    return GenerateSitemapRequestToJSONTyped(json, false);
-}
-
-export function GenerateSitemapRequestToJSONTyped(value?: GenerateSitemapRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function GenerateSitemapRequestToJSON(value?: GenerateSitemapRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'query': value['query'],
-        'operationName': value['operationName'],
+        'query': value.query,
+        'operationName': value.operationName,
     };
 }
 

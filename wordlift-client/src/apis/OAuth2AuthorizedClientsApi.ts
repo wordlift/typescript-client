@@ -18,7 +18,7 @@ import type {
   OAuth2AuthorizedClient,
   OAuth2AuthorizedClientRequest,
   PageOAuth2AuthorizedClient,
-} from '../models/index';
+} from '../models';
 import {
     OAuth2AuthorizedClientFromJSON,
     OAuth2AuthorizedClientToJSON,
@@ -26,7 +26,7 @@ import {
     OAuth2AuthorizedClientRequestToJSON,
     PageOAuth2AuthorizedClientFromJSON,
     PageOAuth2AuthorizedClientToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateOAuth2AuthorizedClientRequest {
     oAuth2AuthorizedClientRequest: OAuth2AuthorizedClientRequest;
@@ -60,11 +60,8 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
      * Create
      */
     async createOAuth2AuthorizedClientRaw(requestParameters: CreateOAuth2AuthorizedClientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OAuth2AuthorizedClient>> {
-        if (requestParameters['oAuth2AuthorizedClientRequest'] == null) {
-            throw new runtime.RequiredError(
-                'oAuth2AuthorizedClientRequest',
-                'Required parameter "oAuth2AuthorizedClientRequest" was null or undefined when calling createOAuth2AuthorizedClient().'
-            );
+        if (requestParameters.oAuth2AuthorizedClientRequest === null || requestParameters.oAuth2AuthorizedClientRequest === undefined) {
+            throw new runtime.RequiredError('oAuth2AuthorizedClientRequest','Required parameter requestParameters.oAuth2AuthorizedClientRequest was null or undefined when calling createOAuth2AuthorizedClient.');
         }
 
         const queryParameters: any = {};
@@ -74,7 +71,7 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -82,7 +79,7 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: OAuth2AuthorizedClientRequestToJSON(requestParameters['oAuth2AuthorizedClientRequest']),
+            body: OAuth2AuthorizedClientRequestToJSON(requestParameters.oAuth2AuthorizedClientRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => OAuth2AuthorizedClientFromJSON(jsonValue));
@@ -102,11 +99,8 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteOAuth2AuthorizedClientRaw(requestParameters: DeleteOAuth2AuthorizedClientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteOAuth2AuthorizedClient().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteOAuth2AuthorizedClient.');
         }
 
         const queryParameters: any = {};
@@ -114,11 +108,11 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -140,11 +134,8 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
      * Get
      */
     async getOAuth2AuthorizedClientRaw(requestParameters: GetOAuth2AuthorizedClientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OAuth2AuthorizedClient>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getOAuth2AuthorizedClient().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getOAuth2AuthorizedClient.');
         }
 
         const queryParameters: any = {};
@@ -152,11 +143,11 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -181,18 +172,18 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
     async listOAuth2AuthorizedClientsRaw(requestParameters: ListOAuth2AuthorizedClientsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageOAuth2AuthorizedClient>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -219,18 +210,12 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
      * Update
      */
     async updateOAuth2AuthorizedClientRaw(requestParameters: UpdateOAuth2AuthorizedClientRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OAuth2AuthorizedClient>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateOAuth2AuthorizedClient().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateOAuth2AuthorizedClient.');
         }
 
-        if (requestParameters['oAuth2AuthorizedClientRequest'] == null) {
-            throw new runtime.RequiredError(
-                'oAuth2AuthorizedClientRequest',
-                'Required parameter "oAuth2AuthorizedClientRequest" was null or undefined when calling updateOAuth2AuthorizedClient().'
-            );
+        if (requestParameters.oAuth2AuthorizedClientRequest === null || requestParameters.oAuth2AuthorizedClientRequest === undefined) {
+            throw new runtime.RequiredError('oAuth2AuthorizedClientRequest','Required parameter requestParameters.oAuth2AuthorizedClientRequest was null or undefined when calling updateOAuth2AuthorizedClient.');
         }
 
         const queryParameters: any = {};
@@ -240,15 +225,15 @@ export class OAuth2AuthorizedClientsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/oauth2/authorized-clients/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: OAuth2AuthorizedClientRequestToJSON(requestParameters['oAuth2AuthorizedClientRequest']),
+            body: OAuth2AuthorizedClientRequestToJSON(requestParameters.oAuth2AuthorizedClientRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => OAuth2AuthorizedClientFromJSON(jsonValue));

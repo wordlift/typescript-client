@@ -23,17 +23,6 @@ export const AuthorizationStatus = {
 export type AuthorizationStatus = typeof AuthorizationStatus[keyof typeof AuthorizationStatus];
 
 
-export function instanceOfAuthorizationStatus(value: any): boolean {
-    for (const key in AuthorizationStatus) {
-        if (Object.prototype.hasOwnProperty.call(AuthorizationStatus, key)) {
-            if (AuthorizationStatus[key as keyof typeof AuthorizationStatus] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function AuthorizationStatusFromJSON(json: any): AuthorizationStatus {
     return AuthorizationStatusFromJSONTyped(json, false);
 }
@@ -44,9 +33,5 @@ export function AuthorizationStatusFromJSONTyped(json: any, ignoreDiscriminator:
 
 export function AuthorizationStatusToJSON(value?: AuthorizationStatus | null): any {
     return value as any;
-}
-
-export function AuthorizationStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): AuthorizationStatus {
-    return value as AuthorizationStatus;
 }
 

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   LongtailResponse,
   RankEntities,
-} from '../models/index';
+} from '../models';
 import {
     LongtailResponseFromJSON,
     LongtailResponseToJSON,
     RankEntitiesFromJSON,
     RankEntitiesToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface Get2Request {
     q: string;
@@ -63,64 +63,52 @@ export class LongTailsApi extends runtime.BaseAPI {
      * Get entities
      */
     async get2Raw(requestParameters: Get2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LongtailResponse>> {
-        if (requestParameters['q'] == null) {
-            throw new runtime.RequiredError(
-                'q',
-                'Required parameter "q" was null or undefined when calling get2().'
-            );
+        if (requestParameters.q === null || requestParameters.q === undefined) {
+            throw new runtime.RequiredError('q','Required parameter requestParameters.q was null or undefined when calling get2.');
         }
 
-        if (requestParameters['ln'] == null) {
-            throw new runtime.RequiredError(
-                'ln',
-                'Required parameter "ln" was null or undefined when calling get2().'
-            );
+        if (requestParameters.ln === null || requestParameters.ln === undefined) {
+            throw new runtime.RequiredError('ln','Required parameter requestParameters.ln was null or undefined when calling get2.');
         }
 
-        if (requestParameters['lc'] == null) {
-            throw new runtime.RequiredError(
-                'lc',
-                'Required parameter "lc" was null or undefined when calling get2().'
-            );
+        if (requestParameters.lc === null || requestParameters.lc === undefined) {
+            throw new runtime.RequiredError('lc','Required parameter requestParameters.lc was null or undefined when calling get2.');
         }
 
-        if (requestParameters['sd'] == null) {
-            throw new runtime.RequiredError(
-                'sd',
-                'Required parameter "sd" was null or undefined when calling get2().'
-            );
+        if (requestParameters.sd === null || requestParameters.sd === undefined) {
+            throw new runtime.RequiredError('sd','Required parameter requestParameters.sd was null or undefined when calling get2.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['q'] != null) {
-            queryParameters['q'] = requestParameters['q'];
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
         }
 
-        if (requestParameters['ln'] != null) {
-            queryParameters['ln'] = requestParameters['ln'];
+        if (requestParameters.ln !== undefined) {
+            queryParameters['ln'] = requestParameters.ln;
         }
 
-        if (requestParameters['lc'] != null) {
-            queryParameters['lc'] = requestParameters['lc'];
+        if (requestParameters.lc !== undefined) {
+            queryParameters['lc'] = requestParameters.lc;
         }
 
-        if (requestParameters['sd'] != null) {
-            queryParameters['sd'] = requestParameters['sd'];
+        if (requestParameters.sd !== undefined) {
+            queryParameters['sd'] = requestParameters.sd;
         }
 
-        if (requestParameters['sc'] != null) {
-            queryParameters['sc'] = requestParameters['sc'];
+        if (requestParameters.sc !== undefined) {
+            queryParameters['sc'] = requestParameters.sc;
         }
 
-        if (requestParameters['d'] != null) {
-            queryParameters['d'] = requestParameters['d'];
+        if (requestParameters.d !== undefined) {
+            queryParameters['d'] = requestParameters.d;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -147,75 +135,60 @@ export class LongTailsApi extends runtime.BaseAPI {
      * Get entities by rank (async)
      */
     async get3Raw(requestParameters: Get3Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['q'] == null) {
-            throw new runtime.RequiredError(
-                'q',
-                'Required parameter "q" was null or undefined when calling get3().'
-            );
+        if (requestParameters.q === null || requestParameters.q === undefined) {
+            throw new runtime.RequiredError('q','Required parameter requestParameters.q was null or undefined when calling get3.');
         }
 
-        if (requestParameters['ln'] == null) {
-            throw new runtime.RequiredError(
-                'ln',
-                'Required parameter "ln" was null or undefined when calling get3().'
-            );
+        if (requestParameters.ln === null || requestParameters.ln === undefined) {
+            throw new runtime.RequiredError('ln','Required parameter requestParameters.ln was null or undefined when calling get3.');
         }
 
-        if (requestParameters['lc'] == null) {
-            throw new runtime.RequiredError(
-                'lc',
-                'Required parameter "lc" was null or undefined when calling get3().'
-            );
+        if (requestParameters.lc === null || requestParameters.lc === undefined) {
+            throw new runtime.RequiredError('lc','Required parameter requestParameters.lc was null or undefined when calling get3.');
         }
 
-        if (requestParameters['sd'] == null) {
-            throw new runtime.RequiredError(
-                'sd',
-                'Required parameter "sd" was null or undefined when calling get3().'
-            );
+        if (requestParameters.sd === null || requestParameters.sd === undefined) {
+            throw new runtime.RequiredError('sd','Required parameter requestParameters.sd was null or undefined when calling get3.');
         }
 
-        if (requestParameters['hk'] == null) {
-            throw new runtime.RequiredError(
-                'hk',
-                'Required parameter "hk" was null or undefined when calling get3().'
-            );
+        if (requestParameters.hk === null || requestParameters.hk === undefined) {
+            throw new runtime.RequiredError('hk','Required parameter requestParameters.hk was null or undefined when calling get3.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['q'] != null) {
-            queryParameters['q'] = requestParameters['q'];
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
         }
 
-        if (requestParameters['ln'] != null) {
-            queryParameters['ln'] = requestParameters['ln'];
+        if (requestParameters.ln !== undefined) {
+            queryParameters['ln'] = requestParameters.ln;
         }
 
-        if (requestParameters['lc'] != null) {
-            queryParameters['lc'] = requestParameters['lc'];
+        if (requestParameters.lc !== undefined) {
+            queryParameters['lc'] = requestParameters.lc;
         }
 
-        if (requestParameters['sd'] != null) {
-            queryParameters['sd'] = requestParameters['sd'];
+        if (requestParameters.sd !== undefined) {
+            queryParameters['sd'] = requestParameters.sd;
         }
 
-        if (requestParameters['sc'] != null) {
-            queryParameters['sc'] = requestParameters['sc'];
+        if (requestParameters.sc !== undefined) {
+            queryParameters['sc'] = requestParameters.sc;
         }
 
-        if (requestParameters['hk'] != null) {
-            queryParameters['hk'] = requestParameters['hk'];
+        if (requestParameters.hk !== undefined) {
+            queryParameters['hk'] = requestParameters.hk;
         }
 
-        if (requestParameters['d'] != null) {
-            queryParameters['d'] = requestParameters['d'];
+        if (requestParameters.d !== undefined) {
+            queryParameters['d'] = requestParameters.d;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -241,64 +214,52 @@ export class LongTailsApi extends runtime.BaseAPI {
      * Get entities by rank
      */
     async getV2Raw(requestParameters: GetV2Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<RankEntities>>> {
-        if (requestParameters['q'] == null) {
-            throw new runtime.RequiredError(
-                'q',
-                'Required parameter "q" was null or undefined when calling getV2().'
-            );
+        if (requestParameters.q === null || requestParameters.q === undefined) {
+            throw new runtime.RequiredError('q','Required parameter requestParameters.q was null or undefined when calling getV2.');
         }
 
-        if (requestParameters['ln'] == null) {
-            throw new runtime.RequiredError(
-                'ln',
-                'Required parameter "ln" was null or undefined when calling getV2().'
-            );
+        if (requestParameters.ln === null || requestParameters.ln === undefined) {
+            throw new runtime.RequiredError('ln','Required parameter requestParameters.ln was null or undefined when calling getV2.');
         }
 
-        if (requestParameters['lc'] == null) {
-            throw new runtime.RequiredError(
-                'lc',
-                'Required parameter "lc" was null or undefined when calling getV2().'
-            );
+        if (requestParameters.lc === null || requestParameters.lc === undefined) {
+            throw new runtime.RequiredError('lc','Required parameter requestParameters.lc was null or undefined when calling getV2.');
         }
 
-        if (requestParameters['sd'] == null) {
-            throw new runtime.RequiredError(
-                'sd',
-                'Required parameter "sd" was null or undefined when calling getV2().'
-            );
+        if (requestParameters.sd === null || requestParameters.sd === undefined) {
+            throw new runtime.RequiredError('sd','Required parameter requestParameters.sd was null or undefined when calling getV2.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['q'] != null) {
-            queryParameters['q'] = requestParameters['q'];
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
         }
 
-        if (requestParameters['ln'] != null) {
-            queryParameters['ln'] = requestParameters['ln'];
+        if (requestParameters.ln !== undefined) {
+            queryParameters['ln'] = requestParameters.ln;
         }
 
-        if (requestParameters['lc'] != null) {
-            queryParameters['lc'] = requestParameters['lc'];
+        if (requestParameters.lc !== undefined) {
+            queryParameters['lc'] = requestParameters.lc;
         }
 
-        if (requestParameters['sd'] != null) {
-            queryParameters['sd'] = requestParameters['sd'];
+        if (requestParameters.sd !== undefined) {
+            queryParameters['sd'] = requestParameters.sd;
         }
 
-        if (requestParameters['sc'] != null) {
-            queryParameters['sc'] = requestParameters['sc'];
+        if (requestParameters.sc !== undefined) {
+            queryParameters['sc'] = requestParameters.sc;
         }
 
-        if (requestParameters['d'] != null) {
-            queryParameters['d'] = requestParameters['d'];
+        if (requestParameters.d !== undefined) {
+            queryParameters['d'] = requestParameters.d;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

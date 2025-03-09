@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { ActiveAccount } from './ActiveAccount';
 import {
     ActiveAccountFromJSON,
     ActiveAccountFromJSONTyped,
     ActiveAccountToJSON,
-    ActiveAccountToJSONTyped,
 } from './ActiveAccount';
 
 /**
@@ -68,14 +67,16 @@ export interface PageActiveAccount {
 /**
  * Check if a given object implements the PageActiveAccount interface.
  */
-export function instanceOfPageActiveAccount(value: object): value is PageActiveAccount {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPageActiveAccount(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PageActiveAccountFromJSON(json: any): PageActiveAccount {
@@ -83,7 +84,7 @@ export function PageActiveAccountFromJSON(json: any): PageActiveAccount {
 }
 
 export function PageActiveAccountFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageActiveAccount {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PageActiveAccountFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function PageActiveAccountToJSON(json: any): PageActiveAccount {
-    return PageActiveAccountToJSONTyped(json, false);
-}
-
-export function PageActiveAccountToJSONTyped(value?: PageActiveAccount | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PageActiveAccountToJSON(value?: PageActiveAccount | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(ActiveAccountToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(ActiveAccountToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 

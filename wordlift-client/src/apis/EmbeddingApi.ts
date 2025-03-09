@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   KgEmbeddingRequest,
-} from '../models/index';
+} from '../models';
 import {
     KgEmbeddingRequestFromJSON,
     KgEmbeddingRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateEmbeddingRequest {
     kgEmbeddingRequest: KgEmbeddingRequest;
@@ -36,11 +36,8 @@ export class EmbeddingApi extends runtime.BaseAPI {
      * Create
      */
     async createEmbeddingRaw(requestParameters: CreateEmbeddingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<{ [key: string]: string; }>>> {
-        if (requestParameters['kgEmbeddingRequest'] == null) {
-            throw new runtime.RequiredError(
-                'kgEmbeddingRequest',
-                'Required parameter "kgEmbeddingRequest" was null or undefined when calling createEmbedding().'
-            );
+        if (requestParameters.kgEmbeddingRequest === null || requestParameters.kgEmbeddingRequest === undefined) {
+            throw new runtime.RequiredError('kgEmbeddingRequest','Required parameter requestParameters.kgEmbeddingRequest was null or undefined when calling createEmbedding.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class EmbeddingApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class EmbeddingApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: KgEmbeddingRequestToJSON(requestParameters['kgEmbeddingRequest']),
+            body: KgEmbeddingRequestToJSON(requestParameters.kgEmbeddingRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);

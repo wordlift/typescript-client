@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request for a completion.
  * @export
@@ -78,9 +78,11 @@ export interface CompletionRequest {
 /**
  * Check if a given object implements the CompletionRequest interface.
  */
-export function instanceOfCompletionRequest(value: object): value is CompletionRequest {
-    if (!('prompt' in value) || value['prompt'] === undefined) return false;
-    return true;
+export function instanceOfCompletionRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "prompt" in value;
+
+    return isInstance;
 }
 
 export function CompletionRequestFromJSON(json: any): CompletionRequest {
@@ -88,43 +90,41 @@ export function CompletionRequestFromJSON(json: any): CompletionRequest {
 }
 
 export function CompletionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CompletionRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'frequencyPenalty': json['frequency_penalty'] == null ? undefined : json['frequency_penalty'],
-        'logitBias': json['logit_bias'] == null ? undefined : json['logit_bias'],
-        'maxTokens': json['max_tokens'] == null ? undefined : json['max_tokens'],
-        'minWords': json['min_words'] == null ? undefined : json['min_words'],
-        'modelId': json['model_id'] == null ? undefined : json['model_id'],
-        'presencePenalty': json['presence_penalty'] == null ? undefined : json['presence_penalty'],
+        'frequencyPenalty': !exists(json, 'frequency_penalty') ? undefined : json['frequency_penalty'],
+        'logitBias': !exists(json, 'logit_bias') ? undefined : json['logit_bias'],
+        'maxTokens': !exists(json, 'max_tokens') ? undefined : json['max_tokens'],
+        'minWords': !exists(json, 'min_words') ? undefined : json['min_words'],
+        'modelId': !exists(json, 'model_id') ? undefined : json['model_id'],
+        'presencePenalty': !exists(json, 'presence_penalty') ? undefined : json['presence_penalty'],
         'prompt': json['prompt'],
-        'stop': json['stop'] == null ? undefined : json['stop'],
-        'temperature': json['temperature'] == null ? undefined : json['temperature'],
+        'stop': !exists(json, 'stop') ? undefined : json['stop'],
+        'temperature': !exists(json, 'temperature') ? undefined : json['temperature'],
     };
 }
 
-export function CompletionRequestToJSON(json: any): CompletionRequest {
-    return CompletionRequestToJSONTyped(json, false);
-}
-
-export function CompletionRequestToJSONTyped(value?: CompletionRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CompletionRequestToJSON(value?: CompletionRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'frequency_penalty': value['frequencyPenalty'],
-        'logit_bias': value['logitBias'],
-        'max_tokens': value['maxTokens'],
-        'min_words': value['minWords'],
-        'model_id': value['modelId'],
-        'presence_penalty': value['presencePenalty'],
-        'prompt': value['prompt'],
-        'stop': value['stop'],
-        'temperature': value['temperature'],
+        'frequency_penalty': value.frequencyPenalty,
+        'logit_bias': value.logitBias,
+        'max_tokens': value.maxTokens,
+        'min_words': value.minWords,
+        'model_id': value.modelId,
+        'presence_penalty': value.presencePenalty,
+        'prompt': value.prompt,
+        'stop': value.stop,
+        'temperature': value.temperature,
     };
 }
 

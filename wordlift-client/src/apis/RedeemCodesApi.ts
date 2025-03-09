@@ -18,7 +18,7 @@ import type {
   ProblemDetail,
   Request2,
   Response2,
-} from '../models/index';
+} from '../models';
 import {
     ProblemDetailFromJSON,
     ProblemDetailToJSON,
@@ -26,7 +26,7 @@ import {
     Request2ToJSON,
     Response2FromJSON,
     Response2ToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface RedeemCodeRequest {
     request2: Request2;
@@ -41,11 +41,8 @@ export class RedeemCodesApi extends runtime.BaseAPI {
      * Redeem the provided code and get a key
      */
     async redeemCodeRaw(requestParameters: RedeemCodeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Response2>> {
-        if (requestParameters['request2'] == null) {
-            throw new runtime.RequiredError(
-                'request2',
-                'Required parameter "request2" was null or undefined when calling redeemCode().'
-            );
+        if (requestParameters.request2 === null || requestParameters.request2 === undefined) {
+            throw new runtime.RequiredError('request2','Required parameter requestParameters.request2 was null or undefined when calling redeemCode.');
         }
 
         const queryParameters: any = {};
@@ -55,7 +52,7 @@ export class RedeemCodesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -63,7 +60,7 @@ export class RedeemCodesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: Request2ToJSON(requestParameters['request2']),
+            body: Request2ToJSON(requestParameters.request2),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => Response2FromJSON(jsonValue));

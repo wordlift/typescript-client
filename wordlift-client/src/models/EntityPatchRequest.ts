@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -50,9 +50,9 @@ export const EntityPatchRequestOpEnum = {
     Move: 'move',
     Copy: 'copy',
     Test: 'test',
-    Add2: 'add',
-    Remove2: 'remove',
-    Replace2: 'replace'
+    Add: 'add',
+    Remove: 'remove',
+    Replace: 'replace'
 } as const;
 export type EntityPatchRequestOpEnum = typeof EntityPatchRequestOpEnum[keyof typeof EntityPatchRequestOpEnum];
 
@@ -60,8 +60,10 @@ export type EntityPatchRequestOpEnum = typeof EntityPatchRequestOpEnum[keyof typ
 /**
  * Check if a given object implements the EntityPatchRequest interface.
  */
-export function instanceOfEntityPatchRequest(value: object): value is EntityPatchRequest {
-    return true;
+export function instanceOfEntityPatchRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function EntityPatchRequestFromJSON(json: any): EntityPatchRequest {
@@ -69,31 +71,29 @@ export function EntityPatchRequestFromJSON(json: any): EntityPatchRequest {
 }
 
 export function EntityPatchRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityPatchRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'op': json['op'] == null ? undefined : json['op'],
-        'path': json['path'] == null ? undefined : json['path'],
-        'value': json['value'] == null ? undefined : json['value'],
+        'op': !exists(json, 'op') ? undefined : json['op'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
+        'value': !exists(json, 'value') ? undefined : json['value'],
     };
 }
 
-export function EntityPatchRequestToJSON(json: any): EntityPatchRequest {
-    return EntityPatchRequestToJSONTyped(json, false);
-}
-
-export function EntityPatchRequestToJSONTyped(value?: EntityPatchRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EntityPatchRequestToJSON(value?: EntityPatchRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'op': value['op'],
-        'path': value['path'],
-        'value': value['value'],
+        'op': value.op,
+        'path': value.path,
+        'value': value.value,
     };
 }
 

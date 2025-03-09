@@ -20,7 +20,7 @@ import type {
   Request3,
   UpdateRecordRequest,
   UpdateRecordsRequest,
-} from '../models/index';
+} from '../models';
 import {
     PageRecordFromJSON,
     PageRecordToJSON,
@@ -32,7 +32,7 @@ import {
     UpdateRecordRequestToJSON,
     UpdateRecordsRequestFromJSON,
     UpdateRecordsRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetRecordRequest {
     contentGenerationId: number;
@@ -76,18 +76,12 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * Get
      */
     async getRecordRaw(requestParameters: GetRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Record>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling getRecord().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling getRecord.');
         }
 
-        if (requestParameters['recordId'] == null) {
-            throw new runtime.RequiredError(
-                'recordId',
-                'Required parameter "recordId" was null or undefined when calling getRecord().'
-            );
+        if (requestParameters.recordId === null || requestParameters.recordId === undefined) {
+            throw new runtime.RequiredError('recordId','Required parameter requestParameters.recordId was null or undefined when calling getRecord.');
         }
 
         const queryParameters: any = {};
@@ -95,11 +89,11 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records/{recordId}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))).replace(`{${"recordId"}}`, encodeURIComponent(String(requestParameters['recordId']))),
+            path: `/content-generations/{contentGenerationId}/records/{recordId}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))).replace(`{${"recordId"}}`, encodeURIComponent(String(requestParameters.recordId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -120,35 +114,32 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * List
      */
     async listRecordsRaw(requestParameters: ListRecordsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageRecord>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling listRecords().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling listRecords.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['q'] != null) {
-            queryParameters['q'] = requestParameters['q'];
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/records`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -169,11 +160,8 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * List as Events
      */
     async listRecordsAsEventsRaw(requestParameters: ListRecordsAsEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling listRecordsAsEvents().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling listRecordsAsEvents.');
         }
 
         const queryParameters: any = {};
@@ -181,11 +169,11 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records-sse`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/records-sse`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -205,25 +193,16 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * Update
      */
     async updateContentGenerationRecordRaw(requestParameters: UpdateContentGenerationRecordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Record>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling updateContentGenerationRecord().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling updateContentGenerationRecord.');
         }
 
-        if (requestParameters['recordId'] == null) {
-            throw new runtime.RequiredError(
-                'recordId',
-                'Required parameter "recordId" was null or undefined when calling updateContentGenerationRecord().'
-            );
+        if (requestParameters.recordId === null || requestParameters.recordId === undefined) {
+            throw new runtime.RequiredError('recordId','Required parameter requestParameters.recordId was null or undefined when calling updateContentGenerationRecord.');
         }
 
-        if (requestParameters['request3'] == null) {
-            throw new runtime.RequiredError(
-                'request3',
-                'Required parameter "request3" was null or undefined when calling updateContentGenerationRecord().'
-            );
+        if (requestParameters.request3 === null || requestParameters.request3 === undefined) {
+            throw new runtime.RequiredError('request3','Required parameter requestParameters.request3 was null or undefined when calling updateContentGenerationRecord.');
         }
 
         const queryParameters: any = {};
@@ -233,15 +212,15 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records/{recordId}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))).replace(`{${"recordId"}}`, encodeURIComponent(String(requestParameters['recordId']))),
+            path: `/content-generations/{contentGenerationId}/records/{recordId}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))).replace(`{${"recordId"}}`, encodeURIComponent(String(requestParameters.recordId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: Request3ToJSON(requestParameters['request3']),
+            body: Request3ToJSON(requestParameters.request3),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RecordFromJSON(jsonValue));
@@ -259,31 +238,22 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * Update
      */
     async updateRecordsRaw(requestParameters: UpdateRecordsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling updateRecords().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling updateRecords.');
         }
 
-        if (requestParameters['isAccepted'] == null) {
-            throw new runtime.RequiredError(
-                'isAccepted',
-                'Required parameter "isAccepted" was null or undefined when calling updateRecords().'
-            );
+        if (requestParameters.isAccepted === null || requestParameters.isAccepted === undefined) {
+            throw new runtime.RequiredError('isAccepted','Required parameter requestParameters.isAccepted was null or undefined when calling updateRecords.');
         }
 
-        if (requestParameters['updateRecordsRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateRecordsRequest',
-                'Required parameter "updateRecordsRequest" was null or undefined when calling updateRecords().'
-            );
+        if (requestParameters.updateRecordsRequest === null || requestParameters.updateRecordsRequest === undefined) {
+            throw new runtime.RequiredError('updateRecordsRequest','Required parameter requestParameters.updateRecordsRequest was null or undefined when calling updateRecords.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['isAccepted'] != null) {
-            queryParameters['is_accepted'] = requestParameters['isAccepted'];
+        if (requestParameters.isAccepted !== undefined) {
+            queryParameters['is_accepted'] = requestParameters.isAccepted;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -291,15 +261,15 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/records`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateRecordsRequestToJSON(requestParameters['updateRecordsRequest']),
+            body: UpdateRecordsRequestToJSON(requestParameters.updateRecordsRequest),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -316,18 +286,12 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
      * Update
      */
     async updateRecordsCollectionRaw(requestParameters: UpdateRecordsCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Record>>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling updateRecordsCollection().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling updateRecordsCollection.');
         }
 
-        if (requestParameters['updateRecordRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateRecordRequest',
-                'Required parameter "updateRecordRequest" was null or undefined when calling updateRecordsCollection().'
-            );
+        if (requestParameters.updateRecordRequest === null || requestParameters.updateRecordRequest === undefined) {
+            throw new runtime.RequiredError('updateRecordRequest','Required parameter requestParameters.updateRecordRequest was null or undefined when calling updateRecordsCollection.');
         }
 
         const queryParameters: any = {};
@@ -337,15 +301,15 @@ export class ContentGenerationRecordsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records-collection`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/records-collection`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['updateRecordRequest']!.map(UpdateRecordRequestToJSON),
+            body: requestParameters.updateRecordRequest.map(UpdateRecordRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RecordFromJSON));

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   GenerateSitemap200Response,
   GenerateSitemapRequest,
-} from '../models/index';
+} from '../models';
 import {
     GenerateSitemap200ResponseFromJSON,
     GenerateSitemap200ResponseToJSON,
     GenerateSitemapRequestFromJSON,
     GenerateSitemapRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GenerateSitemapOperationRequest {
     generateSitemapRequest: GenerateSitemapRequest;
@@ -39,11 +39,8 @@ export class SitemapGeneratorApi extends runtime.BaseAPI {
      * Generate Sitemap
      */
     async generateSitemapRaw(requestParameters: GenerateSitemapOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GenerateSitemap200Response>> {
-        if (requestParameters['generateSitemapRequest'] == null) {
-            throw new runtime.RequiredError(
-                'generateSitemapRequest',
-                'Required parameter "generateSitemapRequest" was null or undefined when calling generateSitemap().'
-            );
+        if (requestParameters.generateSitemapRequest === null || requestParameters.generateSitemapRequest === undefined) {
+            throw new runtime.RequiredError('generateSitemapRequest','Required parameter requestParameters.generateSitemapRequest was null or undefined when calling generateSitemap.');
         }
 
         const queryParameters: any = {};
@@ -53,7 +50,7 @@ export class SitemapGeneratorApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -61,7 +58,7 @@ export class SitemapGeneratorApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GenerateSitemapRequestToJSON(requestParameters['generateSitemapRequest']),
+            body: GenerateSitemapRequestToJSON(requestParameters.generateSitemapRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GenerateSitemap200ResponseFromJSON(jsonValue));

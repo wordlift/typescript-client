@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An array of objects.
  * @export
@@ -42,10 +42,12 @@ export interface Preset {
 /**
  * Check if a given object implements the Preset interface.
  */
-export function instanceOfPreset(value: object): value is Preset {
-    if (!('body' in value) || value['body'] === undefined) return false;
-    if (!('label' in value) || value['label'] === undefined) return false;
-    return true;
+export function instanceOfPreset(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "body" in value;
+    isInstance = isInstance && "label" in value;
+
+    return isInstance;
 }
 
 export function PresetFromJSON(json: any): Preset {
@@ -53,31 +55,29 @@ export function PresetFromJSON(json: any): Preset {
 }
 
 export function PresetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Preset {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'body': json['body'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'label': json['label'],
     };
 }
 
-export function PresetToJSON(json: any): Preset {
-    return PresetToJSONTyped(json, false);
-}
-
-export function PresetToJSONTyped(value?: Preset | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PresetToJSON(value?: Preset | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'body': value['body'],
-        'id': value['id'],
-        'label': value['label'],
+        'body': value.body,
+        'id': value.id,
+        'label': value.label,
     };
 }
 

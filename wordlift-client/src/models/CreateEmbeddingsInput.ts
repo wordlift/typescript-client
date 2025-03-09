@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,9 +30,11 @@ export interface CreateEmbeddingsInput {
 /**
  * Check if a given object implements the CreateEmbeddingsInput interface.
  */
-export function instanceOfCreateEmbeddingsInput(value: object): value is CreateEmbeddingsInput {
-    if (!('text' in value) || value['text'] === undefined) return false;
-    return true;
+export function instanceOfCreateEmbeddingsInput(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "text" in value;
+
+    return isInstance;
 }
 
 export function CreateEmbeddingsInputFromJSON(json: any): CreateEmbeddingsInput {
@@ -40,7 +42,7 @@ export function CreateEmbeddingsInputFromJSON(json: any): CreateEmbeddingsInput 
 }
 
 export function CreateEmbeddingsInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateEmbeddingsInput {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -49,18 +51,16 @@ export function CreateEmbeddingsInputFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function CreateEmbeddingsInputToJSON(json: any): CreateEmbeddingsInput {
-    return CreateEmbeddingsInputToJSONTyped(json, false);
-}
-
-export function CreateEmbeddingsInputToJSONTyped(value?: CreateEmbeddingsInput | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CreateEmbeddingsInputToJSON(value?: CreateEmbeddingsInput | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'text': value['text'],
+        'text': value.text,
     };
 }
 

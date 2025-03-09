@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request to render a template using the provided data structure.
  * @export
@@ -36,10 +36,12 @@ export interface RenderRequest {
 /**
  * Check if a given object implements the RenderRequest interface.
  */
-export function instanceOfRenderRequest(value: object): value is RenderRequest {
-    if (!('data' in value) || value['data'] === undefined) return false;
-    if (!('template' in value) || value['template'] === undefined) return false;
-    return true;
+export function instanceOfRenderRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "data" in value;
+    isInstance = isInstance && "template" in value;
+
+    return isInstance;
 }
 
 export function RenderRequestFromJSON(json: any): RenderRequest {
@@ -47,7 +49,7 @@ export function RenderRequestFromJSON(json: any): RenderRequest {
 }
 
 export function RenderRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RenderRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,18 +59,16 @@ export function RenderRequestFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function RenderRequestToJSON(json: any): RenderRequest {
-    return RenderRequestToJSONTyped(json, false);
-}
-
-export function RenderRequestToJSONTyped(value?: Omit<RenderRequest, 'data'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RenderRequestToJSON(value?: RenderRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'template': value['template'],
+        'template': value.template,
     };
 }
 

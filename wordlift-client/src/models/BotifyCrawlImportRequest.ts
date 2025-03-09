@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Filter } from './Filter';
 import {
     FilterFromJSON,
     FilterFromJSONTyped,
     FilterToJSON,
-    FilterToJSONTyped,
 } from './Filter';
 
 /**
@@ -80,8 +79,10 @@ export interface BotifyCrawlImportRequest {
 /**
  * Check if a given object implements the BotifyCrawlImportRequest interface.
  */
-export function instanceOfBotifyCrawlImportRequest(value: object): value is BotifyCrawlImportRequest {
-    return true;
+export function instanceOfBotifyCrawlImportRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function BotifyCrawlImportRequestFromJSON(json: any): BotifyCrawlImportRequest {
@@ -89,41 +90,39 @@ export function BotifyCrawlImportRequestFromJSON(json: any): BotifyCrawlImportRe
 }
 
 export function BotifyCrawlImportRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BotifyCrawlImportRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'collection': json['collection'] == null ? undefined : json['collection'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'filters': json['filters'] == null ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
-        'headline': json['headline'] == null ? undefined : json['headline'],
-        'requestEmbeddings': json['request_embeddings'] == null ? undefined : new Set(json['request_embeddings']),
-        'text': json['text'] == null ? undefined : json['text'],
-        'types': json['types'] == null ? undefined : new Set(json['types']),
-        'url': json['url'] == null ? undefined : json['url'],
+        'collection': !exists(json, 'collection') ? undefined : json['collection'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'filters': !exists(json, 'filters') ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
+        'headline': !exists(json, 'headline') ? undefined : json['headline'],
+        'requestEmbeddings': !exists(json, 'request_embeddings') ? undefined : json['request_embeddings'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'types': !exists(json, 'types') ? undefined : json['types'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function BotifyCrawlImportRequestToJSON(json: any): BotifyCrawlImportRequest {
-    return BotifyCrawlImportRequestToJSONTyped(json, false);
-}
-
-export function BotifyCrawlImportRequestToJSONTyped(value?: BotifyCrawlImportRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BotifyCrawlImportRequestToJSON(value?: BotifyCrawlImportRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'collection': value['collection'],
-        'description': value['description'],
-        'filters': value['filters'] == null ? undefined : ((value['filters'] as Array<any>).map(FilterToJSON)),
-        'headline': value['headline'],
-        'request_embeddings': value['requestEmbeddings'] == null ? undefined : Array.from(value['requestEmbeddings'] as Set<any>),
-        'text': value['text'],
-        'types': value['types'] == null ? undefined : Array.from(value['types'] as Set<any>),
-        'url': value['url'],
+        'collection': value.collection,
+        'description': value.description,
+        'filters': value.filters === undefined ? undefined : ((value.filters as Array<any>).map(FilterToJSON)),
+        'headline': value.headline,
+        'request_embeddings': value.requestEmbeddings === undefined ? undefined : Array.from(value.requestEmbeddings as Set<any>),
+        'text': value.text,
+        'types': value.types === undefined ? undefined : Array.from(value.types as Set<any>),
+        'url': value.url,
     };
 }
 

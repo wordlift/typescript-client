@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Anchor Text request.
  * @export
@@ -54,8 +54,10 @@ export interface AnchorText {
 /**
  * Check if a given object implements the AnchorText interface.
  */
-export function instanceOfAnchorText(value: object): value is AnchorText {
-    return true;
+export function instanceOfAnchorText(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnchorTextFromJSON(json: any): AnchorText {
@@ -63,34 +65,32 @@ export function AnchorTextFromJSON(json: any): AnchorText {
 }
 
 export function AnchorTextFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnchorText {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'actualPromptTemplate': json['actual_prompt_template'] == null ? undefined : json['actual_prompt_template'],
-        'enabled': json['enabled'] == null ? undefined : json['enabled'],
-        'maxCharacters': json['max_characters'] == null ? undefined : json['max_characters'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'promptTemplate': json['prompt_template'] == null ? undefined : json['prompt_template'],
+        'actualPromptTemplate': !exists(json, 'actual_prompt_template') ? undefined : json['actual_prompt_template'],
+        'enabled': !exists(json, 'enabled') ? undefined : json['enabled'],
+        'maxCharacters': !exists(json, 'max_characters') ? undefined : json['max_characters'],
+        'model': !exists(json, 'model') ? undefined : json['model'],
+        'promptTemplate': !exists(json, 'prompt_template') ? undefined : json['prompt_template'],
     };
 }
 
-export function AnchorTextToJSON(json: any): AnchorText {
-    return AnchorTextToJSONTyped(json, false);
-}
-
-export function AnchorTextToJSONTyped(value?: Omit<AnchorText, 'actual_prompt_template'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnchorTextToJSON(value?: AnchorText | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'enabled': value['enabled'],
-        'max_characters': value['maxCharacters'],
-        'model': value['model'],
-        'prompt_template': value['promptTemplate'],
+        'enabled': value.enabled,
+        'max_characters': value.maxCharacters,
+        'model': value.model,
+        'prompt_template': value.promptTemplate,
     };
 }
 

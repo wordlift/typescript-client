@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An Analytics Import request.
  * @export
@@ -30,8 +30,10 @@ export interface AnalyticsImportRequest {
 /**
  * Check if a given object implements the AnalyticsImportRequest interface.
  */
-export function instanceOfAnalyticsImportRequest(value: object): value is AnalyticsImportRequest {
-    return true;
+export function instanceOfAnalyticsImportRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnalyticsImportRequestFromJSON(json: any): AnalyticsImportRequest {
@@ -39,27 +41,25 @@ export function AnalyticsImportRequestFromJSON(json: any): AnalyticsImportReques
 }
 
 export function AnalyticsImportRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalyticsImportRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'urls': json['urls'] == null ? undefined : new Set(json['urls']),
+        'urls': !exists(json, 'urls') ? undefined : json['urls'],
     };
 }
 
-export function AnalyticsImportRequestToJSON(json: any): AnalyticsImportRequest {
-    return AnalyticsImportRequestToJSONTyped(json, false);
-}
-
-export function AnalyticsImportRequestToJSONTyped(value?: AnalyticsImportRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnalyticsImportRequestToJSON(value?: AnalyticsImportRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'urls': value['urls'] == null ? undefined : Array.from(value['urls'] as Set<any>),
+        'urls': value.urls === undefined ? undefined : Array.from(value.urls as Set<any>),
     };
 }
 

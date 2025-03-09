@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,8 +72,10 @@ export interface WebAsync {
 /**
  * Check if a given object implements the WebAsync interface.
  */
-export function instanceOfWebAsync(value: object): value is WebAsync {
-    return true;
+export function instanceOfWebAsync(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function WebAsyncFromJSON(json: any): WebAsync {
@@ -81,41 +83,39 @@ export function WebAsyncFromJSON(json: any): WebAsync {
 }
 
 export function WebAsyncFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebAsync {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'created': json['created'] == null ? undefined : (new Date(json['created'])),
-        'completed': json['completed'] == null ? undefined : (new Date(json['completed'])),
-        'delivered': json['delivered'] == null ? undefined : (new Date(json['delivered'])),
-        'method': json['method'] == null ? undefined : json['method'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'callback': json['callback'] == null ? undefined : json['callback'],
-        'remoteAddress': json['remoteAddress'] == null ? undefined : json['remoteAddress'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'created': !exists(json, 'created') ? undefined : (new Date(json['created'])),
+        'completed': !exists(json, 'completed') ? undefined : (new Date(json['completed'])),
+        'delivered': !exists(json, 'delivered') ? undefined : (new Date(json['delivered'])),
+        'method': !exists(json, 'method') ? undefined : json['method'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'callback': !exists(json, 'callback') ? undefined : json['callback'],
+        'remoteAddress': !exists(json, 'remoteAddress') ? undefined : json['remoteAddress'],
     };
 }
 
-export function WebAsyncToJSON(json: any): WebAsync {
-    return WebAsyncToJSONTyped(json, false);
-}
-
-export function WebAsyncToJSONTyped(value?: WebAsync | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WebAsyncToJSON(value?: WebAsync | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'created': value['created'] == null ? undefined : ((value['created']).toISOString()),
-        'completed': value['completed'] == null ? undefined : ((value['completed']).toISOString()),
-        'delivered': value['delivered'] == null ? undefined : ((value['delivered']).toISOString()),
-        'method': value['method'],
-        'url': value['url'],
-        'callback': value['callback'],
-        'remoteAddress': value['remoteAddress'],
+        'id': value.id,
+        'created': value.created === undefined ? undefined : (value.created.toISOString()),
+        'completed': value.completed === undefined ? undefined : (value.completed.toISOString()),
+        'delivered': value.delivered === undefined ? undefined : (value.delivered.toISOString()),
+        'method': value.method,
+        'url': value.url,
+        'callback': value.callback,
+        'remoteAddress': value.remoteAddress,
     };
 }
 

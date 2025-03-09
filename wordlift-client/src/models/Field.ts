@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface Field {
 /**
  * Check if a given object implements the Field interface.
  */
-export function instanceOfField(value: object): value is Field {
-    return true;
+export function instanceOfField(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function FieldFromJSON(json: any): Field {
@@ -45,29 +47,27 @@ export function FieldFromJSON(json: any): Field {
 }
 
 export function FieldFromJSONTyped(json: any, ignoreDiscriminator: boolean): Field {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'name': json['name'] == null ? undefined : json['name'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
     };
 }
 
-export function FieldToJSON(json: any): Field {
-    return FieldToJSONTyped(json, false);
-}
-
-export function FieldToJSONTyped(value?: Field | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FieldToJSON(value?: Field | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'name': value['name'],
+        'id': value.id,
+        'name': value.name,
     };
 }
 

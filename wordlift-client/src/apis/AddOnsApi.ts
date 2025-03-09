@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   PageAddOnConfiguration,
-} from '../models/index';
+} from '../models';
 import {
     PageAddOnConfigurationFromJSON,
     PageAddOnConfigurationToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListConfigurationsRequest {
     token?: string;
@@ -40,22 +40,22 @@ export class AddOnsApi extends runtime.BaseAPI {
     async listConfigurationsRaw(requestParameters: ListConfigurationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageAddOnConfiguration>> {
         const queryParameters: any = {};
 
-        if (requestParameters['token'] != null) {
-            queryParameters['token'] = requestParameters['token'];
+        if (requestParameters.token !== undefined) {
+            queryParameters['token'] = requestParameters.token;
         }
 
-        if (requestParameters['key'] != null) {
-            queryParameters['key'] = requestParameters['key'];
+        if (requestParameters.key !== undefined) {
+            queryParameters['key'] = requestParameters.key;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

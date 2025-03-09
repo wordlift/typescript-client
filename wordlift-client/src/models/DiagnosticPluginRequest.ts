@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Diagnostic Plugin Data Request
  * @export
@@ -42,8 +42,10 @@ export interface DiagnosticPluginRequest {
 /**
  * Check if a given object implements the DiagnosticPluginRequest interface.
  */
-export function instanceOfDiagnosticPluginRequest(value: object): value is DiagnosticPluginRequest {
-    return true;
+export function instanceOfDiagnosticPluginRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function DiagnosticPluginRequestFromJSON(json: any): DiagnosticPluginRequest {
@@ -51,31 +53,29 @@ export function DiagnosticPluginRequestFromJSON(json: any): DiagnosticPluginRequ
 }
 
 export function DiagnosticPluginRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DiagnosticPluginRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'active': json['active'] == null ? undefined : json['active'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'version': json['version'] == null ? undefined : json['version'],
+        'active': !exists(json, 'active') ? undefined : json['active'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
     };
 }
 
-export function DiagnosticPluginRequestToJSON(json: any): DiagnosticPluginRequest {
-    return DiagnosticPluginRequestToJSONTyped(json, false);
-}
-
-export function DiagnosticPluginRequestToJSONTyped(value?: DiagnosticPluginRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function DiagnosticPluginRequestToJSON(value?: DiagnosticPluginRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'active': value['active'],
-        'name': value['name'],
-        'version': value['version'],
+        'active': value.active,
+        'name': value.name,
+        'version': value.version,
     };
 }
 

@@ -29,23 +29,20 @@ export class DataURIApi extends runtime.BaseAPI {
      * Get the Web Data URI for a Web Page URL.
      */
     async getDataUriRaw(requestParameters: GetDataUriRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['u'] == null) {
-            throw new runtime.RequiredError(
-                'u',
-                'Required parameter "u" was null or undefined when calling getDataUri().'
-            );
+        if (requestParameters.u === null || requestParameters.u === undefined) {
+            throw new runtime.RequiredError('u','Required parameter requestParameters.u was null or undefined when calling getDataUri.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['u'] != null) {
-            queryParameters['u'] = requestParameters['u'];
+        if (requestParameters.u !== undefined) {
+            queryParameters['u'] = requestParameters.u;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

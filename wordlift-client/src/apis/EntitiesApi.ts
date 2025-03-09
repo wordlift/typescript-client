@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   EntityPatchRequest,
-} from '../models/index';
+} from '../models';
 import {
     EntityPatchRequestFromJSON,
     EntityPatchRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateEntitiesRequest {
     body: string;
@@ -58,11 +58,8 @@ export class EntitiesApi extends runtime.BaseAPI {
      * Create
      */
     async createEntitiesRaw(requestParameters: CreateEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling createEntities().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling createEntities.');
         }
 
         const queryParameters: any = {};
@@ -72,7 +69,7 @@ export class EntitiesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/ld+json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -80,7 +77,7 @@ export class EntitiesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {
@@ -104,11 +101,8 @@ export class EntitiesApi extends runtime.BaseAPI {
      * Update (or create)
      */
     async createOrUpdateEntitiesRaw(requestParameters: CreateOrUpdateEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling createOrUpdateEntities().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling createOrUpdateEntities.');
         }
 
         const queryParameters: any = {};
@@ -118,7 +112,7 @@ export class EntitiesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/ld+json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -126,7 +120,7 @@ export class EntitiesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -145,31 +139,28 @@ export class EntitiesApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteEntitiesRaw(requestParameters: DeleteEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteEntities().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteEntities.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id) {
+            queryParameters['id'] = requestParameters.id;
         }
 
-        if (requestParameters['includeChildren'] != null) {
-            queryParameters['include_children'] = requestParameters['includeChildren'];
+        if (requestParameters.includeChildren !== undefined) {
+            queryParameters['include_children'] = requestParameters.includeChildren;
         }
 
-        if (requestParameters['includeReferenced'] != null) {
-            queryParameters['include_referenced'] = requestParameters['includeReferenced'];
+        if (requestParameters.includeReferenced !== undefined) {
+            queryParameters['include_referenced'] = requestParameters.includeReferenced;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -195,35 +186,32 @@ export class EntitiesApi extends runtime.BaseAPI {
      * Get
      */
     async getEntitiesRaw(requestParameters: GetEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getEntities().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getEntities.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id) {
+            queryParameters['id'] = requestParameters.id;
         }
 
-        if (requestParameters['includeChildren'] != null) {
-            queryParameters['include_children'] = requestParameters['includeChildren'];
+        if (requestParameters.includeChildren !== undefined) {
+            queryParameters['include_children'] = requestParameters.includeChildren;
         }
 
-        if (requestParameters['includeReferenced'] != null) {
-            queryParameters['include_referenced'] = requestParameters['includeReferenced'];
+        if (requestParameters.includeReferenced !== undefined) {
+            queryParameters['include_referenced'] = requestParameters.includeReferenced;
         }
 
-        if (requestParameters['includePrivate'] != null) {
-            queryParameters['include_private'] = requestParameters['includePrivate'];
+        if (requestParameters.includePrivate !== undefined) {
+            queryParameters['include_private'] = requestParameters.includePrivate;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -254,24 +242,18 @@ export class EntitiesApi extends runtime.BaseAPI {
      * Patch Entity
      */
     async patchEntitiesRaw(requestParameters: PatchEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling patchEntities().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling patchEntities.');
         }
 
-        if (requestParameters['entityPatchRequest'] == null) {
-            throw new runtime.RequiredError(
-                'entityPatchRequest',
-                'Required parameter "entityPatchRequest" was null or undefined when calling patchEntities().'
-            );
+        if (requestParameters.entityPatchRequest === null || requestParameters.entityPatchRequest === undefined) {
+            throw new runtime.RequiredError('entityPatchRequest','Required parameter requestParameters.entityPatchRequest was null or undefined when calling patchEntities.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['id'] != null) {
-            queryParameters['id'] = requestParameters['id'];
+        if (requestParameters.id !== undefined) {
+            queryParameters['id'] = requestParameters.id;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -279,7 +261,7 @@ export class EntitiesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json-patch+json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -287,7 +269,7 @@ export class EntitiesApi extends runtime.BaseAPI {
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['entityPatchRequest']!.map(EntityPatchRequestToJSON),
+            body: requestParameters.entityPatchRequest.map(EntityPatchRequestToJSON),
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {

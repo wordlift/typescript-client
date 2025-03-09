@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface Properties1 {
 /**
  * Check if a given object implements the Properties1 interface.
  */
-export function instanceOfProperties1(value: object): value is Properties1 {
-    return true;
+export function instanceOfProperties1(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Properties1FromJSON(json: any): Properties1 {
@@ -45,29 +47,27 @@ export function Properties1FromJSON(json: any): Properties1 {
 }
 
 export function Properties1FromJSONTyped(json: any, ignoreDiscriminator: boolean): Properties1 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': json['name'] == null ? undefined : json['name'],
-        'sameAs': json['sameAs'] == null ? undefined : json['sameAs'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'sameAs': !exists(json, 'sameAs') ? undefined : json['sameAs'],
     };
 }
 
-export function Properties1ToJSON(json: any): Properties1 {
-    return Properties1ToJSONTyped(json, false);
-}
-
-export function Properties1ToJSONTyped(value?: Properties1 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Properties1ToJSON(value?: Properties1 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'name': value['name'],
-        'sameAs': value['sameAs'],
+        'name': value.name,
+        'sameAs': value.sameAs,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -97,13 +97,15 @@ export type PlatformLimitScopeEnum = typeof PlatformLimitScopeEnum[keyof typeof 
 /**
  * Check if a given object implements the PlatformLimit interface.
  */
-export function instanceOfPlatformLimit(value: object): value is PlatformLimit {
-    if (!('appliesTo' in value) || value['appliesTo'] === undefined) return false;
-    if (!('basedOn' in value) || value['basedOn'] === undefined) return false;
-    if (!('basedOnValue' in value) || value['basedOnValue'] === undefined) return false;
-    if (!('limits' in value) || value['limits'] === undefined) return false;
-    if (!('scope' in value) || value['scope'] === undefined) return false;
-    return true;
+export function instanceOfPlatformLimit(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "appliesTo" in value;
+    isInstance = isInstance && "basedOn" in value;
+    isInstance = isInstance && "basedOnValue" in value;
+    isInstance = isInstance && "limits" in value;
+    isInstance = isInstance && "scope" in value;
+
+    return isInstance;
 }
 
 export function PlatformLimitFromJSON(json: any): PlatformLimit {
@@ -111,7 +113,7 @@ export function PlatformLimitFromJSON(json: any): PlatformLimit {
 }
 
 export function PlatformLimitFromJSONTyped(json: any, ignoreDiscriminator: boolean): PlatformLimit {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -119,33 +121,31 @@ export function PlatformLimitFromJSONTyped(json: any, ignoreDiscriminator: boole
         'appliesTo': json['applies_to'],
         'basedOn': json['based_on'],
         'basedOnValue': json['based_on_value'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'description': json['description'] == null ? undefined : json['description'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'limits': json['limits'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
         'scope': json['scope'],
     };
 }
 
-export function PlatformLimitToJSON(json: any): PlatformLimit {
-    return PlatformLimitToJSONTyped(json, false);
-}
-
-export function PlatformLimitToJSONTyped(value?: Omit<PlatformLimit, 'created_at'|'modified_at'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PlatformLimitToJSON(value?: PlatformLimit | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'applies_to': value['appliesTo'],
-        'based_on': value['basedOn'],
-        'based_on_value': value['basedOnValue'],
-        'description': value['description'],
-        'id': value['id'],
-        'limits': value['limits'],
-        'scope': value['scope'],
+        'applies_to': value.appliesTo,
+        'based_on': value.basedOn,
+        'based_on_value': value.basedOnValue,
+        'description': value.description,
+        'id': value.id,
+        'limits': value.limits,
+        'scope': value.scope,
     };
 }
 

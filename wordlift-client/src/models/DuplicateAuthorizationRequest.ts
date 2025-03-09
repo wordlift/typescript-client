@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,12 @@ export interface DuplicateAuthorizationRequest {
 /**
  * Check if a given object implements the DuplicateAuthorizationRequest interface.
  */
-export function instanceOfDuplicateAuthorizationRequest(value: object): value is DuplicateAuthorizationRequest {
-    if (!('fromAccountKey' in value) || value['fromAccountKey'] === undefined) return false;
-    if (!('toAccountKeys' in value) || value['toAccountKeys'] === undefined) return false;
-    return true;
+export function instanceOfDuplicateAuthorizationRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "fromAccountKey" in value;
+    isInstance = isInstance && "toAccountKeys" in value;
+
+    return isInstance;
 }
 
 export function DuplicateAuthorizationRequestFromJSON(json: any): DuplicateAuthorizationRequest {
@@ -47,7 +49,7 @@ export function DuplicateAuthorizationRequestFromJSON(json: any): DuplicateAutho
 }
 
 export function DuplicateAuthorizationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DuplicateAuthorizationRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function DuplicateAuthorizationRequestFromJSONTyped(json: any, ignoreDisc
     };
 }
 
-export function DuplicateAuthorizationRequestToJSON(json: any): DuplicateAuthorizationRequest {
-    return DuplicateAuthorizationRequestToJSONTyped(json, false);
-}
-
-export function DuplicateAuthorizationRequestToJSONTyped(value?: DuplicateAuthorizationRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function DuplicateAuthorizationRequestToJSON(value?: DuplicateAuthorizationRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'from_account_key': value['fromAccountKey'],
-        'to_account_keys': value['toAccountKeys'],
+        'from_account_key': value.fromAccountKey,
+        'to_account_keys': value.toAccountKeys,
     };
 }
 

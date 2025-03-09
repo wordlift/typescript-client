@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface UpdateQuestionAndAnswerRequest {
 /**
  * Check if a given object implements the UpdateQuestionAndAnswerRequest interface.
  */
-export function instanceOfUpdateQuestionAndAnswerRequest(value: object): value is UpdateQuestionAndAnswerRequest {
-    return true;
+export function instanceOfUpdateQuestionAndAnswerRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function UpdateQuestionAndAnswerRequestFromJSON(json: any): UpdateQuestionAndAnswerRequest {
@@ -45,29 +47,27 @@ export function UpdateQuestionAndAnswerRequestFromJSON(json: any): UpdateQuestio
 }
 
 export function UpdateQuestionAndAnswerRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateQuestionAndAnswerRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'answer': json['answer'] == null ? undefined : json['answer'],
-        'question': json['question'] == null ? undefined : json['question'],
+        'answer': !exists(json, 'answer') ? undefined : json['answer'],
+        'question': !exists(json, 'question') ? undefined : json['question'],
     };
 }
 
-export function UpdateQuestionAndAnswerRequestToJSON(json: any): UpdateQuestionAndAnswerRequest {
-    return UpdateQuestionAndAnswerRequestToJSONTyped(json, false);
-}
-
-export function UpdateQuestionAndAnswerRequestToJSONTyped(value?: UpdateQuestionAndAnswerRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function UpdateQuestionAndAnswerRequestToJSON(value?: UpdateQuestionAndAnswerRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'answer': value['answer'],
-        'question': value['question'],
+        'answer': value.answer,
+        'question': value.question,
     };
 }
 

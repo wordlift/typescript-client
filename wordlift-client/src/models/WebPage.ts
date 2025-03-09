@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,8 +72,10 @@ export interface WebPage {
 /**
  * Check if a given object implements the WebPage interface.
  */
-export function instanceOfWebPage(value: object): value is WebPage {
-    return true;
+export function instanceOfWebPage(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function WebPageFromJSON(json: any): WebPage {
@@ -81,41 +83,39 @@ export function WebPageFromJSON(json: any): WebPage {
 }
 
 export function WebPageFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebPage {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        '_abstract': json['abstract'] == null ? undefined : json['abstract'],
-        'datePublished': json['date_published'] == null ? undefined : (new Date(json['date_published'])),
-        'headline': json['headline'] == null ? undefined : json['headline'],
-        'image': json['image'] == null ? undefined : json['image'],
-        'markdown': json['markdown'] == null ? undefined : json['markdown'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'types': json['types'] == null ? undefined : new Set(json['types']),
-        'url': json['url'] == null ? undefined : json['url'],
+        '_abstract': !exists(json, 'abstract') ? undefined : json['abstract'],
+        'datePublished': !exists(json, 'date_published') ? undefined : (new Date(json['date_published'])),
+        'headline': !exists(json, 'headline') ? undefined : json['headline'],
+        'image': !exists(json, 'image') ? undefined : json['image'],
+        'markdown': !exists(json, 'markdown') ? undefined : json['markdown'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'types': !exists(json, 'types') ? undefined : json['types'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function WebPageToJSON(json: any): WebPage {
-    return WebPageToJSONTyped(json, false);
-}
-
-export function WebPageToJSONTyped(value?: WebPage | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WebPageToJSON(value?: WebPage | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'abstract': value['_abstract'],
-        'date_published': value['datePublished'] == null ? undefined : ((value['datePublished']).toISOString().substring(0,10)),
-        'headline': value['headline'],
-        'image': value['image'],
-        'markdown': value['markdown'],
-        'text': value['text'],
-        'types': value['types'] == null ? undefined : Array.from(value['types'] as Set<any>),
-        'url': value['url'],
+        'abstract': value._abstract,
+        'date_published': value.datePublished === undefined ? undefined : (value.datePublished.toISOString().substr(0,10)),
+        'headline': value.headline,
+        'image': value.image,
+        'markdown': value.markdown,
+        'text': value.text,
+        'types': value.types === undefined ? undefined : Array.from(value.types as Set<any>),
+        'url': value.url,
     };
 }
 

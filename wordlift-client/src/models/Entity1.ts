@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Properties1 } from './Properties1';
 import {
     Properties1FromJSON,
     Properties1FromJSONTyped,
     Properties1ToJSON,
-    Properties1ToJSONTyped,
 } from './Properties1';
 
 /**
@@ -44,8 +43,10 @@ export interface Entity1 {
 /**
  * Check if a given object implements the Entity1 interface.
  */
-export function instanceOfEntity1(value: object): value is Entity1 {
-    return true;
+export function instanceOfEntity1(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Entity1FromJSON(json: any): Entity1 {
@@ -53,29 +54,27 @@ export function Entity1FromJSON(json: any): Entity1 {
 }
 
 export function Entity1FromJSONTyped(json: any, ignoreDiscriminator: boolean): Entity1 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'reference': json['reference'] == null ? undefined : json['reference'],
-        'properties': json['properties'] == null ? undefined : Properties1FromJSON(json['properties']),
+        'reference': !exists(json, 'reference') ? undefined : json['reference'],
+        'properties': !exists(json, 'properties') ? undefined : Properties1FromJSON(json['properties']),
     };
 }
 
-export function Entity1ToJSON(json: any): Entity1 {
-    return Entity1ToJSONTyped(json, false);
-}
-
-export function Entity1ToJSONTyped(value?: Entity1 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Entity1ToJSON(value?: Entity1 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'reference': value['reference'],
-        'properties': Properties1ToJSON(value['properties']),
+        'reference': value.reference,
+        'properties': Properties1ToJSON(value.properties),
     };
 }
 

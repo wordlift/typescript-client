@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface GenerateSitemap200Response {
 /**
  * Check if a given object implements the GenerateSitemap200Response interface.
  */
-export function instanceOfGenerateSitemap200Response(value: object): value is GenerateSitemap200Response {
-    return true;
+export function instanceOfGenerateSitemap200Response(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function GenerateSitemap200ResponseFromJSON(json: any): GenerateSitemap200Response {
@@ -39,27 +41,25 @@ export function GenerateSitemap200ResponseFromJSON(json: any): GenerateSitemap20
 }
 
 export function GenerateSitemap200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GenerateSitemap200Response {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'sitemap': json['sitemap'] == null ? undefined : json['sitemap'],
+        'sitemap': !exists(json, 'sitemap') ? undefined : json['sitemap'],
     };
 }
 
-export function GenerateSitemap200ResponseToJSON(json: any): GenerateSitemap200Response {
-    return GenerateSitemap200ResponseToJSONTyped(json, false);
-}
-
-export function GenerateSitemap200ResponseToJSONTyped(value?: GenerateSitemap200Response | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function GenerateSitemap200ResponseToJSON(value?: GenerateSitemap200Response | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'sitemap': value['sitemap'],
+        'sitemap': value.sitemap,
     };
 }
 

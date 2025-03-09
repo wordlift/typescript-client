@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The entity properties.
  * @export
@@ -36,8 +36,10 @@ export interface Properties {
 /**
  * Check if a given object implements the Properties interface.
  */
-export function instanceOfProperties(value: object): value is Properties {
-    return true;
+export function instanceOfProperties(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function PropertiesFromJSON(json: any): Properties {
@@ -45,29 +47,27 @@ export function PropertiesFromJSON(json: any): Properties {
 }
 
 export function PropertiesFromJSONTyped(json: any, ignoreDiscriminator: boolean): Properties {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'latitude': json['latitude'] == null ? undefined : json['latitude'],
-        'longitude': json['longitude'] == null ? undefined : json['longitude'],
+        'latitude': !exists(json, 'latitude') ? undefined : json['latitude'],
+        'longitude': !exists(json, 'longitude') ? undefined : json['longitude'],
     };
 }
 
-export function PropertiesToJSON(json: any): Properties {
-    return PropertiesToJSONTyped(json, false);
-}
-
-export function PropertiesToJSONTyped(value?: Properties | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PropertiesToJSON(value?: Properties | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'latitude': value['latitude'],
-        'longitude': value['longitude'],
+        'latitude': value.latitude,
+        'longitude': value.longitude,
     };
 }
 

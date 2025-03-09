@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * One or more questions.
  * @export
@@ -36,9 +36,11 @@ export interface VectorSearchQuestionRequest {
 /**
  * Check if a given object implements the VectorSearchQuestionRequest interface.
  */
-export function instanceOfVectorSearchQuestionRequest(value: object): value is VectorSearchQuestionRequest {
-    if (!('questions' in value) || value['questions'] === undefined) return false;
-    return true;
+export function instanceOfVectorSearchQuestionRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "questions" in value;
+
+    return isInstance;
 }
 
 export function VectorSearchQuestionRequestFromJSON(json: any): VectorSearchQuestionRequest {
@@ -46,29 +48,27 @@ export function VectorSearchQuestionRequestFromJSON(json: any): VectorSearchQues
 }
 
 export function VectorSearchQuestionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQuestionRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'language': json['language'] == null ? undefined : json['language'],
+        'language': !exists(json, 'language') ? undefined : json['language'],
         'questions': json['questions'],
     };
 }
 
-export function VectorSearchQuestionRequestToJSON(json: any): VectorSearchQuestionRequest {
-    return VectorSearchQuestionRequestToJSONTyped(json, false);
-}
-
-export function VectorSearchQuestionRequestToJSONTyped(value?: VectorSearchQuestionRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQuestionRequestToJSON(value?: VectorSearchQuestionRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'language': value['language'],
-        'questions': value['questions'],
+        'language': value.language,
+        'questions': value.questions,
     };
 }
 

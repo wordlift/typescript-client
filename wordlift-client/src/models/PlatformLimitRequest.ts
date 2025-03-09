@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Platform Limit request
  * @export
@@ -79,13 +79,15 @@ export type PlatformLimitRequestScopeEnum = typeof PlatformLimitRequestScopeEnum
 /**
  * Check if a given object implements the PlatformLimitRequest interface.
  */
-export function instanceOfPlatformLimitRequest(value: object): value is PlatformLimitRequest {
-    if (!('appliesTo' in value) || value['appliesTo'] === undefined) return false;
-    if (!('basedOn' in value) || value['basedOn'] === undefined) return false;
-    if (!('basedOnValue' in value) || value['basedOnValue'] === undefined) return false;
-    if (!('limits' in value) || value['limits'] === undefined) return false;
-    if (!('scope' in value) || value['scope'] === undefined) return false;
-    return true;
+export function instanceOfPlatformLimitRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "appliesTo" in value;
+    isInstance = isInstance && "basedOn" in value;
+    isInstance = isInstance && "basedOnValue" in value;
+    isInstance = isInstance && "limits" in value;
+    isInstance = isInstance && "scope" in value;
+
+    return isInstance;
 }
 
 export function PlatformLimitRequestFromJSON(json: any): PlatformLimitRequest {
@@ -93,7 +95,7 @@ export function PlatformLimitRequestFromJSON(json: any): PlatformLimitRequest {
 }
 
 export function PlatformLimitRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): PlatformLimitRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -101,29 +103,27 @@ export function PlatformLimitRequestFromJSONTyped(json: any, ignoreDiscriminator
         'appliesTo': json['applies_to'],
         'basedOn': json['based_on'],
         'basedOnValue': json['based_on_value'],
-        'description': json['description'] == null ? undefined : json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'limits': json['limits'],
         'scope': json['scope'],
     };
 }
 
-export function PlatformLimitRequestToJSON(json: any): PlatformLimitRequest {
-    return PlatformLimitRequestToJSONTyped(json, false);
-}
-
-export function PlatformLimitRequestToJSONTyped(value?: PlatformLimitRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PlatformLimitRequestToJSON(value?: PlatformLimitRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'applies_to': value['appliesTo'],
-        'based_on': value['basedOn'],
-        'based_on_value': value['basedOnValue'],
-        'description': value['description'],
-        'limits': value['limits'],
-        'scope': value['scope'],
+        'applies_to': value.appliesTo,
+        'based_on': value.basedOn,
+        'based_on_value': value.basedOnValue,
+        'description': value.description,
+        'limits': value.limits,
+        'scope': value.scope,
     };
 }
 

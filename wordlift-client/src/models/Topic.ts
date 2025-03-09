@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Topic
  * @export
@@ -60,8 +60,10 @@ export interface Topic {
 /**
  * Check if a given object implements the Topic interface.
  */
-export function instanceOfTopic(value: object): value is Topic {
-    return true;
+export function instanceOfTopic(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function TopicFromJSON(json: any): Topic {
@@ -69,37 +71,35 @@ export function TopicFromJSON(json: any): Topic {
 }
 
 export function TopicFromJSONTyped(json: any, ignoreDiscriminator: boolean): Topic {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'label': json['label'] == null ? undefined : json['label'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'uri': json['uri'] == null ? undefined : json['uri'],
-        'confidence': json['confidence'] == null ? undefined : json['confidence'],
-        'images': json['images'] == null ? undefined : json['images'],
-        'sameAs': json['sameAs'] == null ? undefined : json['sameAs'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'uri': !exists(json, 'uri') ? undefined : json['uri'],
+        'confidence': !exists(json, 'confidence') ? undefined : json['confidence'],
+        'images': !exists(json, 'images') ? undefined : json['images'],
+        'sameAs': !exists(json, 'sameAs') ? undefined : json['sameAs'],
     };
 }
 
-export function TopicToJSON(json: any): Topic {
-    return TopicToJSONTyped(json, false);
-}
-
-export function TopicToJSONTyped(value?: Topic | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function TopicToJSON(value?: Topic | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'label': value['label'],
-        'description': value['description'],
-        'uri': value['uri'],
-        'confidence': value['confidence'],
-        'images': value['images'],
-        'sameAs': value['sameAs'],
+        'label': value.label,
+        'description': value.description,
+        'uri': value.uri,
+        'confidence': value.confidence,
+        'images': value.images,
+        'sameAs': value.sameAs,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Merchant project.
  * @export
@@ -166,14 +166,16 @@ export type MerchantUrlStrategyEnum = typeof MerchantUrlStrategyEnum[keyof typeo
 /**
  * Check if a given object implements the Merchant interface.
  */
-export function instanceOfMerchant(value: object): value is Merchant {
-    if (!('accessToken' in value) || value['accessToken'] === undefined) return false;
-    if (!('defaultProductsFilterAction' in value) || value['defaultProductsFilterAction'] === undefined) return false;
-    if (!('deleted' in value) || value['deleted'] === undefined) return false;
-    if (!('googleMerchantId' in value) || value['googleMerchantId'] === undefined) return false;
-    if (!('publisherName' in value) || value['publisherName'] === undefined) return false;
-    if (!('refreshToken' in value) || value['refreshToken'] === undefined) return false;
-    return true;
+export function instanceOfMerchant(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+    isInstance = isInstance && "defaultProductsFilterAction" in value;
+    isInstance = isInstance && "deleted" in value;
+    isInstance = isInstance && "googleMerchantId" in value;
+    isInstance = isInstance && "publisherName" in value;
+    isInstance = isInstance && "refreshToken" in value;
+
+    return isInstance;
 }
 
 export function MerchantFromJSON(json: any): Merchant {
@@ -181,60 +183,58 @@ export function MerchantFromJSON(json: any): Merchant {
 }
 
 export function MerchantFromJSONTyped(json: any, ignoreDiscriminator: boolean): Merchant {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accessToken': json['access_token'],
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
-        'automaticSynchronization': json['automatic_synchronization'] == null ? undefined : json['automatic_synchronization'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'customSeller': json['custom_seller'] == null ? undefined : json['custom_seller'],
-        'datasetDomain': json['dataset_domain'] == null ? undefined : json['dataset_domain'],
-        'datasetName': json['dataset_name'] == null ? undefined : json['dataset_name'],
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
+        'automaticSynchronization': !exists(json, 'automatic_synchronization') ? undefined : json['automatic_synchronization'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'customSeller': !exists(json, 'custom_seller') ? undefined : json['custom_seller'],
+        'datasetDomain': !exists(json, 'dataset_domain') ? undefined : json['dataset_domain'],
+        'datasetName': !exists(json, 'dataset_name') ? undefined : json['dataset_name'],
         'defaultProductsFilterAction': json['default_products_filter_action'],
         'deleted': json['deleted'],
-        'deletedAt': json['deleted_at'] == null ? undefined : (new Date(json['deleted_at'])),
+        'deletedAt': !exists(json, 'deleted_at') ? undefined : (new Date(json['deleted_at'])),
         'googleMerchantId': json['google_merchant_id'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'ignoreBrand': json['ignore_brand'] == null ? undefined : json['ignore_brand'],
-        'ignoreImage': json['ignore_image'] == null ? undefined : json['ignore_image'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'ignoreBrand': !exists(json, 'ignore_brand') ? undefined : json['ignore_brand'],
+        'ignoreImage': !exists(json, 'ignore_image') ? undefined : json['ignore_image'],
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
         'publisherName': json['publisher_name'],
         'refreshToken': json['refresh_token'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'urlStrategy': json['url_strategy'] == null ? undefined : json['url_strategy'],
-        'writerService': json['writer_service'] == null ? undefined : json['writer_service'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'urlStrategy': !exists(json, 'url_strategy') ? undefined : json['url_strategy'],
+        'writerService': !exists(json, 'writer_service') ? undefined : json['writer_service'],
     };
 }
 
-export function MerchantToJSON(json: any): Merchant {
-    return MerchantToJSONTyped(json, false);
-}
-
-export function MerchantToJSONTyped(value?: Omit<Merchant, 'account_id'|'created_at'|'deleted_at'|'id'|'modified_at'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MerchantToJSON(value?: Merchant | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'access_token': value['accessToken'],
-        'automatic_synchronization': value['automaticSynchronization'],
-        'custom_seller': value['customSeller'],
-        'dataset_domain': value['datasetDomain'],
-        'dataset_name': value['datasetName'],
-        'default_products_filter_action': value['defaultProductsFilterAction'],
-        'deleted': value['deleted'],
-        'google_merchant_id': value['googleMerchantId'],
-        'ignore_brand': value['ignoreBrand'],
-        'ignore_image': value['ignoreImage'],
-        'publisher_name': value['publisherName'],
-        'refresh_token': value['refreshToken'],
-        'url': value['url'],
-        'url_strategy': value['urlStrategy'],
-        'writer_service': value['writerService'],
+        'access_token': value.accessToken,
+        'automatic_synchronization': value.automaticSynchronization,
+        'custom_seller': value.customSeller,
+        'dataset_domain': value.datasetDomain,
+        'dataset_name': value.datasetName,
+        'default_products_filter_action': value.defaultProductsFilterAction,
+        'deleted': value.deleted,
+        'google_merchant_id': value.googleMerchantId,
+        'ignore_brand': value.ignoreBrand,
+        'ignore_image': value.ignoreImage,
+        'publisher_name': value.publisherName,
+        'refresh_token': value.refreshToken,
+        'url': value.url,
+        'url_strategy': value.urlStrategy,
+        'writer_service': value.writerService,
     };
 }
 

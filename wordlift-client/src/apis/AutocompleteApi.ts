@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   AutocompleteResult,
-} from '../models/index';
+} from '../models';
 import {
     AutocompleteResultFromJSON,
     AutocompleteResultToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetRequest {
     query: string;
@@ -40,46 +40,40 @@ export class AutocompleteApi extends runtime.BaseAPI {
      * Get
      */
     async getRaw(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AutocompleteResult>> {
-        if (requestParameters['query'] == null) {
-            throw new runtime.RequiredError(
-                'query',
-                'Required parameter "query" was null or undefined when calling get().'
-            );
+        if (requestParameters.query === null || requestParameters.query === undefined) {
+            throw new runtime.RequiredError('query','Required parameter requestParameters.query was null or undefined when calling get.');
         }
 
-        if (requestParameters['language'] == null) {
-            throw new runtime.RequiredError(
-                'language',
-                'Required parameter "language" was null or undefined when calling get().'
-            );
+        if (requestParameters.language === null || requestParameters.language === undefined) {
+            throw new runtime.RequiredError('language','Required parameter requestParameters.language was null or undefined when calling get.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['query'] != null) {
-            queryParameters['query'] = requestParameters['query'];
+        if (requestParameters.query !== undefined) {
+            queryParameters['query'] = requestParameters.query;
         }
 
-        if (requestParameters['language'] != null) {
-            queryParameters['language'] = requestParameters['language'];
+        if (requestParameters.language !== undefined) {
+            queryParameters['language'] = requestParameters.language;
         }
 
-        if (requestParameters['scope'] != null) {
-            queryParameters['scope'] = requestParameters['scope'];
+        if (requestParameters.scope !== undefined) {
+            queryParameters['scope'] = requestParameters.scope;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['exclude'] != null) {
-            queryParameters['exclude'] = requestParameters['exclude'];
+        if (requestParameters.exclude) {
+            queryParameters['exclude'] = requestParameters.exclude;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

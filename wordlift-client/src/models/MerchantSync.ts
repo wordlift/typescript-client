@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Merchant products data synchronization.
  * @export
@@ -132,9 +132,11 @@ export interface MerchantSync {
 /**
  * Check if a given object implements the MerchantSync interface.
  */
-export function instanceOfMerchantSync(value: object): value is MerchantSync {
-    if (!('merchantId' in value) || value['merchantId'] === undefined) return false;
-    return true;
+export function instanceOfMerchantSync(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "merchantId" in value;
+
+    return isInstance;
 }
 
 export function MerchantSyncFromJSON(json: any): MerchantSync {
@@ -142,44 +144,42 @@ export function MerchantSyncFromJSON(json: any): MerchantSync {
 }
 
 export function MerchantSyncFromJSONTyped(json: any, ignoreDiscriminator: boolean): MerchantSync {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'errorReason': json['error_reason'] == null ? undefined : json['error_reason'],
-        'hasErrors': json['has_errors'] == null ? undefined : json['has_errors'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'errorReason': !exists(json, 'error_reason') ? undefined : json['error_reason'],
+        'hasErrors': !exists(json, 'has_errors') ? undefined : json['has_errors'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'merchantId': json['merchant_id'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
-        'overallProductsInKg': json['overall_products_in_kg'] == null ? undefined : json['overall_products_in_kg'],
-        'productsCreated': json['products_created'] == null ? undefined : json['products_created'],
-        'productsDeleted': json['products_deleted'] == null ? undefined : json['products_deleted'],
-        'productsErrored': json['products_errored'] == null ? undefined : json['products_errored'],
-        'productsSkipped': json['products_skipped'] == null ? undefined : json['products_skipped'],
-        'productsTotal': json['products_total'] == null ? undefined : json['products_total'],
-        'productsUnchanged': json['products_unchanged'] == null ? undefined : json['products_unchanged'],
-        'productsUpdated': json['products_updated'] == null ? undefined : json['products_updated'],
-        'startedAt': json['started_at'] == null ? undefined : (new Date(json['started_at'])),
-        'stoppedAt': json['stopped_at'] == null ? undefined : (new Date(json['stopped_at'])),
-        'syncedProductsInKg': json['synced_products_in_kg'] == null ? undefined : json['synced_products_in_kg'],
-        'syncedProductsInKgBeforeCleanup': json['synced_products_in_kg_before_cleanup'] == null ? undefined : json['synced_products_in_kg_before_cleanup'],
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
+        'overallProductsInKg': !exists(json, 'overall_products_in_kg') ? undefined : json['overall_products_in_kg'],
+        'productsCreated': !exists(json, 'products_created') ? undefined : json['products_created'],
+        'productsDeleted': !exists(json, 'products_deleted') ? undefined : json['products_deleted'],
+        'productsErrored': !exists(json, 'products_errored') ? undefined : json['products_errored'],
+        'productsSkipped': !exists(json, 'products_skipped') ? undefined : json['products_skipped'],
+        'productsTotal': !exists(json, 'products_total') ? undefined : json['products_total'],
+        'productsUnchanged': !exists(json, 'products_unchanged') ? undefined : json['products_unchanged'],
+        'productsUpdated': !exists(json, 'products_updated') ? undefined : json['products_updated'],
+        'startedAt': !exists(json, 'started_at') ? undefined : (new Date(json['started_at'])),
+        'stoppedAt': !exists(json, 'stopped_at') ? undefined : (new Date(json['stopped_at'])),
+        'syncedProductsInKg': !exists(json, 'synced_products_in_kg') ? undefined : json['synced_products_in_kg'],
+        'syncedProductsInKgBeforeCleanup': !exists(json, 'synced_products_in_kg_before_cleanup') ? undefined : json['synced_products_in_kg_before_cleanup'],
     };
 }
 
-export function MerchantSyncToJSON(json: any): MerchantSync {
-    return MerchantSyncToJSONTyped(json, false);
-}
-
-export function MerchantSyncToJSONTyped(value?: Omit<MerchantSync, 'created_at'|'error_reason'|'has_errors'|'id'|'merchant_id'|'modified_at'|'overall_products_in_kg'|'products_created'|'products_deleted'|'products_errored'|'products_skipped'|'products_total'|'products_unchanged'|'products_updated'|'started_at'|'stopped_at'|'synced_products_in_kg'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MerchantSyncToJSON(value?: MerchantSync | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'synced_products_in_kg_before_cleanup': value['syncedProductsInKgBeforeCleanup'],
+        'synced_products_in_kg_before_cleanup': value.syncedProductsInKgBeforeCleanup,
     };
 }
 

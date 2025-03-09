@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   CreateSEOScore200Response,
   CreateSEOScoreRequest,
-} from '../models/index';
+} from '../models';
 import {
     CreateSEOScore200ResponseFromJSON,
     CreateSEOScore200ResponseToJSON,
     CreateSEOScoreRequestFromJSON,
     CreateSEOScoreRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateSEOScoreOperationRequest {
     createSEOScoreRequest: CreateSEOScoreRequest;
@@ -38,11 +38,8 @@ export class SEOScoresApi extends runtime.BaseAPI {
      * Create
      */
     async createSEOScoreRaw(requestParameters: CreateSEOScoreOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSEOScore200Response>> {
-        if (requestParameters['createSEOScoreRequest'] == null) {
-            throw new runtime.RequiredError(
-                'createSEOScoreRequest',
-                'Required parameter "createSEOScoreRequest" was null or undefined when calling createSEOScore().'
-            );
+        if (requestParameters.createSEOScoreRequest === null || requestParameters.createSEOScoreRequest === undefined) {
+            throw new runtime.RequiredError('createSEOScoreRequest','Required parameter requestParameters.createSEOScoreRequest was null or undefined when calling createSEOScore.');
         }
 
         const queryParameters: any = {};
@@ -52,7 +49,7 @@ export class SEOScoresApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -60,7 +57,7 @@ export class SEOScoresApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateSEOScoreRequestToJSON(requestParameters['createSEOScoreRequest']),
+            body: CreateSEOScoreRequestToJSON(requestParameters.createSEOScoreRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateSEOScore200ResponseFromJSON(jsonValue));

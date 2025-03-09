@@ -31,25 +31,22 @@ export class SummarizationsApi extends runtime.BaseAPI {
      * Create
      */
     async microdataToJsonLdUsingPOSTRaw(requestParameters: MicrodataToJsonLdUsingPOSTRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: string; }>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling microdataToJsonLdUsingPOST().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling microdataToJsonLdUsingPOST.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['maxLength'] != null) {
-            queryParameters['max_length'] = requestParameters['maxLength'];
+        if (requestParameters.maxLength !== undefined) {
+            queryParameters['max_length'] = requestParameters.maxLength;
         }
 
-        if (requestParameters['minLength'] != null) {
-            queryParameters['min_length'] = requestParameters['minLength'];
+        if (requestParameters.minLength !== undefined) {
+            queryParameters['min_length'] = requestParameters.minLength;
         }
 
-        if (requestParameters['ratio'] != null) {
-            queryParameters['ratio'] = requestParameters['ratio'];
+        if (requestParameters.ratio !== undefined) {
+            queryParameters['ratio'] = requestParameters.ratio;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -57,7 +54,7 @@ export class SummarizationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'text/plain';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -65,7 +62,7 @@ export class SummarizationsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
@@ -74,16 +71,9 @@ export class SummarizationsApi extends runtime.BaseAPI {
     /**
      * Create
      */
-    async microdataToJsonLdUsingPOST(requestParameters: MicrodataToJsonLdUsingPOSTRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: string; } | null | undefined > {
+    async microdataToJsonLdUsingPOST(requestParameters: MicrodataToJsonLdUsingPOSTRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: string; }> {
         const response = await this.microdataToJsonLdUsingPOSTRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { WebpageProperties } from './WebpageProperties';
 import {
     WebpagePropertiesFromJSON,
     WebpagePropertiesFromJSONTyped,
     WebpagePropertiesToJSON,
-    WebpagePropertiesToJSONTyped,
 } from './WebpageProperties';
 
 /**
@@ -44,8 +43,10 @@ export interface QuestionAndAnswerRequest {
 /**
  * Check if a given object implements the QuestionAndAnswerRequest interface.
  */
-export function instanceOfQuestionAndAnswerRequest(value: object): value is QuestionAndAnswerRequest {
-    return true;
+export function instanceOfQuestionAndAnswerRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function QuestionAndAnswerRequestFromJSON(json: any): QuestionAndAnswerRequest {
@@ -53,29 +54,27 @@ export function QuestionAndAnswerRequestFromJSON(json: any): QuestionAndAnswerRe
 }
 
 export function QuestionAndAnswerRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): QuestionAndAnswerRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'smartContentId': json['smartContentId'] == null ? undefined : json['smartContentId'],
-        'webpageProperties': json['webpageProperties'] == null ? undefined : WebpagePropertiesFromJSON(json['webpageProperties']),
+        'smartContentId': !exists(json, 'smartContentId') ? undefined : json['smartContentId'],
+        'webpageProperties': !exists(json, 'webpageProperties') ? undefined : WebpagePropertiesFromJSON(json['webpageProperties']),
     };
 }
 
-export function QuestionAndAnswerRequestToJSON(json: any): QuestionAndAnswerRequest {
-    return QuestionAndAnswerRequestToJSONTyped(json, false);
-}
-
-export function QuestionAndAnswerRequestToJSONTyped(value?: QuestionAndAnswerRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function QuestionAndAnswerRequestToJSON(value?: QuestionAndAnswerRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'smartContentId': value['smartContentId'],
-        'webpageProperties': WebpagePropertiesToJSON(value['webpageProperties']),
+        'smartContentId': value.smartContentId,
+        'webpageProperties': WebpagePropertiesToJSON(value.webpageProperties),
     };
 }
 

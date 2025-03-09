@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Properties } from './Properties';
 import {
     PropertiesFromJSON,
     PropertiesFromJSONTyped,
     PropertiesToJSON,
-    PropertiesToJSONTyped,
 } from './Properties';
 
 /**
@@ -92,8 +91,10 @@ export interface Entity {
 /**
  * Check if a given object implements the Entity interface.
  */
-export function instanceOfEntity(value: object): value is Entity {
-    return true;
+export function instanceOfEntity(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function EntityFromJSON(json: any): Entity {
@@ -101,45 +102,43 @@ export function EntityFromJSON(json: any): Entity {
 }
 
 export function EntityFromJSONTyped(json: any, ignoreDiscriminator: boolean): Entity {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'entityId': json['entityId'] == null ? undefined : json['entityId'],
-        'confidence': json['confidence'] == null ? undefined : json['confidence'],
-        'mainType': json['mainType'] == null ? undefined : json['mainType'],
-        'types': json['types'] == null ? undefined : json['types'],
-        'label': json['label'] == null ? undefined : json['label'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'images': json['images'] == null ? undefined : json['images'],
-        'sameAs': json['sameAs'] == null ? undefined : json['sameAs'],
-        'properties': json['properties'] == null ? undefined : PropertiesFromJSON(json['properties']),
-        'synonyms': json['synonyms'] == null ? undefined : json['synonyms'],
+        'entityId': !exists(json, 'entityId') ? undefined : json['entityId'],
+        'confidence': !exists(json, 'confidence') ? undefined : json['confidence'],
+        'mainType': !exists(json, 'mainType') ? undefined : json['mainType'],
+        'types': !exists(json, 'types') ? undefined : json['types'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'images': !exists(json, 'images') ? undefined : json['images'],
+        'sameAs': !exists(json, 'sameAs') ? undefined : json['sameAs'],
+        'properties': !exists(json, 'properties') ? undefined : PropertiesFromJSON(json['properties']),
+        'synonyms': !exists(json, 'synonyms') ? undefined : json['synonyms'],
     };
 }
 
-export function EntityToJSON(json: any): Entity {
-    return EntityToJSONTyped(json, false);
-}
-
-export function EntityToJSONTyped(value?: Entity | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EntityToJSON(value?: Entity | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'entityId': value['entityId'],
-        'confidence': value['confidence'],
-        'mainType': value['mainType'],
-        'types': value['types'],
-        'label': value['label'],
-        'description': value['description'],
-        'images': value['images'],
-        'sameAs': value['sameAs'],
-        'properties': PropertiesToJSON(value['properties']),
-        'synonyms': value['synonyms'],
+        'entityId': value.entityId,
+        'confidence': value.confidence,
+        'mainType': value.mainType,
+        'types': value.types,
+        'label': value.label,
+        'description': value.description,
+        'images': value.images,
+        'sameAs': value.sameAs,
+        'properties': PropertiesToJSON(value.properties),
+        'synonyms': value.synonyms,
     };
 }
 

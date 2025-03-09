@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Smart Content project.
  * @export
@@ -48,9 +48,11 @@ export interface SmartContent {
 /**
  * Check if a given object implements the SmartContent interface.
  */
-export function instanceOfSmartContent(value: object): value is SmartContent {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    return true;
+export function instanceOfSmartContent(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accountId" in value;
+
+    return isInstance;
 }
 
 export function SmartContentFromJSON(json: any): SmartContent {
@@ -58,30 +60,28 @@ export function SmartContentFromJSON(json: any): SmartContent {
 }
 
 export function SmartContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): SmartContent {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accountId': json['account_id'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'id': json['id'] == null ? undefined : json['id'],
-        'modelId': json['model_id'] == null ? undefined : json['model_id'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'modelId': !exists(json, 'model_id') ? undefined : json['model_id'],
     };
 }
 
-export function SmartContentToJSON(json: any): SmartContent {
-    return SmartContentToJSONTyped(json, false);
-}
-
-export function SmartContentToJSONTyped(value?: Omit<SmartContent, 'account_id'|'created_at'|'id'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SmartContentToJSON(value?: SmartContent | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'model_id': value['modelId'],
+        'model_id': value.modelId,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -24,8 +24,10 @@ export interface LocationInner {
 /**
  * Check if a given object implements the LocationInner interface.
  */
-export function instanceOfLocationInner(value: object): value is LocationInner {
-    return true;
+export function instanceOfLocationInner(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LocationInnerFromJSON(json: any): LocationInner {
@@ -36,11 +38,7 @@ export function LocationInnerFromJSONTyped(json: any, ignoreDiscriminator: boole
     return json;
 }
 
-export function LocationInnerToJSON(json: any): LocationInner {
-    return LocationInnerToJSONTyped(json, false);
-}
-
-export function LocationInnerToJSONTyped(value?: LocationInner | null, ignoreDiscriminator: boolean = false): any {
+export function LocationInnerToJSON(value?: LocationInner | null): any {
     return value;
 }
 

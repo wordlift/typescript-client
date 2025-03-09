@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   AnalysesResponse,
   EntityGapRequest,
-} from '../models/index';
+} from '../models';
 import {
     AnalysesResponseFromJSON,
     AnalysesResponseToJSON,
     EntityGapRequestFromJSON,
     EntityGapRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateEntityGapRequest {
     entityGapRequest: EntityGapRequest;
@@ -39,11 +39,8 @@ export class EntityGapsApi extends runtime.BaseAPI {
      * Create
      */
     async createEntityGapRaw(requestParameters: CreateEntityGapRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AnalysesResponse>> {
-        if (requestParameters['entityGapRequest'] == null) {
-            throw new runtime.RequiredError(
-                'entityGapRequest',
-                'Required parameter "entityGapRequest" was null or undefined when calling createEntityGap().'
-            );
+        if (requestParameters.entityGapRequest === null || requestParameters.entityGapRequest === undefined) {
+            throw new runtime.RequiredError('entityGapRequest','Required parameter requestParameters.entityGapRequest was null or undefined when calling createEntityGap.');
         }
 
         const queryParameters: any = {};
@@ -53,7 +50,7 @@ export class EntityGapsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -61,7 +58,7 @@ export class EntityGapsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: EntityGapRequestToJSON(requestParameters['entityGapRequest']),
+            body: EntityGapRequestToJSON(requestParameters.entityGapRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AnalysesResponseFromJSON(jsonValue));

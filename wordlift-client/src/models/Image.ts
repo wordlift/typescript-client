@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Image
  * @export
@@ -36,8 +36,10 @@ export interface Image {
 /**
  * Check if a given object implements the Image interface.
  */
-export function instanceOfImage(value: object): value is Image {
-    return true;
+export function instanceOfImage(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ImageFromJSON(json: any): Image {
@@ -45,29 +47,27 @@ export function ImageFromJSON(json: any): Image {
 }
 
 export function ImageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Image {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'label': json['label'] == null ? undefined : json['label'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function ImageToJSON(json: any): Image {
-    return ImageToJSONTyped(json, false);
-}
-
-export function ImageToJSONTyped(value?: Image | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ImageToJSON(value?: Image | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'label': value['label'],
-        'url': value['url'],
+        'label': value.label,
+        'url': value.url,
     };
 }
 

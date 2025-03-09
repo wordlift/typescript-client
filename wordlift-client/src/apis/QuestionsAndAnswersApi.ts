@@ -20,7 +20,7 @@ import type {
   SmartContent,
   SmartContentRequest,
   UpdateQuestionAndAnswerRequest,
-} from '../models/index';
+} from '../models';
 import {
     QuestionAndAnswerFromJSON,
     QuestionAndAnswerToJSON,
@@ -32,7 +32,7 @@ import {
     SmartContentRequestToJSON,
     UpdateQuestionAndAnswerRequestFromJSON,
     UpdateQuestionAndAnswerRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateQuestionAndAnswerRequest {
     questionAndAnswerRequest: QuestionAndAnswerRequest;
@@ -74,11 +74,8 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Create
      */
     async createQuestionAndAnswerRaw(requestParameters: CreateQuestionAndAnswerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<QuestionAndAnswer>> {
-        if (requestParameters['questionAndAnswerRequest'] == null) {
-            throw new runtime.RequiredError(
-                'questionAndAnswerRequest',
-                'Required parameter "questionAndAnswerRequest" was null or undefined when calling createQuestionAndAnswer().'
-            );
+        if (requestParameters.questionAndAnswerRequest === null || requestParameters.questionAndAnswerRequest === undefined) {
+            throw new runtime.RequiredError('questionAndAnswerRequest','Required parameter requestParameters.questionAndAnswerRequest was null or undefined when calling createQuestionAndAnswer.');
         }
 
         const queryParameters: any = {};
@@ -88,7 +85,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -96,7 +93,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: QuestionAndAnswerRequestToJSON(requestParameters['questionAndAnswerRequest']),
+            body: QuestionAndAnswerRequestToJSON(requestParameters.questionAndAnswerRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => QuestionAndAnswerFromJSON(jsonValue));
@@ -114,11 +111,8 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Create
      */
     async createQuestionsAndAnswersCollectionRaw(requestParameters: CreateQuestionsAndAnswersCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SmartContent>> {
-        if (requestParameters['smartContentRequest'] == null) {
-            throw new runtime.RequiredError(
-                'smartContentRequest',
-                'Required parameter "smartContentRequest" was null or undefined when calling createQuestionsAndAnswersCollection().'
-            );
+        if (requestParameters.smartContentRequest === null || requestParameters.smartContentRequest === undefined) {
+            throw new runtime.RequiredError('smartContentRequest','Required parameter requestParameters.smartContentRequest was null or undefined when calling createQuestionsAndAnswersCollection.');
         }
 
         const queryParameters: any = {};
@@ -128,7 +122,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -136,7 +130,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SmartContentRequestToJSON(requestParameters['smartContentRequest']),
+            body: SmartContentRequestToJSON(requestParameters.smartContentRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SmartContentFromJSON(jsonValue));
@@ -154,11 +148,8 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteQuestionAndAnswerRaw(requestParameters: DeleteQuestionAndAnswerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteQuestionAndAnswer().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteQuestionAndAnswer.');
         }
 
         const queryParameters: any = {};
@@ -166,11 +157,11 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/questions-and-answers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/questions-and-answers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -190,23 +181,20 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteQuestionsAndAnswersCollectionRaw(requestParameters: DeleteQuestionsAndAnswersCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['smartContentId'] == null) {
-            throw new runtime.RequiredError(
-                'smartContentId',
-                'Required parameter "smartContentId" was null or undefined when calling deleteQuestionsAndAnswersCollection().'
-            );
+        if (requestParameters.smartContentId === null || requestParameters.smartContentId === undefined) {
+            throw new runtime.RequiredError('smartContentId','Required parameter requestParameters.smartContentId was null or undefined when calling deleteQuestionsAndAnswersCollection.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['smartContentId'] != null) {
-            queryParameters['smart_content_id'] = requestParameters['smartContentId'];
+        if (requestParameters.smartContentId !== undefined) {
+            queryParameters['smart_content_id'] = requestParameters.smartContentId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -232,22 +220,22 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
     async getQuestionsAndAnswersRaw(requestParameters: GetQuestionsAndAnswersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<QuestionAndAnswer>>> {
         const queryParameters: any = {};
 
-        if (requestParameters['accountId'] != null) {
-            queryParameters['account_id'] = requestParameters['accountId'];
+        if (requestParameters.accountId !== undefined) {
+            queryParameters['account_id'] = requestParameters.accountId;
         }
 
-        if (requestParameters['iri'] != null) {
-            queryParameters['iri'] = requestParameters['iri'];
+        if (requestParameters.iri !== undefined) {
+            queryParameters['iri'] = requestParameters.iri;
         }
 
-        if (requestParameters['smartContentId'] != null) {
-            queryParameters['smart_content_id'] = requestParameters['smartContentId'];
+        if (requestParameters.smartContentId !== undefined) {
+            queryParameters['smart_content_id'] = requestParameters.smartContentId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -272,18 +260,12 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Update
      */
     async updateQuestionAndAnswerRaw(requestParameters: UpdateQuestionAndAnswerOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<QuestionAndAnswer>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateQuestionAndAnswer().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateQuestionAndAnswer.');
         }
 
-        if (requestParameters['updateQuestionAndAnswerRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateQuestionAndAnswerRequest',
-                'Required parameter "updateQuestionAndAnswerRequest" was null or undefined when calling updateQuestionAndAnswer().'
-            );
+        if (requestParameters.updateQuestionAndAnswerRequest === null || requestParameters.updateQuestionAndAnswerRequest === undefined) {
+            throw new runtime.RequiredError('updateQuestionAndAnswerRequest','Required parameter requestParameters.updateQuestionAndAnswerRequest was null or undefined when calling updateQuestionAndAnswer.');
         }
 
         const queryParameters: any = {};
@@ -293,15 +275,15 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/questions-and-answers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/questions-and-answers/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateQuestionAndAnswerRequestToJSON(requestParameters['updateQuestionAndAnswerRequest']),
+            body: UpdateQuestionAndAnswerRequestToJSON(requestParameters.updateQuestionAndAnswerRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => QuestionAndAnswerFromJSON(jsonValue));
@@ -319,11 +301,8 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
      * Update
      */
     async updateQuestionsAndAnswersCollectionRaw(requestParameters: UpdateQuestionsAndAnswersCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<QuestionAndAnswer>>> {
-        if (requestParameters['questionAndAnswerRequest'] == null) {
-            throw new runtime.RequiredError(
-                'questionAndAnswerRequest',
-                'Required parameter "questionAndAnswerRequest" was null or undefined when calling updateQuestionsAndAnswersCollection().'
-            );
+        if (requestParameters.questionAndAnswerRequest === null || requestParameters.questionAndAnswerRequest === undefined) {
+            throw new runtime.RequiredError('questionAndAnswerRequest','Required parameter requestParameters.questionAndAnswerRequest was null or undefined when calling updateQuestionsAndAnswersCollection.');
         }
 
         const queryParameters: any = {};
@@ -333,7 +312,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -341,7 +320,7 @@ export class QuestionsAndAnswersApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: QuestionAndAnswerRequestToJSON(requestParameters['questionAndAnswerRequest']),
+            body: QuestionAndAnswerRequestToJSON(requestParameters.questionAndAnswerRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(QuestionAndAnswerFromJSON));

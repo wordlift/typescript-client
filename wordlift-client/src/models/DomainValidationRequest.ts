@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,12 @@ export interface DomainValidationRequest {
 /**
  * Check if a given object implements the DomainValidationRequest interface.
  */
-export function instanceOfDomainValidationRequest(value: object): value is DomainValidationRequest {
-    if (!('datasetDomain' in value) || value['datasetDomain'] === undefined) return false;
-    if (!('datasetName' in value) || value['datasetName'] === undefined) return false;
-    return true;
+export function instanceOfDomainValidationRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "datasetDomain" in value;
+    isInstance = isInstance && "datasetName" in value;
+
+    return isInstance;
 }
 
 export function DomainValidationRequestFromJSON(json: any): DomainValidationRequest {
@@ -47,7 +49,7 @@ export function DomainValidationRequestFromJSON(json: any): DomainValidationRequ
 }
 
 export function DomainValidationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DomainValidationRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function DomainValidationRequestFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function DomainValidationRequestToJSON(json: any): DomainValidationRequest {
-    return DomainValidationRequestToJSONTyped(json, false);
-}
-
-export function DomainValidationRequestToJSONTyped(value?: DomainValidationRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function DomainValidationRequestToJSON(value?: DomainValidationRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'dataset_domain': value['datasetDomain'],
-        'dataset_name': value['datasetName'],
+        'dataset_domain': value.datasetDomain,
+        'dataset_name': value.datasetName,
     };
 }
 

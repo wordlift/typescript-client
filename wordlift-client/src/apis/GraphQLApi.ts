@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   GraphqlRequest,
-} from '../models/index';
+} from '../models';
 import {
     GraphqlRequestFromJSON,
     GraphqlRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GraphqlUsingPostRequest {
     body: GraphqlRequest;
@@ -35,11 +35,8 @@ export class GraphQLApi extends runtime.BaseAPI {
      * Query
      */
     async graphqlUsingPostRaw(requestParameters: GraphqlUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: object; }>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling graphqlUsingPost().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling graphqlUsingPost.');
         }
 
         const queryParameters: any = {};
@@ -49,7 +46,7 @@ export class GraphQLApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -57,7 +54,7 @@ export class GraphQLApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GraphqlRequestToJSON(requestParameters['body']),
+            body: GraphqlRequestToJSON(requestParameters.body),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
@@ -66,16 +63,9 @@ export class GraphQLApi extends runtime.BaseAPI {
     /**
      * Query
      */
-    async graphqlUsingPost(requestParameters: GraphqlUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: object; } | null | undefined > {
+    async graphqlUsingPost(requestParameters: GraphqlUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: object; }> {
         const response = await this.graphqlUsingPostRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

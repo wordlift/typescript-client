@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { DiagnosticPlugin } from './DiagnosticPlugin';
-import {
-    DiagnosticPluginFromJSON,
-    DiagnosticPluginFromJSONTyped,
-    DiagnosticPluginToJSON,
-    DiagnosticPluginToJSONTyped,
-} from './DiagnosticPlugin';
+import { exists, mapValues } from '../runtime';
 import type { AccountSubscription } from './AccountSubscription';
 import {
     AccountSubscriptionFromJSON,
     AccountSubscriptionFromJSONTyped,
     AccountSubscriptionToJSON,
-    AccountSubscriptionToJSONTyped,
 } from './AccountSubscription';
+import type { DiagnosticPlugin } from './DiagnosticPlugin';
+import {
+    DiagnosticPluginFromJSON,
+    DiagnosticPluginFromJSONTyped,
+    DiagnosticPluginToJSON,
+} from './DiagnosticPlugin';
 
 /**
  * An array of objects.
@@ -159,8 +157,10 @@ export interface ActiveAccount {
 /**
  * Check if a given object implements the ActiveAccount interface.
  */
-export function instanceOfActiveAccount(value: object): value is ActiveAccount {
-    return true;
+export function instanceOfActiveAccount(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ActiveAccountFromJSON(json: any): ActiveAccount {
@@ -168,65 +168,63 @@ export function ActiveAccountFromJSON(json: any): ActiveAccount {
 }
 
 export function ActiveAccountFromJSONTyped(json: any, ignoreDiscriminator: boolean): ActiveAccount {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'collection': json['collection'] == null ? undefined : json['collection'],
-        'country': json['country'] == null ? undefined : json['country'],
-        'diagnosticPlugins': json['diagnostic_plugins'] == null ? undefined : ((json['diagnostic_plugins'] as Array<any>).map(DiagnosticPluginFromJSON)),
-        'domainUri': json['domain_uri'] == null ? undefined : json['domain_uri'],
-        'googleSearchConsoleSiteUrl': json['google_search_console_site_url'] == null ? undefined : json['google_search_console_site_url'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'isWordpress': json['is_wordpress'] == null ? undefined : json['is_wordpress'],
-        'key': json['key'] == null ? undefined : json['key'],
-        'language': json['language'] == null ? undefined : json['language'],
-        'ngDatasetId': json['ng_dataset_id'] == null ? undefined : json['ng_dataset_id'],
-        'packageType': json['package_type'] == null ? undefined : json['package_type'],
-        'subscription': json['subscription'] == null ? undefined : AccountSubscriptionFromJSON(json['subscription']),
-        'subscriptionId': json['subscription_id'] == null ? undefined : json['subscription_id'],
-        'totalEntities': json['total_entities'] == null ? undefined : json['total_entities'],
-        'totalEntitiesWithSchemaUrl': json['total_entities_with_schema_url'] == null ? undefined : json['total_entities_with_schema_url'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'userId': json['user_id'] == null ? undefined : json['user_id'],
-        'wpAdmin': json['wp_admin'] == null ? undefined : json['wp_admin'],
-        'wpIncludeExcludeDefault': json['wp_include_exclude_default'] == null ? undefined : json['wp_include_exclude_default'],
-        'wpJson': json['wp_json'] == null ? undefined : json['wp_json'],
+        'collection': !exists(json, 'collection') ? undefined : json['collection'],
+        'country': !exists(json, 'country') ? undefined : json['country'],
+        'diagnosticPlugins': !exists(json, 'diagnostic_plugins') ? undefined : ((json['diagnostic_plugins'] as Array<any>).map(DiagnosticPluginFromJSON)),
+        'domainUri': !exists(json, 'domain_uri') ? undefined : json['domain_uri'],
+        'googleSearchConsoleSiteUrl': !exists(json, 'google_search_console_site_url') ? undefined : json['google_search_console_site_url'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'isWordpress': !exists(json, 'is_wordpress') ? undefined : json['is_wordpress'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
+        'language': !exists(json, 'language') ? undefined : json['language'],
+        'ngDatasetId': !exists(json, 'ng_dataset_id') ? undefined : json['ng_dataset_id'],
+        'packageType': !exists(json, 'package_type') ? undefined : json['package_type'],
+        'subscription': !exists(json, 'subscription') ? undefined : AccountSubscriptionFromJSON(json['subscription']),
+        'subscriptionId': !exists(json, 'subscription_id') ? undefined : json['subscription_id'],
+        'totalEntities': !exists(json, 'total_entities') ? undefined : json['total_entities'],
+        'totalEntitiesWithSchemaUrl': !exists(json, 'total_entities_with_schema_url') ? undefined : json['total_entities_with_schema_url'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'wpAdmin': !exists(json, 'wp_admin') ? undefined : json['wp_admin'],
+        'wpIncludeExcludeDefault': !exists(json, 'wp_include_exclude_default') ? undefined : json['wp_include_exclude_default'],
+        'wpJson': !exists(json, 'wp_json') ? undefined : json['wp_json'],
     };
 }
 
-export function ActiveAccountToJSON(json: any): ActiveAccount {
-    return ActiveAccountToJSONTyped(json, false);
-}
-
-export function ActiveAccountToJSONTyped(value?: ActiveAccount | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ActiveAccountToJSON(value?: ActiveAccount | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'collection': value['collection'],
-        'country': value['country'],
-        'diagnostic_plugins': value['diagnosticPlugins'] == null ? undefined : ((value['diagnosticPlugins'] as Array<any>).map(DiagnosticPluginToJSON)),
-        'domain_uri': value['domainUri'],
-        'google_search_console_site_url': value['googleSearchConsoleSiteUrl'],
-        'id': value['id'],
-        'is_wordpress': value['isWordpress'],
-        'key': value['key'],
-        'language': value['language'],
-        'ng_dataset_id': value['ngDatasetId'],
-        'package_type': value['packageType'],
-        'subscription': AccountSubscriptionToJSON(value['subscription']),
-        'subscription_id': value['subscriptionId'],
-        'total_entities': value['totalEntities'],
-        'total_entities_with_schema_url': value['totalEntitiesWithSchemaUrl'],
-        'url': value['url'],
-        'user_id': value['userId'],
-        'wp_admin': value['wpAdmin'],
-        'wp_include_exclude_default': value['wpIncludeExcludeDefault'],
-        'wp_json': value['wpJson'],
+        'collection': value.collection,
+        'country': value.country,
+        'diagnostic_plugins': value.diagnosticPlugins === undefined ? undefined : ((value.diagnosticPlugins as Array<any>).map(DiagnosticPluginToJSON)),
+        'domain_uri': value.domainUri,
+        'google_search_console_site_url': value.googleSearchConsoleSiteUrl,
+        'id': value.id,
+        'is_wordpress': value.isWordpress,
+        'key': value.key,
+        'language': value.language,
+        'ng_dataset_id': value.ngDatasetId,
+        'package_type': value.packageType,
+        'subscription': AccountSubscriptionToJSON(value.subscription),
+        'subscription_id': value.subscriptionId,
+        'total_entities': value.totalEntities,
+        'total_entities_with_schema_url': value.totalEntitiesWithSchemaUrl,
+        'url': value.url,
+        'user_id': value.userId,
+        'wp_admin': value.wpAdmin,
+        'wp_include_exclude_default': value.wpIncludeExcludeDefault,
+        'wp_json': value.wpJson,
     };
 }
 

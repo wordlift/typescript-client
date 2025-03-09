@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * InternalLink destinations configuration.
  * @export
@@ -42,11 +42,13 @@ export interface InternalLinkDestination {
 /**
  * Check if a given object implements the InternalLinkDestination interface.
  */
-export function instanceOfInternalLinkDestination(value: object): value is InternalLinkDestination {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('position' in value) || value['position'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfInternalLinkDestination(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "position" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function InternalLinkDestinationFromJSON(json: any): InternalLinkDestination {
@@ -54,7 +56,7 @@ export function InternalLinkDestinationFromJSON(json: any): InternalLinkDestinat
 }
 
 export function InternalLinkDestinationFromJSONTyped(json: any, ignoreDiscriminator: boolean): InternalLinkDestination {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -65,20 +67,18 @@ export function InternalLinkDestinationFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function InternalLinkDestinationToJSON(json: any): InternalLinkDestination {
-    return InternalLinkDestinationToJSONTyped(json, false);
-}
-
-export function InternalLinkDestinationToJSONTyped(value?: InternalLinkDestination | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InternalLinkDestinationToJSON(value?: InternalLinkDestination | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'name': value['name'],
-        'position': value['position'],
-        'url': value['url'],
+        'name': value.name,
+        'position': value.position,
+        'url': value.url,
     };
 }
 

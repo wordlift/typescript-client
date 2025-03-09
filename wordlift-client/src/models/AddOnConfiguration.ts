@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An Add-On configuration
  * @export
@@ -54,8 +54,10 @@ export interface AddOnConfiguration {
 /**
  * Check if a given object implements the AddOnConfiguration interface.
  */
-export function instanceOfAddOnConfiguration(value: object): value is AddOnConfiguration {
-    return true;
+export function instanceOfAddOnConfiguration(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AddOnConfigurationFromJSON(json: any): AddOnConfiguration {
@@ -63,28 +65,26 @@ export function AddOnConfigurationFromJSON(json: any): AddOnConfiguration {
 }
 
 export function AddOnConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): AddOnConfiguration {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'canDoContentExpansion': json['can_do_content_expansion'] == null ? undefined : json['can_do_content_expansion'],
-        'canImportToWordpress': json['can_import_to_wordpress'] == null ? undefined : json['can_import_to_wordpress'],
-        'key': json['key'] == null ? undefined : json['key'],
-        'wpAdmin': json['wp_admin'] == null ? undefined : json['wp_admin'],
-        'wpJson': json['wp_json'] == null ? undefined : json['wp_json'],
+        'canDoContentExpansion': !exists(json, 'can_do_content_expansion') ? undefined : json['can_do_content_expansion'],
+        'canImportToWordpress': !exists(json, 'can_import_to_wordpress') ? undefined : json['can_import_to_wordpress'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
+        'wpAdmin': !exists(json, 'wp_admin') ? undefined : json['wp_admin'],
+        'wpJson': !exists(json, 'wp_json') ? undefined : json['wp_json'],
     };
 }
 
-export function AddOnConfigurationToJSON(json: any): AddOnConfiguration {
-    return AddOnConfigurationToJSONTyped(json, false);
-}
-
-export function AddOnConfigurationToJSONTyped(value?: Omit<AddOnConfiguration, 'can_do_content_expansion'|'can_import_to_wordpress'|'key'|'wp_admin'|'wp_json'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AddOnConfigurationToJSON(value?: AddOnConfiguration | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
     };

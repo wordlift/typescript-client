@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface CreateSEOScore200Response {
 /**
  * Check if a given object implements the CreateSEOScore200Response interface.
  */
-export function instanceOfCreateSEOScore200Response(value: object): value is CreateSEOScore200Response {
-    return true;
+export function instanceOfCreateSEOScore200Response(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function CreateSEOScore200ResponseFromJSON(json: any): CreateSEOScore200Response {
@@ -39,27 +41,25 @@ export function CreateSEOScore200ResponseFromJSON(json: any): CreateSEOScore200R
 }
 
 export function CreateSEOScore200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateSEOScore200Response {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'analyze': json['analyze'] == null ? undefined : json['analyze'],
+        'analyze': !exists(json, 'analyze') ? undefined : json['analyze'],
     };
 }
 
-export function CreateSEOScore200ResponseToJSON(json: any): CreateSEOScore200Response {
-    return CreateSEOScore200ResponseToJSONTyped(json, false);
-}
-
-export function CreateSEOScore200ResponseToJSONTyped(value?: CreateSEOScore200Response | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CreateSEOScore200ResponseToJSON(value?: CreateSEOScore200Response | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'analyze': value['analyze'],
+        'analyze': value.analyze,
     };
 }
 

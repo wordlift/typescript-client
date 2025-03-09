@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   PagePreset,
-} from '../models/index';
+} from '../models';
 import {
     PagePresetFromJSON,
     PagePresetToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListPresetsRequest {
     cursor?: string;
@@ -38,18 +38,18 @@ export class ContentGenerationPresetsApi extends runtime.BaseAPI {
     async listPresetsRaw(requestParameters: ListPresetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagePreset>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

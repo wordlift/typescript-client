@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Entity Match
  * @export
@@ -36,8 +36,10 @@ export interface EntityMatch {
 /**
  * Check if a given object implements the EntityMatch interface.
  */
-export function instanceOfEntityMatch(value: object): value is EntityMatch {
-    return true;
+export function instanceOfEntityMatch(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function EntityMatchFromJSON(json: any): EntityMatch {
@@ -45,29 +47,27 @@ export function EntityMatchFromJSON(json: any): EntityMatch {
 }
 
 export function EntityMatchFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityMatch {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'confidence': json['confidence'] == null ? undefined : json['confidence'],
-        'entityId': json['entityId'] == null ? undefined : json['entityId'],
+        'confidence': !exists(json, 'confidence') ? undefined : json['confidence'],
+        'entityId': !exists(json, 'entityId') ? undefined : json['entityId'],
     };
 }
 
-export function EntityMatchToJSON(json: any): EntityMatch {
-    return EntityMatchToJSONTyped(json, false);
-}
-
-export function EntityMatchToJSONTyped(value?: EntityMatch | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EntityMatchToJSON(value?: EntityMatch | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'confidence': value['confidence'],
-        'entityId': value['entityId'],
+        'confidence': value.confidence,
+        'entityId': value.entityId,
     };
 }
 

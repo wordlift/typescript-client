@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Content Expansion response.
  * @export
@@ -30,8 +30,10 @@ export interface ContentExpansionResponse {
 /**
  * Check if a given object implements the ContentExpansionResponse interface.
  */
-export function instanceOfContentExpansionResponse(value: object): value is ContentExpansionResponse {
-    return true;
+export function instanceOfContentExpansionResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ContentExpansionResponseFromJSON(json: any): ContentExpansionResponse {
@@ -39,27 +41,25 @@ export function ContentExpansionResponseFromJSON(json: any): ContentExpansionRes
 }
 
 export function ContentExpansionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentExpansionResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'completion': json['completion'] == null ? undefined : json['completion'],
+        'completion': !exists(json, 'completion') ? undefined : json['completion'],
     };
 }
 
-export function ContentExpansionResponseToJSON(json: any): ContentExpansionResponse {
-    return ContentExpansionResponseToJSONTyped(json, false);
-}
-
-export function ContentExpansionResponseToJSONTyped(value?: ContentExpansionResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ContentExpansionResponseToJSON(value?: ContentExpansionResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'completion': value['completion'],
+        'completion': value.completion,
     };
 }
 

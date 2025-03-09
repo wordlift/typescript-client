@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   PageWithLimits,
-} from '../models/index';
+} from '../models';
 import {
     PageWithLimitsFromJSON,
     PageWithLimitsToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateOrUpdateMyPlatformConsumptionRequest {
     appliesTo: string;
@@ -43,27 +43,24 @@ export class PlatformConsumptionsApi extends runtime.BaseAPI {
      * Create or update the Platform Consumption
      */
     async createOrUpdateMyPlatformConsumptionRaw(requestParameters: CreateOrUpdateMyPlatformConsumptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWithLimits>> {
-        if (requestParameters['appliesTo'] == null) {
-            throw new runtime.RequiredError(
-                'appliesTo',
-                'Required parameter "appliesTo" was null or undefined when calling createOrUpdateMyPlatformConsumption().'
-            );
+        if (requestParameters.appliesTo === null || requestParameters.appliesTo === undefined) {
+            throw new runtime.RequiredError('appliesTo','Required parameter requestParameters.appliesTo was null or undefined when calling createOrUpdateMyPlatformConsumption.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['appliesTo'] != null) {
-            queryParameters['applies_to'] = requestParameters['appliesTo'];
+        if (requestParameters.appliesTo !== undefined) {
+            queryParameters['applies_to'] = requestParameters.appliesTo;
         }
 
-        if (requestParameters['consumptionToAdd'] != null) {
-            queryParameters['consumption_to_add'] = requestParameters['consumptionToAdd'];
+        if (requestParameters.consumptionToAdd !== undefined) {
+            queryParameters['consumption_to_add'] = requestParameters.consumptionToAdd;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -90,31 +87,28 @@ export class PlatformConsumptionsApi extends runtime.BaseAPI {
      * Get the Platform Consumption
      */
     async getMyPlatformConsumptionRaw(requestParameters: GetMyPlatformConsumptionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWithLimits>> {
-        if (requestParameters['appliesTo'] == null) {
-            throw new runtime.RequiredError(
-                'appliesTo',
-                'Required parameter "appliesTo" was null or undefined when calling getMyPlatformConsumption().'
-            );
+        if (requestParameters.appliesTo === null || requestParameters.appliesTo === undefined) {
+            throw new runtime.RequiredError('appliesTo','Required parameter requestParameters.appliesTo was null or undefined when calling getMyPlatformConsumption.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['appliesTo'] != null) {
-            queryParameters['applies_to'] = requestParameters['appliesTo'];
+        if (requestParameters.appliesTo !== undefined) {
+            queryParameters['applies_to'] = requestParameters.appliesTo;
         }
 
-        if (requestParameters['includeSubscription'] != null) {
-            queryParameters['include_subscription'] = requestParameters['includeSubscription'];
+        if (requestParameters.includeSubscription !== undefined) {
+            queryParameters['include_subscription'] = requestParameters.includeSubscription;
         }
 
-        if (requestParameters['includeLimit'] != null) {
-            queryParameters['include_limit'] = requestParameters['includeLimit'];
+        if (requestParameters.includeLimit !== undefined) {
+            queryParameters['include_limit'] = requestParameters.includeLimit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

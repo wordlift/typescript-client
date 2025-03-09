@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   Account,
   DiagnosticPluginRequest,
-} from '../models/index';
+} from '../models';
 import {
     AccountFromJSON,
     AccountToJSON,
     DiagnosticPluginRequestFromJSON,
     DiagnosticPluginRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface UpdateDiagnosticPluginCollectionRequest {
     account: Account;
@@ -40,24 +40,18 @@ export class PluginDiagnosticsApi extends runtime.BaseAPI {
      * Update
      */
     async updateDiagnosticPluginCollectionRaw(requestParameters: UpdateDiagnosticPluginCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['account'] == null) {
-            throw new runtime.RequiredError(
-                'account',
-                'Required parameter "account" was null or undefined when calling updateDiagnosticPluginCollection().'
-            );
+        if (requestParameters.account === null || requestParameters.account === undefined) {
+            throw new runtime.RequiredError('account','Required parameter requestParameters.account was null or undefined when calling updateDiagnosticPluginCollection.');
         }
 
-        if (requestParameters['diagnosticPluginRequest'] == null) {
-            throw new runtime.RequiredError(
-                'diagnosticPluginRequest',
-                'Required parameter "diagnosticPluginRequest" was null or undefined when calling updateDiagnosticPluginCollection().'
-            );
+        if (requestParameters.diagnosticPluginRequest === null || requestParameters.diagnosticPluginRequest === undefined) {
+            throw new runtime.RequiredError('diagnosticPluginRequest','Required parameter requestParameters.diagnosticPluginRequest was null or undefined when calling updateDiagnosticPluginCollection.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['account'] != null) {
-            queryParameters['account'] = requestParameters['account'];
+        if (requestParameters.account !== undefined) {
+            queryParameters['account'] = requestParameters.account;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -65,7 +59,7 @@ export class PluginDiagnosticsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -73,7 +67,7 @@ export class PluginDiagnosticsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['diagnosticPluginRequest']!.map(DiagnosticPluginRequestToJSON),
+            body: requestParameters.diagnosticPluginRequest.map(DiagnosticPluginRequestToJSON),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

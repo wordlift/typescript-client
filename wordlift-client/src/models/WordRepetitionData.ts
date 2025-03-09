@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Words in completion which are repeated.
  * @export
@@ -36,8 +36,10 @@ export interface WordRepetitionData {
 /**
  * Check if a given object implements the WordRepetitionData interface.
  */
-export function instanceOfWordRepetitionData(value: object): value is WordRepetitionData {
-    return true;
+export function instanceOfWordRepetitionData(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function WordRepetitionDataFromJSON(json: any): WordRepetitionData {
@@ -45,29 +47,27 @@ export function WordRepetitionDataFromJSON(json: any): WordRepetitionData {
 }
 
 export function WordRepetitionDataFromJSONTyped(json: any, ignoreDiscriminator: boolean): WordRepetitionData {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'count': json['count'] == null ? undefined : json['count'],
-        'repeatedInSameSentence': json['repeated_in_same_sentence'] == null ? undefined : json['repeated_in_same_sentence'],
+        'count': !exists(json, 'count') ? undefined : json['count'],
+        'repeatedInSameSentence': !exists(json, 'repeated_in_same_sentence') ? undefined : json['repeated_in_same_sentence'],
     };
 }
 
-export function WordRepetitionDataToJSON(json: any): WordRepetitionData {
-    return WordRepetitionDataToJSONTyped(json, false);
-}
-
-export function WordRepetitionDataToJSONTyped(value?: WordRepetitionData | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WordRepetitionDataToJSON(value?: WordRepetitionData | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'count': value['count'],
-        'repeated_in_same_sentence': value['repeatedInSameSentence'],
+        'count': value.count,
+        'repeated_in_same_sentence': value.repeatedInSameSentence,
     };
 }
 

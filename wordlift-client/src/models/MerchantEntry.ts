@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Merchant Entry with the Google Merchant Id and the Website URL
  * @export
@@ -36,10 +36,12 @@ export interface MerchantEntry {
 /**
  * Check if a given object implements the MerchantEntry interface.
  */
-export function instanceOfMerchantEntry(value: object): value is MerchantEntry {
-    if (!('googleMerchantId' in value) || value['googleMerchantId'] === undefined) return false;
-    if (!('websiteUrl' in value) || value['websiteUrl'] === undefined) return false;
-    return true;
+export function instanceOfMerchantEntry(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "googleMerchantId" in value;
+    isInstance = isInstance && "websiteUrl" in value;
+
+    return isInstance;
 }
 
 export function MerchantEntryFromJSON(json: any): MerchantEntry {
@@ -47,7 +49,7 @@ export function MerchantEntryFromJSON(json: any): MerchantEntry {
 }
 
 export function MerchantEntryFromJSONTyped(json: any, ignoreDiscriminator: boolean): MerchantEntry {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function MerchantEntryFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function MerchantEntryToJSON(json: any): MerchantEntry {
-    return MerchantEntryToJSONTyped(json, false);
-}
-
-export function MerchantEntryToJSONTyped(value?: MerchantEntry | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MerchantEntryToJSON(value?: MerchantEntry | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'google_merchant_id': value['googleMerchantId'],
-        'website_url': value['websiteUrl'],
+        'google_merchant_id': value.googleMerchantId,
+        'website_url': value.websiteUrl,
     };
 }
 

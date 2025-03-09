@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   NodeRequest,
-} from '../models/index';
+} from '../models';
 import {
     NodeRequestFromJSON,
     NodeRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface UpdateNodesCollectionRequest {
     nodeRequest: Array<NodeRequest>;
@@ -35,11 +35,8 @@ export class VectorSearchNodesApi extends runtime.BaseAPI {
      * Update
      */
     async updateNodesCollectionRaw(requestParameters: UpdateNodesCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['nodeRequest'] == null) {
-            throw new runtime.RequiredError(
-                'nodeRequest',
-                'Required parameter "nodeRequest" was null or undefined when calling updateNodesCollection().'
-            );
+        if (requestParameters.nodeRequest === null || requestParameters.nodeRequest === undefined) {
+            throw new runtime.RequiredError('nodeRequest','Required parameter requestParameters.nodeRequest was null or undefined when calling updateNodesCollection.');
         }
 
         const queryParameters: any = {};
@@ -49,7 +46,7 @@ export class VectorSearchNodesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -57,7 +54,7 @@ export class VectorSearchNodesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['nodeRequest']!.map(NodeRequestToJSON),
+            body: requestParameters.nodeRequest.map(NodeRequestToJSON),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

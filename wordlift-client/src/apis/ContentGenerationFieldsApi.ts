@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   Field,
   PageField,
-} from '../models/index';
+} from '../models';
 import {
     FieldFromJSON,
     FieldToJSON,
     PageFieldFromJSON,
     PageFieldToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListFieldsRequest {
     contentGenerationId: number;
@@ -44,31 +44,28 @@ export class ContentGenerationFieldsApi extends runtime.BaseAPI {
      * List
      */
     async listFieldsRaw(requestParameters: ListFieldsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageField>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling listFields().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling listFields.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/fields`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/fields`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -89,11 +86,8 @@ export class ContentGenerationFieldsApi extends runtime.BaseAPI {
      * List for GraphQl Query
      */
     async listFieldsForGraphQlQueryRaw(requestParameters: ListFieldsForGraphQlQueryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Field>>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling listFieldsForGraphQlQuery().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling listFieldsForGraphQlQuery.');
         }
 
         const queryParameters: any = {};
@@ -103,7 +97,7 @@ export class ContentGenerationFieldsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/graphql';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -111,7 +105,7 @@ export class ContentGenerationFieldsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FieldFromJSON));

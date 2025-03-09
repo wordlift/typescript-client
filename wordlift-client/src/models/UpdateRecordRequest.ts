@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request to update the properties of a record.
  * @export
@@ -48,11 +48,13 @@ export interface UpdateRecordRequest {
 /**
  * Check if a given object implements the UpdateRecordRequest interface.
  */
-export function instanceOfUpdateRecordRequest(value: object): value is UpdateRecordRequest {
-    if (!('hasUpvote' in value) || value['hasUpvote'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('isAccepted' in value) || value['isAccepted'] === undefined) return false;
-    return true;
+export function instanceOfUpdateRecordRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "hasUpvote" in value;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "isAccepted" in value;
+
+    return isInstance;
 }
 
 export function UpdateRecordRequestFromJSON(json: any): UpdateRecordRequest {
@@ -60,33 +62,31 @@ export function UpdateRecordRequestFromJSON(json: any): UpdateRecordRequest {
 }
 
 export function UpdateRecordRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateRecordRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'completion': json['completion'] == null ? undefined : json['completion'],
+        'completion': !exists(json, 'completion') ? undefined : json['completion'],
         'hasUpvote': json['has_upvote'],
         'id': json['id'],
         'isAccepted': json['is_accepted'],
     };
 }
 
-export function UpdateRecordRequestToJSON(json: any): UpdateRecordRequest {
-    return UpdateRecordRequestToJSONTyped(json, false);
-}
-
-export function UpdateRecordRequestToJSONTyped(value?: UpdateRecordRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function UpdateRecordRequestToJSON(value?: UpdateRecordRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'completion': value['completion'],
-        'has_upvote': value['hasUpvote'],
-        'id': value['id'],
-        'is_accepted': value['isAccepted'],
+        'completion': value.completion,
+        'has_upvote': value.hasUpvote,
+        'id': value.id,
+        'is_accepted': value.isAccepted,
     };
 }
 

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Filter } from './Filter';
 import {
     FilterFromJSON,
     FilterFromJSONTyped,
     FilterToJSON,
-    FilterToJSONTyped,
 } from './Filter';
 
 /**
@@ -74,8 +73,10 @@ export interface VectorSearchQueryRequest {
 /**
  * Check if a given object implements the VectorSearchQueryRequest interface.
  */
-export function instanceOfVectorSearchQueryRequest(value: object): value is VectorSearchQueryRequest {
-    return true;
+export function instanceOfVectorSearchQueryRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function VectorSearchQueryRequestFromJSON(json: any): VectorSearchQueryRequest {
@@ -83,39 +84,37 @@ export function VectorSearchQueryRequestFromJSON(json: any): VectorSearchQueryRe
 }
 
 export function VectorSearchQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQueryRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'fields': json['fields'] == null ? undefined : new Set(json['fields']),
-        'filters': json['filters'] == null ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
-        'queryEmbedding': json['query_embedding'] == null ? undefined : json['query_embedding'],
-        'queryString': json['query_string'] == null ? undefined : json['query_string'],
-        'queryUri': json['query_uri'] == null ? undefined : json['query_uri'],
-        'queryUrl': json['query_url'] == null ? undefined : json['query_url'],
-        'similarityTopK': json['similarity_top_k'] == null ? undefined : json['similarity_top_k'],
+        'fields': !exists(json, 'fields') ? undefined : json['fields'],
+        'filters': !exists(json, 'filters') ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
+        'queryEmbedding': !exists(json, 'query_embedding') ? undefined : json['query_embedding'],
+        'queryString': !exists(json, 'query_string') ? undefined : json['query_string'],
+        'queryUri': !exists(json, 'query_uri') ? undefined : json['query_uri'],
+        'queryUrl': !exists(json, 'query_url') ? undefined : json['query_url'],
+        'similarityTopK': !exists(json, 'similarity_top_k') ? undefined : json['similarity_top_k'],
     };
 }
 
-export function VectorSearchQueryRequestToJSON(json: any): VectorSearchQueryRequest {
-    return VectorSearchQueryRequestToJSONTyped(json, false);
-}
-
-export function VectorSearchQueryRequestToJSONTyped(value?: VectorSearchQueryRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQueryRequestToJSON(value?: VectorSearchQueryRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'fields': value['fields'] == null ? undefined : Array.from(value['fields'] as Set<any>),
-        'filters': value['filters'] == null ? undefined : ((value['filters'] as Array<any>).map(FilterToJSON)),
-        'query_embedding': value['queryEmbedding'],
-        'query_string': value['queryString'],
-        'query_uri': value['queryUri'],
-        'query_url': value['queryUrl'],
-        'similarity_top_k': value['similarityTopK'],
+        'fields': value.fields === undefined ? undefined : Array.from(value.fields as Set<any>),
+        'filters': value.filters === undefined ? undefined : ((value.filters as Array<any>).map(FilterToJSON)),
+        'query_embedding': value.queryEmbedding,
+        'query_string': value.queryString,
+        'query_uri': value.queryUri,
+        'query_url': value.queryUrl,
+        'similarity_top_k': value.similarityTopK,
     };
 }
 

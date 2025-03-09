@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * InternalLink source configuration.
  * @export
@@ -42,9 +42,11 @@ export interface InternalLinkSource {
 /**
  * Check if a given object implements the InternalLinkSource interface.
  */
-export function instanceOfInternalLinkSource(value: object): value is InternalLinkSource {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfInternalLinkSource(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function InternalLinkSourceFromJSON(json: any): InternalLinkSource {
@@ -52,31 +54,29 @@ export function InternalLinkSourceFromJSON(json: any): InternalLinkSource {
 }
 
 export function InternalLinkSourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): InternalLinkSource {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'name': json['name'] == null ? undefined : json['name'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
         'url': json['url'],
     };
 }
 
-export function InternalLinkSourceToJSON(json: any): InternalLinkSource {
-    return InternalLinkSourceToJSONTyped(json, false);
-}
-
-export function InternalLinkSourceToJSONTyped(value?: InternalLinkSource | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InternalLinkSourceToJSON(value?: InternalLinkSource | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'name': value['name'],
-        'url': value['url'],
+        'id': value.id,
+        'name': value.name,
+        'url': value.url,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Plugin Data used for diagnostics
  * @export
@@ -60,8 +60,10 @@ export interface DiagnosticPlugin {
 /**
  * Check if a given object implements the DiagnosticPlugin interface.
  */
-export function instanceOfDiagnosticPlugin(value: object): value is DiagnosticPlugin {
-    return true;
+export function instanceOfDiagnosticPlugin(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function DiagnosticPluginFromJSON(json: any): DiagnosticPlugin {
@@ -69,34 +71,32 @@ export function DiagnosticPluginFromJSON(json: any): DiagnosticPlugin {
 }
 
 export function DiagnosticPluginFromJSONTyped(json: any, ignoreDiscriminator: boolean): DiagnosticPlugin {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
-        'active': json['active'] == null ? undefined : json['active'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'id': json['id'] == null ? undefined : json['id'],
-        'name': json['name'] == null ? undefined : json['name'],
-        'version': json['version'] == null ? undefined : json['version'],
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
+        'active': !exists(json, 'active') ? undefined : json['active'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'version': !exists(json, 'version') ? undefined : json['version'],
     };
 }
 
-export function DiagnosticPluginToJSON(json: any): DiagnosticPlugin {
-    return DiagnosticPluginToJSONTyped(json, false);
-}
-
-export function DiagnosticPluginToJSONTyped(value?: Omit<DiagnosticPlugin, 'account_id'|'created_at'|'id'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function DiagnosticPluginToJSON(value?: DiagnosticPlugin | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'active': value['active'],
-        'name': value['name'],
-        'version': value['version'],
+        'active': value.active,
+        'name': value.name,
+        'version': value.version,
     };
 }
 

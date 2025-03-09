@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Content Generation request.
  * @export
@@ -96,11 +96,13 @@ export interface ContentGenerationRequest {
 /**
  * Check if a given object implements the ContentGenerationRequest interface.
  */
-export function instanceOfContentGenerationRequest(value: object): value is ContentGenerationRequest {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    if (!('graphqlQuery' in value) || value['graphqlQuery'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
+export function instanceOfContentGenerationRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accountId" in value;
+    isInstance = isInstance && "graphqlQuery" in value;
+    isInstance = isInstance && "name" in value;
+
+    return isInstance;
 }
 
 export function ContentGenerationRequestFromJSON(json: any): ContentGenerationRequest {
@@ -108,49 +110,47 @@ export function ContentGenerationRequestFromJSON(json: any): ContentGenerationRe
 }
 
 export function ContentGenerationRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentGenerationRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accountId': json['account_id'],
-        'deleted': json['deleted'] == null ? undefined : json['deleted'],
+        'deleted': !exists(json, 'deleted') ? undefined : json['deleted'],
         'graphqlQuery': json['graphql_query'],
-        'maxTokens': json['max_tokens'] == null ? undefined : json['max_tokens'],
-        'minWords': json['min_words'] == null ? undefined : json['min_words'],
-        'modelId': json['model_id'] == null ? undefined : json['model_id'],
+        'maxTokens': !exists(json, 'max_tokens') ? undefined : json['max_tokens'],
+        'minWords': !exists(json, 'min_words') ? undefined : json['min_words'],
+        'modelId': !exists(json, 'model_id') ? undefined : json['model_id'],
         'name': json['name'],
-        'penalty': json['penalty'] == null ? undefined : json['penalty'],
-        'promptTemplate': json['prompt_template'] == null ? undefined : json['prompt_template'],
-        'stop': json['stop'] == null ? undefined : json['stop'],
-        'temperature': json['temperature'] == null ? undefined : json['temperature'],
-        'wordsToIgnore': json['words_to_ignore'] == null ? undefined : new Set(json['words_to_ignore']),
+        'penalty': !exists(json, 'penalty') ? undefined : json['penalty'],
+        'promptTemplate': !exists(json, 'prompt_template') ? undefined : json['prompt_template'],
+        'stop': !exists(json, 'stop') ? undefined : json['stop'],
+        'temperature': !exists(json, 'temperature') ? undefined : json['temperature'],
+        'wordsToIgnore': !exists(json, 'words_to_ignore') ? undefined : json['words_to_ignore'],
     };
 }
 
-export function ContentGenerationRequestToJSON(json: any): ContentGenerationRequest {
-    return ContentGenerationRequestToJSONTyped(json, false);
-}
-
-export function ContentGenerationRequestToJSONTyped(value?: ContentGenerationRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ContentGenerationRequestToJSON(value?: ContentGenerationRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'account_id': value['accountId'],
-        'deleted': value['deleted'],
-        'graphql_query': value['graphqlQuery'],
-        'max_tokens': value['maxTokens'],
-        'min_words': value['minWords'],
-        'model_id': value['modelId'],
-        'name': value['name'],
-        'penalty': value['penalty'],
-        'prompt_template': value['promptTemplate'],
-        'stop': value['stop'],
-        'temperature': value['temperature'],
-        'words_to_ignore': value['wordsToIgnore'] == null ? undefined : Array.from(value['wordsToIgnore'] as Set<any>),
+        'account_id': value.accountId,
+        'deleted': value.deleted,
+        'graphql_query': value.graphqlQuery,
+        'max_tokens': value.maxTokens,
+        'min_words': value.minWords,
+        'model_id': value.modelId,
+        'name': value.name,
+        'penalty': value.penalty,
+        'prompt_template': value.promptTemplate,
+        'stop': value.stop,
+        'temperature': value.temperature,
+        'words_to_ignore': value.wordsToIgnore === undefined ? undefined : Array.from(value.wordsToIgnore as Set<any>),
     };
 }
 

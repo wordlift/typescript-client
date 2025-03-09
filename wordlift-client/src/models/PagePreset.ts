@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Preset } from './Preset';
 import {
     PresetFromJSON,
     PresetFromJSONTyped,
     PresetToJSON,
-    PresetToJSONTyped,
 } from './Preset';
 
 /**
@@ -68,14 +67,16 @@ export interface PagePreset {
 /**
  * Check if a given object implements the PagePreset interface.
  */
-export function instanceOfPagePreset(value: object): value is PagePreset {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPagePreset(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PagePresetFromJSON(json: any): PagePreset {
@@ -83,7 +84,7 @@ export function PagePresetFromJSON(json: any): PagePreset {
 }
 
 export function PagePresetFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagePreset {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PagePresetFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function PagePresetToJSON(json: any): PagePreset {
-    return PagePresetToJSONTyped(json, false);
-}
-
-export function PagePresetToJSONTyped(value?: PagePreset | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagePresetToJSON(value?: PagePreset | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(PresetToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(PresetToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 

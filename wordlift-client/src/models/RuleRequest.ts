@@ -12,56 +12,49 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { WhenOperator } from './WhenOperator';
-import {
-    WhenOperatorFromJSON,
-    WhenOperatorFromJSONTyped,
-    WhenOperatorToJSON,
-    WhenOperatorToJSONTyped,
-} from './WhenOperator';
-import type { Scope } from './Scope';
-import {
-    ScopeFromJSON,
-    ScopeFromJSONTyped,
-    ScopeToJSON,
-    ScopeToJSONTyped,
-} from './Scope';
+import { exists, mapValues } from '../runtime';
 import type { LevelEnum } from './LevelEnum';
 import {
     LevelEnumFromJSON,
     LevelEnumFromJSONTyped,
     LevelEnumToJSON,
-    LevelEnumToJSONTyped,
 } from './LevelEnum';
-import type { ValidationFix } from './ValidationFix';
-import {
-    ValidationFixFromJSON,
-    ValidationFixFromJSONTyped,
-    ValidationFixToJSON,
-    ValidationFixToJSONTyped,
-} from './ValidationFix';
 import type { ProjectType } from './ProjectType';
 import {
     ProjectTypeFromJSON,
     ProjectTypeFromJSONTyped,
     ProjectTypeToJSON,
-    ProjectTypeToJSONTyped,
 } from './ProjectType';
+import type { Scope } from './Scope';
+import {
+    ScopeFromJSON,
+    ScopeFromJSONTyped,
+    ScopeToJSON,
+} from './Scope';
+import type { ValidationFix } from './ValidationFix';
+import {
+    ValidationFixFromJSON,
+    ValidationFixFromJSONTyped,
+    ValidationFixToJSON,
+} from './ValidationFix';
 import type { WhatOperandLhs } from './WhatOperandLhs';
 import {
     WhatOperandLhsFromJSON,
     WhatOperandLhsFromJSONTyped,
     WhatOperandLhsToJSON,
-    WhatOperandLhsToJSONTyped,
 } from './WhatOperandLhs';
 import type { WhatOperator } from './WhatOperator';
 import {
     WhatOperatorFromJSON,
     WhatOperatorFromJSONTyped,
     WhatOperatorToJSON,
-    WhatOperatorToJSONTyped,
 } from './WhatOperator';
+import type { WhenOperator } from './WhenOperator';
+import {
+    WhenOperatorFromJSON,
+    WhenOperatorFromJSONTyped,
+    WhenOperatorToJSON,
+} from './WhenOperator';
 
 /**
  * 
@@ -161,23 +154,23 @@ export interface RuleRequest {
     whenOperator: WhenOperator;
 }
 
-
-
 /**
  * Check if a given object implements the RuleRequest interface.
  */
-export function instanceOfRuleRequest(value: object): value is RuleRequest {
-    if (!('level' in value) || value['level'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('scope' in value) || value['scope'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    if (!('whatOperandLhs' in value) || value['whatOperandLhs'] === undefined) return false;
-    if (!('whatOperandRhs' in value) || value['whatOperandRhs'] === undefined) return false;
-    if (!('whatOperator' in value) || value['whatOperator'] === undefined) return false;
-    if (!('whenOperandLhs' in value) || value['whenOperandLhs'] === undefined) return false;
-    if (!('whenOperandRhs' in value) || value['whenOperandRhs'] === undefined) return false;
-    if (!('whenOperator' in value) || value['whenOperator'] === undefined) return false;
-    return true;
+export function instanceOfRuleRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "level" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "scope" in value;
+    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "whatOperandLhs" in value;
+    isInstance = isInstance && "whatOperandRhs" in value;
+    isInstance = isInstance && "whatOperator" in value;
+    isInstance = isInstance && "whenOperandLhs" in value;
+    isInstance = isInstance && "whenOperandRhs" in value;
+    isInstance = isInstance && "whenOperator" in value;
+
+    return isInstance;
 }
 
 export function RuleRequestFromJSON(json: any): RuleRequest {
@@ -185,18 +178,18 @@ export function RuleRequestFromJSON(json: any): RuleRequest {
 }
 
 export function RuleRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RuleRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'description': json['description'] == null ? undefined : json['description'],
-        'fixes': json['fixes'] == null ? undefined : ((json['fixes'] as Array<any>).map(ValidationFixFromJSON)),
-        'isEnabled': json['is_enabled'] == null ? undefined : json['is_enabled'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'fixes': !exists(json, 'fixes') ? undefined : ((json['fixes'] as Array<any>).map(ValidationFixFromJSON)),
+        'isEnabled': !exists(json, 'is_enabled') ? undefined : json['is_enabled'],
         'level': LevelEnumFromJSON(json['level']),
         'name': json['name'],
-        'projectId': json['project_id'] == null ? undefined : json['project_id'],
-        'projectType': json['project_type'] == null ? undefined : ProjectTypeFromJSON(json['project_type']),
+        'projectId': !exists(json, 'project_id') ? undefined : json['project_id'],
+        'projectType': !exists(json, 'project_type') ? undefined : ProjectTypeFromJSON(json['project_type']),
         'scope': ScopeFromJSON(json['scope']),
         'type': json['type'],
         'whatOperandLhs': WhatOperandLhsFromJSON(json['what_operand_lhs']),
@@ -208,32 +201,30 @@ export function RuleRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function RuleRequestToJSON(json: any): RuleRequest {
-    return RuleRequestToJSONTyped(json, false);
-}
-
-export function RuleRequestToJSONTyped(value?: RuleRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RuleRequestToJSON(value?: RuleRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'description': value['description'],
-        'fixes': value['fixes'] == null ? undefined : ((value['fixes'] as Array<any>).map(ValidationFixToJSON)),
-        'is_enabled': value['isEnabled'],
-        'level': LevelEnumToJSON(value['level']),
-        'name': value['name'],
-        'project_id': value['projectId'],
-        'project_type': ProjectTypeToJSON(value['projectType']),
-        'scope': ScopeToJSON(value['scope']),
-        'type': value['type'],
-        'what_operand_lhs': WhatOperandLhsToJSON(value['whatOperandLhs']),
-        'what_operand_rhs': value['whatOperandRhs'],
-        'what_operator': WhatOperatorToJSON(value['whatOperator']),
-        'when_operand_lhs': value['whenOperandLhs'],
-        'when_operand_rhs': value['whenOperandRhs'],
-        'when_operator': WhenOperatorToJSON(value['whenOperator']),
+        'description': value.description,
+        'fixes': value.fixes === undefined ? undefined : ((value.fixes as Array<any>).map(ValidationFixToJSON)),
+        'is_enabled': value.isEnabled,
+        'level': LevelEnumToJSON(value.level),
+        'name': value.name,
+        'project_id': value.projectId,
+        'project_type': ProjectTypeToJSON(value.projectType),
+        'scope': ScopeToJSON(value.scope),
+        'type': value.type,
+        'what_operand_lhs': WhatOperandLhsToJSON(value.whatOperandLhs),
+        'what_operand_rhs': value.whatOperandRhs,
+        'what_operator': WhatOperatorToJSON(value.whatOperator),
+        'when_operand_lhs': value.whenOperandLhs,
+        'when_operand_rhs': value.whenOperandRhs,
+        'when_operator': WhenOperatorToJSON(value.whenOperator),
     };
 }
 

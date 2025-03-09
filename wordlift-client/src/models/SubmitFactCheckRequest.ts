@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface SubmitFactCheckRequest {
 /**
  * Check if a given object implements the SubmitFactCheckRequest interface.
  */
-export function instanceOfSubmitFactCheckRequest(value: object): value is SubmitFactCheckRequest {
-    return true;
+export function instanceOfSubmitFactCheckRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SubmitFactCheckRequestFromJSON(json: any): SubmitFactCheckRequest {
@@ -39,27 +41,25 @@ export function SubmitFactCheckRequestFromJSON(json: any): SubmitFactCheckReques
 }
 
 export function SubmitFactCheckRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SubmitFactCheckRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'query': json['query'] == null ? undefined : json['query'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
     };
 }
 
-export function SubmitFactCheckRequestToJSON(json: any): SubmitFactCheckRequest {
-    return SubmitFactCheckRequestToJSONTyped(json, false);
-}
-
-export function SubmitFactCheckRequestToJSONTyped(value?: SubmitFactCheckRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SubmitFactCheckRequestToJSON(value?: SubmitFactCheckRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'query': value['query'],
+        'query': value.query,
     };
 }
 

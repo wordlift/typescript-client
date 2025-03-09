@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { VectorSearchQueryRequest } from './VectorSearchQueryRequest';
 import {
     VectorSearchQueryRequestFromJSON,
     VectorSearchQueryRequestFromJSONTyped,
     VectorSearchQueryRequestToJSON,
-    VectorSearchQueryRequestToJSONTyped,
 } from './VectorSearchQueryRequest';
 
 /**
@@ -50,9 +49,11 @@ export interface Item {
 /**
  * Check if a given object implements the Item interface.
  */
-export function instanceOfItem(value: object): value is Item {
-    if (!('query' in value) || value['query'] === undefined) return false;
-    return true;
+export function instanceOfItem(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "query" in value;
+
+    return isInstance;
 }
 
 export function ItemFromJSON(json: any): Item {
@@ -60,31 +61,29 @@ export function ItemFromJSON(json: any): Item {
 }
 
 export function ItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): Item {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'query': VectorSearchQueryRequestFromJSON(json['query']),
-        'sourceName': json['source_name'] == null ? undefined : json['source_name'],
+        'sourceName': !exists(json, 'source_name') ? undefined : json['source_name'],
     };
 }
 
-export function ItemToJSON(json: any): Item {
-    return ItemToJSONTyped(json, false);
-}
-
-export function ItemToJSONTyped(value?: Item | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ItemToJSON(value?: Item | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'query': VectorSearchQueryRequestToJSON(value['query']),
-        'source_name': value['sourceName'],
+        'id': value.id,
+        'query': VectorSearchQueryRequestToJSON(value.query),
+        'source_name': value.sourceName,
     };
 }
 

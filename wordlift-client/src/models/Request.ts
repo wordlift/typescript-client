@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Html } from './Html';
 import {
     HtmlFromJSON,
     HtmlFromJSONTyped,
     HtmlToJSON,
-    HtmlToJSONTyped,
 } from './Html';
 
 /**
@@ -98,10 +97,12 @@ export type RequestUrlClientEnum = typeof RequestUrlClientEnum[keyof typeof Requ
 /**
  * Check if a given object implements the Request interface.
  */
-export function instanceOfRequest(value: object): value is Request {
-    if (!('language' in value) || value['language'] === undefined) return false;
-    if (!('scope' in value) || value['scope'] === undefined) return false;
-    return true;
+export function instanceOfRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "language" in value;
+    isInstance = isInstance && "scope" in value;
+
+    return isInstance;
 }
 
 export function RequestFromJSON(json: any): Request {
@@ -109,43 +110,41 @@ export function RequestFromJSON(json: any): Request {
 }
 
 export function RequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): Request {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'html': json['html'] == null ? undefined : HtmlFromJSON(json['html']),
-        'url': json['url'] == null ? undefined : json['url'],
-        'urlClient': json['urlClient'] == null ? undefined : json['urlClient'],
+        'html': !exists(json, 'html') ? undefined : HtmlFromJSON(json['html']),
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'urlClient': !exists(json, 'urlClient') ? undefined : json['urlClient'],
         'language': json['language'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'exclude': json['exclude'] == null ? undefined : json['exclude'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'exclude': !exists(json, 'exclude') ? undefined : json['exclude'],
         'scope': json['scope'],
-        'matches': json['matches'] == null ? undefined : json['matches'],
-        'links': json['links'] == null ? undefined : json['links'],
+        'matches': !exists(json, 'matches') ? undefined : json['matches'],
+        'links': !exists(json, 'links') ? undefined : json['links'],
     };
 }
 
-export function RequestToJSON(json: any): Request {
-    return RequestToJSONTyped(json, false);
-}
-
-export function RequestToJSONTyped(value?: Request | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RequestToJSON(value?: Request | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'html': HtmlToJSON(value['html']),
-        'url': value['url'],
-        'urlClient': value['urlClient'],
-        'language': value['language'],
-        'text': value['text'],
-        'exclude': value['exclude'],
-        'scope': value['scope'],
-        'matches': value['matches'],
-        'links': value['links'],
+        'html': HtmlToJSON(value.html),
+        'url': value.url,
+        'urlClient': value.urlClient,
+        'language': value.language,
+        'text': value.text,
+        'exclude': value.exclude,
+        'scope': value.scope,
+        'matches': value.matches,
+        'links': value.links,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An array of objects.
  * @export
@@ -36,8 +36,10 @@ export interface VectorSearchQuestionResponseItem {
 /**
  * Check if a given object implements the VectorSearchQuestionResponseItem interface.
  */
-export function instanceOfVectorSearchQuestionResponseItem(value: object): value is VectorSearchQuestionResponseItem {
-    return true;
+export function instanceOfVectorSearchQuestionResponseItem(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function VectorSearchQuestionResponseItemFromJSON(json: any): VectorSearchQuestionResponseItem {
@@ -45,29 +47,27 @@ export function VectorSearchQuestionResponseItemFromJSON(json: any): VectorSearc
 }
 
 export function VectorSearchQuestionResponseItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQuestionResponseItem {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'answer': json['answer'] == null ? undefined : json['answer'],
-        'question': json['question'] == null ? undefined : json['question'],
+        'answer': !exists(json, 'answer') ? undefined : json['answer'],
+        'question': !exists(json, 'question') ? undefined : json['question'],
     };
 }
 
-export function VectorSearchQuestionResponseItemToJSON(json: any): VectorSearchQuestionResponseItem {
-    return VectorSearchQuestionResponseItemToJSONTyped(json, false);
-}
-
-export function VectorSearchQuestionResponseItemToJSONTyped(value?: VectorSearchQuestionResponseItem | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQuestionResponseItemToJSON(value?: VectorSearchQuestionResponseItem | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'answer': value['answer'],
-        'question': value['question'],
+        'answer': value.answer,
+        'question': value.question,
     };
 }
 

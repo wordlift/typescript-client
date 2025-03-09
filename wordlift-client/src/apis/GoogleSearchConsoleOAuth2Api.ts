@@ -21,7 +21,7 @@ import type {
   DuplicateAuthorizationRequest,
   ExchangeAuthCodeRequest,
   ExchangeAuthCodeResponse,
-} from '../models/index';
+} from '../models';
 import {
     AuthorizationFromJSON,
     AuthorizationToJSON,
@@ -35,7 +35,7 @@ import {
     ExchangeAuthCodeRequestToJSON,
     ExchangeAuthCodeResponseFromJSON,
     ExchangeAuthCodeResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateAuthCodeExchangeRequest {
     exchangeAuthCodeRequest: ExchangeAuthCodeRequest;
@@ -67,14 +67,10 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
     /**
      * Call this API to have the Platform receive an Authentication Token to access the Analytics data via Google Search Console.
      * Get an Access Code
-     * @deprecated
      */
     async createAuthCodeExchangeRaw(requestParameters: CreateAuthCodeExchangeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ExchangeAuthCodeResponse>> {
-        if (requestParameters['exchangeAuthCodeRequest'] == null) {
-            throw new runtime.RequiredError(
-                'exchangeAuthCodeRequest',
-                'Required parameter "exchangeAuthCodeRequest" was null or undefined when calling createAuthCodeExchange().'
-            );
+        if (requestParameters.exchangeAuthCodeRequest === null || requestParameters.exchangeAuthCodeRequest === undefined) {
+            throw new runtime.RequiredError('exchangeAuthCodeRequest','Required parameter requestParameters.exchangeAuthCodeRequest was null or undefined when calling createAuthCodeExchange.');
         }
 
         const queryParameters: any = {};
@@ -84,7 +80,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -92,7 +88,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ExchangeAuthCodeRequestToJSON(requestParameters['exchangeAuthCodeRequest']),
+            body: ExchangeAuthCodeRequestToJSON(requestParameters.exchangeAuthCodeRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ExchangeAuthCodeResponseFromJSON(jsonValue));
@@ -101,7 +97,6 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
     /**
      * Call this API to have the Platform receive an Authentication Token to access the Analytics data via Google Search Console.
      * Get an Access Code
-     * @deprecated
      */
     async createAuthCodeExchange(requestParameters: CreateAuthCodeExchangeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ExchangeAuthCodeResponse> {
         const response = await this.createAuthCodeExchangeRaw(requestParameters, initOverrides);
@@ -111,14 +106,10 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
     /**
      * Call this API to get an authorization URI needed to interactively get an authorization token. Then call the `exchangeAuthCode` to exchange it with an authorization token.
      * Create an Authorization URI
-     * @deprecated
      */
     async createAuthorizeUriRaw(requestParameters: CreateAuthorizeUriRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BuildAuthorizeUriResponse>> {
-        if (requestParameters['buildAuthorizeUriRequest'] == null) {
-            throw new runtime.RequiredError(
-                'buildAuthorizeUriRequest',
-                'Required parameter "buildAuthorizeUriRequest" was null or undefined when calling createAuthorizeUri().'
-            );
+        if (requestParameters.buildAuthorizeUriRequest === null || requestParameters.buildAuthorizeUriRequest === undefined) {
+            throw new runtime.RequiredError('buildAuthorizeUriRequest','Required parameter requestParameters.buildAuthorizeUriRequest was null or undefined when calling createAuthorizeUri.');
         }
 
         const queryParameters: any = {};
@@ -128,7 +119,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -136,7 +127,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BuildAuthorizeUriRequestToJSON(requestParameters['buildAuthorizeUriRequest']),
+            body: BuildAuthorizeUriRequestToJSON(requestParameters.buildAuthorizeUriRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => BuildAuthorizeUriResponseFromJSON(jsonValue));
@@ -145,7 +136,6 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
     /**
      * Call this API to get an authorization URI needed to interactively get an authorization token. Then call the `exchangeAuthCode` to exchange it with an authorization token.
      * Create an Authorization URI
-     * @deprecated
      */
     async createAuthorizeUri(requestParameters: CreateAuthorizeUriRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BuildAuthorizeUriResponse> {
         const response = await this.createAuthorizeUriRaw(requestParameters, initOverrides);
@@ -162,7 +152,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -188,11 +178,8 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
      * Duplicate the Google Search Console connection through accounts
      */
     async duplicateRaw(requestParameters: DuplicateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters['duplicateAuthorizationRequest'] == null) {
-            throw new runtime.RequiredError(
-                'duplicateAuthorizationRequest',
-                'Required parameter "duplicateAuthorizationRequest" was null or undefined when calling duplicate().'
-            );
+        if (requestParameters.duplicateAuthorizationRequest === null || requestParameters.duplicateAuthorizationRequest === undefined) {
+            throw new runtime.RequiredError('duplicateAuthorizationRequest','Required parameter requestParameters.duplicateAuthorizationRequest was null or undefined when calling duplicate.');
         }
 
         const queryParameters: any = {};
@@ -202,7 +189,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -210,7 +197,7 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DuplicateAuthorizationRequestToJSON(requestParameters['duplicateAuthorizationRequest']),
+            body: DuplicateAuthorizationRequestToJSON(requestParameters.duplicateAuthorizationRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
@@ -232,14 +219,14 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
     async getAuthorizationsRaw(requestParameters: GetAuthorizationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Authorization>>> {
         const queryParameters: any = {};
 
-        if (requestParameters['accountKey'] != null) {
-            queryParameters['account_key'] = requestParameters['accountKey'];
+        if (requestParameters.accountKey) {
+            queryParameters['account_key'] = requestParameters.accountKey;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -266,38 +253,32 @@ export class GoogleSearchConsoleOAuth2Api extends runtime.BaseAPI {
      * Login to the Google Search Console API client
      */
     async loginRaw(requestParameters: LoginRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['accountKey'] == null) {
-            throw new runtime.RequiredError(
-                'accountKey',
-                'Required parameter "accountKey" was null or undefined when calling login().'
-            );
+        if (requestParameters.accountKey === null || requestParameters.accountKey === undefined) {
+            throw new runtime.RequiredError('accountKey','Required parameter requestParameters.accountKey was null or undefined when calling login.');
         }
 
-        if (requestParameters['redirectUri'] == null) {
-            throw new runtime.RequiredError(
-                'redirectUri',
-                'Required parameter "redirectUri" was null or undefined when calling login().'
-            );
+        if (requestParameters.redirectUri === null || requestParameters.redirectUri === undefined) {
+            throw new runtime.RequiredError('redirectUri','Required parameter requestParameters.redirectUri was null or undefined when calling login.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['accountKey'] != null) {
-            queryParameters['accountKey'] = requestParameters['accountKey'];
+        if (requestParameters.accountKey !== undefined) {
+            queryParameters['accountKey'] = requestParameters.accountKey;
         }
 
-        if (requestParameters['redirectUri'] != null) {
-            queryParameters['redirectUri'] = requestParameters['redirectUri'];
+        if (requestParameters.redirectUri !== undefined) {
+            queryParameters['redirectUri'] = requestParameters.redirectUri;
         }
 
-        if (requestParameters['state'] != null) {
-            queryParameters['state'] = requestParameters['state'];
+        if (requestParameters.state !== undefined) {
+            queryParameters['state'] = requestParameters.state;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

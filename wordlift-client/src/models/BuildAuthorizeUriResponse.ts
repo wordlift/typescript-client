@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The response of the `buildAuthorizeUri` endpoint.
  * @export
@@ -30,9 +30,11 @@ export interface BuildAuthorizeUriResponse {
 /**
  * Check if a given object implements the BuildAuthorizeUriResponse interface.
  */
-export function instanceOfBuildAuthorizeUriResponse(value: object): value is BuildAuthorizeUriResponse {
-    if (!('authorizeUri' in value) || value['authorizeUri'] === undefined) return false;
-    return true;
+export function instanceOfBuildAuthorizeUriResponse(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "authorizeUri" in value;
+
+    return isInstance;
 }
 
 export function BuildAuthorizeUriResponseFromJSON(json: any): BuildAuthorizeUriResponse {
@@ -40,7 +42,7 @@ export function BuildAuthorizeUriResponseFromJSON(json: any): BuildAuthorizeUriR
 }
 
 export function BuildAuthorizeUriResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): BuildAuthorizeUriResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -49,18 +51,16 @@ export function BuildAuthorizeUriResponseFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function BuildAuthorizeUriResponseToJSON(json: any): BuildAuthorizeUriResponse {
-    return BuildAuthorizeUriResponseToJSONTyped(json, false);
-}
-
-export function BuildAuthorizeUriResponseToJSONTyped(value?: BuildAuthorizeUriResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BuildAuthorizeUriResponseToJSON(value?: BuildAuthorizeUriResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'authorize_uri': value['authorizeUri'],
+        'authorize_uri': value.authorizeUri,
     };
 }
 

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   IncludeExclude,
   IncludeExcludeRequest,
-} from '../models/index';
+} from '../models';
 import {
     IncludeExcludeFromJSON,
     IncludeExcludeToJSON,
     IncludeExcludeRequestFromJSON,
     IncludeExcludeRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface UpdateIncludeExcludesRequest {
     includeExcludeRequest: Array<IncludeExcludeRequest>;
@@ -44,7 +44,7 @@ export class IncludeExcludesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -71,11 +71,8 @@ export class IncludeExcludesApi extends runtime.BaseAPI {
      * Update
      */
     async updateIncludeExcludesRaw(requestParameters: UpdateIncludeExcludesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<IncludeExclude>>> {
-        if (requestParameters['includeExcludeRequest'] == null) {
-            throw new runtime.RequiredError(
-                'includeExcludeRequest',
-                'Required parameter "includeExcludeRequest" was null or undefined when calling updateIncludeExcludes().'
-            );
+        if (requestParameters.includeExcludeRequest === null || requestParameters.includeExcludeRequest === undefined) {
+            throw new runtime.RequiredError('includeExcludeRequest','Required parameter requestParameters.includeExcludeRequest was null or undefined when calling updateIncludeExcludes.');
         }
 
         const queryParameters: any = {};
@@ -85,7 +82,7 @@ export class IncludeExcludesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -93,7 +90,7 @@ export class IncludeExcludesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['includeExcludeRequest']!.map(IncludeExcludeRequestToJSON),
+            body: requestParameters.includeExcludeRequest.map(IncludeExcludeRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(IncludeExcludeFromJSON));

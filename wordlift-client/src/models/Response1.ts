@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Event } from './Event';
 import {
     EventFromJSON,
     EventFromJSONTyped,
     EventToJSON,
-    EventToJSONTyped,
 } from './Event';
 
 /**
@@ -68,8 +67,10 @@ export interface Response1 {
 /**
  * Check if a given object implements the Response1 interface.
  */
-export function instanceOfResponse1(value: object): value is Response1 {
-    return true;
+export function instanceOfResponse1(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Response1FromJSON(json: any): Response1 {
@@ -77,37 +78,35 @@ export function Response1FromJSON(json: any): Response1 {
 }
 
 export function Response1FromJSONTyped(json: any, ignoreDiscriminator: boolean): Response1 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'items': json['items'] == null ? undefined : ((json['items'] as Array<any>).map(EventFromJSON)),
-        'self': json['self'] == null ? undefined : json['self'],
-        'next': json['next'] == null ? undefined : json['next'],
-        'prev': json['prev'] == null ? undefined : json['prev'],
-        'last': json['last'] == null ? undefined : json['last'],
-        'first': json['first'] == null ? undefined : json['first'],
+        'items': !exists(json, 'items') ? undefined : ((json['items'] as Array<any>).map(EventFromJSON)),
+        'self': !exists(json, 'self') ? undefined : json['self'],
+        'next': !exists(json, 'next') ? undefined : json['next'],
+        'prev': !exists(json, 'prev') ? undefined : json['prev'],
+        'last': !exists(json, 'last') ? undefined : json['last'],
+        'first': !exists(json, 'first') ? undefined : json['first'],
     };
 }
 
-export function Response1ToJSON(json: any): Response1 {
-    return Response1ToJSONTyped(json, false);
-}
-
-export function Response1ToJSONTyped(value?: Response1 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Response1ToJSON(value?: Response1 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'items': value['items'] == null ? undefined : ((value['items'] as Array<any>).map(EventToJSON)),
-        'self': value['self'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'last': value['last'],
-        'first': value['first'],
+        'items': value.items === undefined ? undefined : ((value.items as Array<any>).map(EventToJSON)),
+        'self': value.self,
+        'next': value.next,
+        'prev': value.prev,
+        'last': value.last,
+        'first': value.first,
     };
 }
 

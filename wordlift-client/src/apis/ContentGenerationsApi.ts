@@ -18,7 +18,7 @@ import type {
   ContentGeneration,
   ContentGenerationRequest,
   PageContentGeneration,
-} from '../models/index';
+} from '../models';
 import {
     ContentGenerationFromJSON,
     ContentGenerationToJSON,
@@ -26,7 +26,7 @@ import {
     ContentGenerationRequestToJSON,
     PageContentGenerationFromJSON,
     PageContentGenerationToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateContentGenerationRequest {
     contentGenerationRequest: ContentGenerationRequest;
@@ -64,11 +64,8 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
      * Create
      */
     async createContentGenerationRaw(requestParameters: CreateContentGenerationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentGeneration>> {
-        if (requestParameters['contentGenerationRequest'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationRequest',
-                'Required parameter "contentGenerationRequest" was null or undefined when calling createContentGeneration().'
-            );
+        if (requestParameters.contentGenerationRequest === null || requestParameters.contentGenerationRequest === undefined) {
+            throw new runtime.RequiredError('contentGenerationRequest','Required parameter requestParameters.contentGenerationRequest was null or undefined when calling createContentGeneration.');
         }
 
         const queryParameters: any = {};
@@ -78,7 +75,7 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -86,7 +83,7 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ContentGenerationRequestToJSON(requestParameters['contentGenerationRequest']),
+            body: ContentGenerationRequestToJSON(requestParameters.contentGenerationRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ContentGenerationFromJSON(jsonValue));
@@ -104,11 +101,8 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteContentGenerationRaw(requestParameters: DeleteContentGenerationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteContentGeneration().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteContentGeneration.');
         }
 
         const queryParameters: any = {};
@@ -116,11 +110,11 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -140,11 +134,8 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
      * Duplicate
      */
     async duplicateContentGenerationRaw(requestParameters: DuplicateContentGenerationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentGeneration>> {
-        if (requestParameters['fromContentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'fromContentGenerationId',
-                'Required parameter "fromContentGenerationId" was null or undefined when calling duplicateContentGeneration().'
-            );
+        if (requestParameters.fromContentGenerationId === null || requestParameters.fromContentGenerationId === undefined) {
+            throw new runtime.RequiredError('fromContentGenerationId','Required parameter requestParameters.fromContentGenerationId was null or undefined when calling duplicateContentGeneration.');
         }
 
         const queryParameters: any = {};
@@ -152,11 +143,11 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{from_content_generation_id}/duplicates`.replace(`{${"from_content_generation_id"}}`, encodeURIComponent(String(requestParameters['fromContentGenerationId']))),
+            path: `/content-generations/{from_content_generation_id}/duplicates`.replace(`{${"from_content_generation_id"}}`, encodeURIComponent(String(requestParameters.fromContentGenerationId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -177,11 +168,8 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
      * Get
      */
     async getContentGenerationRaw(requestParameters: GetContentGenerationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentGeneration>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getContentGeneration().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getContentGeneration.');
         }
 
         const queryParameters: any = {};
@@ -189,11 +177,11 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -216,22 +204,22 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
     async listContentGenerationsRaw(requestParameters: ListContentGenerationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageContentGeneration>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['deleted'] != null) {
-            queryParameters['deleted'] = requestParameters['deleted'];
+        if (requestParameters.deleted !== undefined) {
+            queryParameters['deleted'] = requestParameters.deleted;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -256,18 +244,12 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
      * Update
      */
     async updateContentGenerationRaw(requestParameters: UpdateContentGenerationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentGeneration>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateContentGeneration().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateContentGeneration.');
         }
 
-        if (requestParameters['contentGenerationRequest'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationRequest',
-                'Required parameter "contentGenerationRequest" was null or undefined when calling updateContentGeneration().'
-            );
+        if (requestParameters.contentGenerationRequest === null || requestParameters.contentGenerationRequest === undefined) {
+            throw new runtime.RequiredError('contentGenerationRequest','Required parameter requestParameters.contentGenerationRequest was null or undefined when calling updateContentGeneration.');
         }
 
         const queryParameters: any = {};
@@ -277,15 +259,15 @@ export class ContentGenerationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/content-generations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ContentGenerationRequestToJSON(requestParameters['contentGenerationRequest']),
+            body: ContentGenerationRequestToJSON(requestParameters.contentGenerationRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ContentGenerationFromJSON(jsonValue));

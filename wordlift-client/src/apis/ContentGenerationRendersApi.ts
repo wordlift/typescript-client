@@ -16,14 +16,14 @@
 import * as runtime from '../runtime';
 import type {
   RenderRequest,
-} from '../models/index';
+} from '../models';
 import {
     RenderRequestFromJSON,
     RenderRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface RenderTemplateRequest {
-    renderRequest: Omit<RenderRequest, 'data'>;
+    renderRequest: RenderRequest;
 }
 
 export interface RenderTemplateCollectionRequest {
@@ -40,11 +40,8 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
      * Render
      */
     async renderTemplateRaw(requestParameters: RenderTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['renderRequest'] == null) {
-            throw new runtime.RequiredError(
-                'renderRequest',
-                'Required parameter "renderRequest" was null or undefined when calling renderTemplate().'
-            );
+        if (requestParameters.renderRequest === null || requestParameters.renderRequest === undefined) {
+            throw new runtime.RequiredError('renderRequest','Required parameter requestParameters.renderRequest was null or undefined when calling renderTemplate.');
         }
 
         const queryParameters: any = {};
@@ -54,7 +51,7 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -62,7 +59,7 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RenderRequestToJSON(requestParameters['renderRequest']),
+            body: RenderRequestToJSON(requestParameters.renderRequest),
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {
@@ -86,11 +83,8 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
      * Render
      */
     async renderTemplateCollectionRaw(requestParameters: RenderTemplateCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters['renderRequest'] == null) {
-            throw new runtime.RequiredError(
-                'renderRequest',
-                'Required parameter "renderRequest" was null or undefined when calling renderTemplateCollection().'
-            );
+        if (requestParameters.renderRequest === null || requestParameters.renderRequest === undefined) {
+            throw new runtime.RequiredError('renderRequest','Required parameter requestParameters.renderRequest was null or undefined when calling renderTemplateCollection.');
         }
 
         const queryParameters: any = {};
@@ -100,7 +94,7 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -108,7 +102,7 @@ export class ContentGenerationRendersApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['renderRequest']!.map(RenderRequestToJSON),
+            body: requestParameters.renderRequest.map(RenderRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);

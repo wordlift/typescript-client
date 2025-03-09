@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   AnalyticsImportRequest,
-} from '../models/index';
+} from '../models';
 import {
     AnalyticsImportRequestFromJSON,
     AnalyticsImportRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateAnalyticsImportRequest {
     analyticsImportRequest: AnalyticsImportRequest;
@@ -36,11 +36,8 @@ export class AnalyticsImportsApi extends runtime.BaseAPI {
      * Create
      */
     async createAnalyticsImportRaw(requestParameters: CreateAnalyticsImportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<{ [key: string]: string; }>>> {
-        if (requestParameters['analyticsImportRequest'] == null) {
-            throw new runtime.RequiredError(
-                'analyticsImportRequest',
-                'Required parameter "analyticsImportRequest" was null or undefined when calling createAnalyticsImport().'
-            );
+        if (requestParameters.analyticsImportRequest === null || requestParameters.analyticsImportRequest === undefined) {
+            throw new runtime.RequiredError('analyticsImportRequest','Required parameter requestParameters.analyticsImportRequest was null or undefined when calling createAnalyticsImport.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class AnalyticsImportsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class AnalyticsImportsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AnalyticsImportRequestToJSON(requestParameters['analyticsImportRequest']),
+            body: AnalyticsImportRequestToJSON(requestParameters.analyticsImportRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);

@@ -18,7 +18,7 @@ import type {
   PageWord,
   Word,
   WordRequest,
-} from '../models/index';
+} from '../models';
 import {
     PageWordFromJSON,
     PageWordToJSON,
@@ -26,7 +26,7 @@ import {
     WordToJSON,
     WordRequestFromJSON,
     WordRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateWordRequest {
     contentGenerationId: number;
@@ -70,18 +70,12 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * Create
      */
     async createWordRaw(requestParameters: CreateWordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Word>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling createWord().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling createWord.');
         }
 
-        if (requestParameters['wordRequest'] == null) {
-            throw new runtime.RequiredError(
-                'wordRequest',
-                'Required parameter "wordRequest" was null or undefined when calling createWord().'
-            );
+        if (requestParameters.wordRequest === null || requestParameters.wordRequest === undefined) {
+            throw new runtime.RequiredError('wordRequest','Required parameter requestParameters.wordRequest was null or undefined when calling createWord.');
         }
 
         const queryParameters: any = {};
@@ -91,15 +85,15 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WordRequestToJSON(requestParameters['wordRequest']),
+            body: WordRequestToJSON(requestParameters.wordRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WordFromJSON(jsonValue));
@@ -118,11 +112,8 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * Update for prompt
      */
     async createWordsRaw(requestParameters: CreateWordsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Word>>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling createWords().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling createWords.');
         }
 
         const queryParameters: any = {};
@@ -132,15 +123,15 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['wordRequest']!.map(WordRequestToJSON),
+            body: requestParameters.wordRequest.map(WordRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WordFromJSON));
@@ -159,18 +150,12 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * Update from CSV
      */
     async createWordsFromCSVRaw(requestParameters: CreateWordsFromCSVRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling createWordsFromCSV().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling createWordsFromCSV.');
         }
 
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling createWordsFromCSV().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling createWordsFromCSV.');
         }
 
         const queryParameters: any = {};
@@ -179,20 +164,20 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'text/csv';
 
-        if (requestParameters['contentType'] != null) {
-            headerParameters['content-type'] = String(requestParameters['contentType']);
+        if (requestParameters.contentType !== undefined && requestParameters.contentType !== null) {
+            headerParameters['content-type'] = String(requestParameters.contentType);
         }
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words/imports`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/words/imports`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -209,18 +194,12 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteWordRaw(requestParameters: DeleteWordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling deleteWord().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling deleteWord.');
         }
 
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteWord().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteWord.');
         }
 
         const queryParameters: any = {};
@@ -228,11 +207,11 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words/{id}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/content-generations/{contentGenerationId}/words/{id}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -252,31 +231,28 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * List
      */
     async listWordsRaw(requestParameters: ListWordsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWord>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling listWords().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling listWords.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['theCursor'] != null) {
-            queryParameters['The cursor.'] = requestParameters['theCursor'];
+        if (requestParameters.theCursor !== undefined) {
+            queryParameters['The cursor.'] = requestParameters.theCursor;
         }
 
-        if (requestParameters['theMaximumNumberOfResults'] != null) {
-            queryParameters['The maximum number of results.'] = requestParameters['theMaximumNumberOfResults'];
+        if (requestParameters.theMaximumNumberOfResults !== undefined) {
+            queryParameters['The maximum number of results.'] = requestParameters.theMaximumNumberOfResults;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/words`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -297,25 +273,16 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
      * Update
      */
     async updateWordRaw(requestParameters: UpdateWordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Word>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling updateWord().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling updateWord.');
         }
 
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateWord().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateWord.');
         }
 
-        if (requestParameters['wordRequest'] == null) {
-            throw new runtime.RequiredError(
-                'wordRequest',
-                'Required parameter "wordRequest" was null or undefined when calling updateWord().'
-            );
+        if (requestParameters.wordRequest === null || requestParameters.wordRequest === undefined) {
+            throw new runtime.RequiredError('wordRequest','Required parameter requestParameters.wordRequest was null or undefined when calling updateWord.');
         }
 
         const queryParameters: any = {};
@@ -325,15 +292,15 @@ export class ContentGenerationWordBiasesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/words/{id}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/content-generations/{contentGenerationId}/words/{id}`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))).replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: WordRequestToJSON(requestParameters['wordRequest']),
+            body: WordRequestToJSON(requestParameters.wordRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WordFromJSON(jsonValue));

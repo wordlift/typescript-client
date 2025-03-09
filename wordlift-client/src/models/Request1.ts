@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Event request
  * @export
@@ -42,8 +42,10 @@ export interface Request1 {
 /**
  * Check if a given object implements the Request1 interface.
  */
-export function instanceOfRequest1(value: object): value is Request1 {
-    return true;
+export function instanceOfRequest1(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Request1FromJSON(json: any): Request1 {
@@ -51,31 +53,29 @@ export function Request1FromJSON(json: any): Request1 {
 }
 
 export function Request1FromJSONTyped(json: any, ignoreDiscriminator: boolean): Request1 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'source': json['source'] == null ? undefined : json['source'],
-        'args': json['args'] == null ? undefined : json['args'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'source': !exists(json, 'source') ? undefined : json['source'],
+        'args': !exists(json, 'args') ? undefined : json['args'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function Request1ToJSON(json: any): Request1 {
-    return Request1ToJSONTyped(json, false);
-}
-
-export function Request1ToJSONTyped(value?: Request1 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Request1ToJSON(value?: Request1 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'source': value['source'],
-        'args': value['args'],
-        'url': value['url'],
+        'source': value.source,
+        'args': value.args,
+        'url': value.url,
     };
 }
 

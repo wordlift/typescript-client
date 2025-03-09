@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request to generate the embeddings.
  * @export
@@ -36,8 +36,10 @@ export interface EmbeddingRequest {
 /**
  * Check if a given object implements the EmbeddingRequest interface.
  */
-export function instanceOfEmbeddingRequest(value: object): value is EmbeddingRequest {
-    return true;
+export function instanceOfEmbeddingRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function EmbeddingRequestFromJSON(json: any): EmbeddingRequest {
@@ -45,29 +47,27 @@ export function EmbeddingRequestFromJSON(json: any): EmbeddingRequest {
 }
 
 export function EmbeddingRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EmbeddingRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'model': json['model'] == null ? undefined : json['model'],
-        'properties': json['properties'] == null ? undefined : new Set(json['properties']),
+        'model': !exists(json, 'model') ? undefined : json['model'],
+        'properties': !exists(json, 'properties') ? undefined : json['properties'],
     };
 }
 
-export function EmbeddingRequestToJSON(json: any): EmbeddingRequest {
-    return EmbeddingRequestToJSONTyped(json, false);
-}
-
-export function EmbeddingRequestToJSONTyped(value?: EmbeddingRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EmbeddingRequestToJSON(value?: EmbeddingRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'model': value['model'],
-        'properties': value['properties'] == null ? undefined : Array.from(value['properties'] as Set<any>),
+        'model': value.model,
+        'properties': value.properties === undefined ? undefined : Array.from(value.properties as Set<any>),
     };
 }
 

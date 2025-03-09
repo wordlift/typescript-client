@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Merchant request
  * @export
@@ -113,12 +113,14 @@ export type MerchantRequestUrlStrategyEnum = typeof MerchantRequestUrlStrategyEn
 /**
  * Check if a given object implements the MerchantRequest interface.
  */
-export function instanceOfMerchantRequest(value: object): value is MerchantRequest {
-    if (!('googleMerchantId' in value) || value['googleMerchantId'] === undefined) return false;
-    if (!('publisherName' in value) || value['publisherName'] === undefined) return false;
-    if (!('refreshToken' in value) || value['refreshToken'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfMerchantRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "googleMerchantId" in value;
+    isInstance = isInstance && "publisherName" in value;
+    isInstance = isInstance && "refreshToken" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function MerchantRequestFromJSON(json: any): MerchantRequest {
@@ -126,51 +128,49 @@ export function MerchantRequestFromJSON(json: any): MerchantRequest {
 }
 
 export function MerchantRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): MerchantRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accessToken': json['access_token'] == null ? undefined : json['access_token'],
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
-        'datasetDomain': json['dataset_domain'] == null ? undefined : json['dataset_domain'],
-        'datasetName': json['dataset_name'] == null ? undefined : json['dataset_name'],
-        'deleted': json['deleted'] == null ? undefined : json['deleted'],
+        'accessToken': !exists(json, 'access_token') ? undefined : json['access_token'],
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
+        'datasetDomain': !exists(json, 'dataset_domain') ? undefined : json['dataset_domain'],
+        'datasetName': !exists(json, 'dataset_name') ? undefined : json['dataset_name'],
+        'deleted': !exists(json, 'deleted') ? undefined : json['deleted'],
         'googleMerchantId': json['google_merchant_id'],
-        'ignoreBrand': json['ignore_brand'] == null ? undefined : json['ignore_brand'],
-        'ignoreImage': json['ignore_image'] == null ? undefined : json['ignore_image'],
+        'ignoreBrand': !exists(json, 'ignore_brand') ? undefined : json['ignore_brand'],
+        'ignoreImage': !exists(json, 'ignore_image') ? undefined : json['ignore_image'],
         'publisherName': json['publisher_name'],
         'refreshToken': json['refresh_token'],
         'url': json['url'],
-        'urlStrategy': json['url_strategy'] == null ? undefined : json['url_strategy'],
-        'writerService': json['writer_service'] == null ? undefined : json['writer_service'],
+        'urlStrategy': !exists(json, 'url_strategy') ? undefined : json['url_strategy'],
+        'writerService': !exists(json, 'writer_service') ? undefined : json['writer_service'],
     };
 }
 
-export function MerchantRequestToJSON(json: any): MerchantRequest {
-    return MerchantRequestToJSONTyped(json, false);
-}
-
-export function MerchantRequestToJSONTyped(value?: MerchantRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MerchantRequestToJSON(value?: MerchantRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'access_token': value['accessToken'],
-        'account_id': value['accountId'],
-        'dataset_domain': value['datasetDomain'],
-        'dataset_name': value['datasetName'],
-        'deleted': value['deleted'],
-        'google_merchant_id': value['googleMerchantId'],
-        'ignore_brand': value['ignoreBrand'],
-        'ignore_image': value['ignoreImage'],
-        'publisher_name': value['publisherName'],
-        'refresh_token': value['refreshToken'],
-        'url': value['url'],
-        'url_strategy': value['urlStrategy'],
-        'writer_service': value['writerService'],
+        'access_token': value.accessToken,
+        'account_id': value.accountId,
+        'dataset_domain': value.datasetDomain,
+        'dataset_name': value.datasetName,
+        'deleted': value.deleted,
+        'google_merchant_id': value.googleMerchantId,
+        'ignore_brand': value.ignoreBrand,
+        'ignore_image': value.ignoreImage,
+        'publisher_name': value.publisherName,
+        'refresh_token': value.refreshToken,
+        'url': value.url,
+        'url_strategy': value.urlStrategy,
+        'writer_service': value.writerService,
     };
 }
 

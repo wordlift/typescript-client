@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Network Account Information
  * @export
@@ -48,9 +48,11 @@ export interface NetworkAccountInfo {
 /**
  * Check if a given object implements the NetworkAccountInfo interface.
  */
-export function instanceOfNetworkAccountInfo(value: object): value is NetworkAccountInfo {
-    if (!('datasetUri' in value) || value['datasetUri'] === undefined) return false;
-    return true;
+export function instanceOfNetworkAccountInfo(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "datasetUri" in value;
+
+    return isInstance;
 }
 
 export function NetworkAccountInfoFromJSON(json: any): NetworkAccountInfo {
@@ -58,27 +60,25 @@ export function NetworkAccountInfoFromJSON(json: any): NetworkAccountInfo {
 }
 
 export function NetworkAccountInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): NetworkAccountInfo {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accountId': json['accountId'] == null ? undefined : json['accountId'],
-        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
+        'accountId': !exists(json, 'accountId') ? undefined : json['accountId'],
+        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
         'datasetUri': json['datasetUri'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function NetworkAccountInfoToJSON(json: any): NetworkAccountInfo {
-    return NetworkAccountInfoToJSONTyped(json, false);
-}
-
-export function NetworkAccountInfoToJSONTyped(value?: Omit<NetworkAccountInfo, 'accountId'|'datasetId'|'datasetUri'|'url'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function NetworkAccountInfoToJSON(value?: NetworkAccountInfo | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
     };

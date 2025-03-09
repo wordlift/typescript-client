@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An array of objects.
  * @export
@@ -101,9 +101,11 @@ export type WithLimitsReferenceTypeEnum = typeof WithLimitsReferenceTypeEnum[key
 /**
  * Check if a given object implements the WithLimits interface.
  */
-export function instanceOfWithLimits(value: object): value is WithLimits {
-    if (!('appliesTo' in value) || value['appliesTo'] === undefined) return false;
-    return true;
+export function instanceOfWithLimits(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "appliesTo" in value;
+
+    return isInstance;
 }
 
 export function WithLimitsFromJSON(json: any): WithLimits {
@@ -111,47 +113,45 @@ export function WithLimitsFromJSON(json: any): WithLimits {
 }
 
 export function WithLimitsFromJSONTyped(json: any, ignoreDiscriminator: boolean): WithLimits {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accountLimits': json['account_limits'] == null ? undefined : json['account_limits'],
+        'accountLimits': !exists(json, 'account_limits') ? undefined : json['account_limits'],
         'appliesTo': json['applies_to'],
-        'block': json['block'] == null ? undefined : json['block'],
-        'consumption': json['consumption'] == null ? undefined : json['consumption'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'limits': json['limits'] == null ? undefined : json['limits'],
-        'referenceId': json['reference_id'] == null ? undefined : json['reference_id'],
-        'referenceType': json['reference_type'] == null ? undefined : json['reference_type'],
-        'remaining': json['remaining'] == null ? undefined : json['remaining'],
-        'resetsInSeconds': json['resets_in_seconds'] == null ? undefined : json['resets_in_seconds'],
-        'subscriptionLimits': json['subscription_limits'] == null ? undefined : json['subscription_limits'],
+        'block': !exists(json, 'block') ? undefined : json['block'],
+        'consumption': !exists(json, 'consumption') ? undefined : json['consumption'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'limits': !exists(json, 'limits') ? undefined : json['limits'],
+        'referenceId': !exists(json, 'reference_id') ? undefined : json['reference_id'],
+        'referenceType': !exists(json, 'reference_type') ? undefined : json['reference_type'],
+        'remaining': !exists(json, 'remaining') ? undefined : json['remaining'],
+        'resetsInSeconds': !exists(json, 'resets_in_seconds') ? undefined : json['resets_in_seconds'],
+        'subscriptionLimits': !exists(json, 'subscription_limits') ? undefined : json['subscription_limits'],
     };
 }
 
-export function WithLimitsToJSON(json: any): WithLimits {
-    return WithLimitsToJSONTyped(json, false);
-}
-
-export function WithLimitsToJSONTyped(value?: WithLimits | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WithLimitsToJSON(value?: WithLimits | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'account_limits': value['accountLimits'],
-        'applies_to': value['appliesTo'],
-        'block': value['block'],
-        'consumption': value['consumption'],
-        'id': value['id'],
-        'limits': value['limits'],
-        'reference_id': value['referenceId'],
-        'reference_type': value['referenceType'],
-        'remaining': value['remaining'],
-        'resets_in_seconds': value['resetsInSeconds'],
-        'subscription_limits': value['subscriptionLimits'],
+        'account_limits': value.accountLimits,
+        'applies_to': value.appliesTo,
+        'block': value.block,
+        'consumption': value.consumption,
+        'id': value.id,
+        'limits': value.limits,
+        'reference_id': value.referenceId,
+        'reference_type': value.referenceType,
+        'remaining': value.remaining,
+        'resets_in_seconds': value.resetsInSeconds,
+        'subscription_limits': value.subscriptionLimits,
     };
 }
 

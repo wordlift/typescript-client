@@ -18,7 +18,7 @@ import type {
   PagePlatformLimit,
   PlatformLimit,
   PlatformLimitRequest,
-} from '../models/index';
+} from '../models';
 import {
     PagePlatformLimitFromJSON,
     PagePlatformLimitToJSON,
@@ -26,7 +26,7 @@ import {
     PlatformLimitToJSON,
     PlatformLimitRequestFromJSON,
     PlatformLimitRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreatePlatformLimitRequest {
     platformLimitRequest: PlatformLimitRequest;
@@ -62,11 +62,8 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
      * Create Platform Limit
      */
     async createPlatformLimitRaw(requestParameters: CreatePlatformLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlatformLimit>> {
-        if (requestParameters['platformLimitRequest'] == null) {
-            throw new runtime.RequiredError(
-                'platformLimitRequest',
-                'Required parameter "platformLimitRequest" was null or undefined when calling createPlatformLimit().'
-            );
+        if (requestParameters.platformLimitRequest === null || requestParameters.platformLimitRequest === undefined) {
+            throw new runtime.RequiredError('platformLimitRequest','Required parameter requestParameters.platformLimitRequest was null or undefined when calling createPlatformLimit.');
         }
 
         const queryParameters: any = {};
@@ -76,7 +73,7 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -84,7 +81,7 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PlatformLimitRequestToJSON(requestParameters['platformLimitRequest']),
+            body: PlatformLimitRequestToJSON(requestParameters.platformLimitRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PlatformLimitFromJSON(jsonValue));
@@ -104,11 +101,8 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
      * Delete Platform Limit
      */
     async deletePlatformLimitRaw(requestParameters: DeletePlatformLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deletePlatformLimit().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deletePlatformLimit.');
         }
 
         const queryParameters: any = {};
@@ -116,11 +110,11 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -142,11 +136,8 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
      * Get Platform Limit
      */
     async getPlatformLimitRaw(requestParameters: GetPlatformLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlatformLimit>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getPlatformLimit().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getPlatformLimit.');
         }
 
         const queryParameters: any = {};
@@ -154,11 +145,11 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -183,26 +174,26 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
     async listPlatformLimitsRaw(requestParameters: ListPlatformLimitsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PagePlatformLimit>> {
         const queryParameters: any = {};
 
-        if (requestParameters['basedOnIn'] != null) {
-            queryParameters['based_on_in'] = requestParameters['basedOnIn'];
+        if (requestParameters.basedOnIn) {
+            queryParameters['based_on_in'] = requestParameters.basedOnIn;
         }
 
-        if (requestParameters['basedOnValueIn'] != null) {
-            queryParameters['based_on_value_in'] = requestParameters['basedOnValueIn'];
+        if (requestParameters.basedOnValueIn) {
+            queryParameters['based_on_value_in'] = requestParameters.basedOnValueIn;
         }
 
-        if (requestParameters['appliesToIn'] != null) {
-            queryParameters['applies_to_in'] = requestParameters['appliesToIn'];
+        if (requestParameters.appliesToIn) {
+            queryParameters['applies_to_in'] = requestParameters.appliesToIn;
         }
 
-        if (requestParameters['scopeIn'] != null) {
-            queryParameters['scope_in'] = requestParameters['scopeIn'];
+        if (requestParameters.scopeIn) {
+            queryParameters['scope_in'] = requestParameters.scopeIn;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -229,18 +220,12 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
      * Update Platform Limit
      */
     async updatePlatformLimitRaw(requestParameters: UpdatePlatformLimitRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PlatformLimit>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updatePlatformLimit().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updatePlatformLimit.');
         }
 
-        if (requestParameters['platformLimitRequest'] == null) {
-            throw new runtime.RequiredError(
-                'platformLimitRequest',
-                'Required parameter "platformLimitRequest" was null or undefined when calling updatePlatformLimit().'
-            );
+        if (requestParameters.platformLimitRequest === null || requestParameters.platformLimitRequest === undefined) {
+            throw new runtime.RequiredError('platformLimitRequest','Required parameter requestParameters.platformLimitRequest was null or undefined when calling updatePlatformLimit.');
         }
 
         const queryParameters: any = {};
@@ -250,15 +235,15 @@ export class PlatformLimitsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/platform-limit/limits/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: PlatformLimitRequestToJSON(requestParameters['platformLimitRequest']),
+            body: PlatformLimitRequestToJSON(requestParameters.platformLimitRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PlatformLimitFromJSON(jsonValue));

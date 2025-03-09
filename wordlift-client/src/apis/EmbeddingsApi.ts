@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   CreateEmbeddingsInput,
-} from '../models/index';
+} from '../models';
 import {
     CreateEmbeddingsInputFromJSON,
     CreateEmbeddingsInputToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateEmbeddingsRequest {
     createEmbeddingsInput: CreateEmbeddingsInput;
@@ -36,11 +36,8 @@ export class EmbeddingsApi extends runtime.BaseAPI {
      * Create Embeddings
      */
     async createEmbeddingsRaw(requestParameters: CreateEmbeddingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['createEmbeddingsInput'] == null) {
-            throw new runtime.RequiredError(
-                'createEmbeddingsInput',
-                'Required parameter "createEmbeddingsInput" was null or undefined when calling createEmbeddings().'
-            );
+        if (requestParameters.createEmbeddingsInput === null || requestParameters.createEmbeddingsInput === undefined) {
+            throw new runtime.RequiredError('createEmbeddingsInput','Required parameter requestParameters.createEmbeddingsInput was null or undefined when calling createEmbeddings.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class EmbeddingsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class EmbeddingsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateEmbeddingsInputToJSON(requestParameters['createEmbeddingsInput']),
+            body: CreateEmbeddingsInputToJSON(requestParameters.createEmbeddingsInput),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

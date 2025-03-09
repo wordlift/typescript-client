@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { LevelEnum } from './LevelEnum';
 import {
     LevelEnumFromJSON,
     LevelEnumFromJSONTyped,
     LevelEnumToJSON,
-    LevelEnumToJSONTyped,
 } from './LevelEnum';
 
 /**
@@ -63,8 +62,10 @@ export type ValidationResultResultEnum = typeof ValidationResultResultEnum[keyof
 /**
  * Check if a given object implements the ValidationResult interface.
  */
-export function instanceOfValidationResult(value: object): value is ValidationResult {
-    return true;
+export function instanceOfValidationResult(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ValidationResultFromJSON(json: any): ValidationResult {
@@ -72,31 +73,29 @@ export function ValidationResultFromJSON(json: any): ValidationResult {
 }
 
 export function ValidationResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationResult {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'levelEnum': json['levelEnum'] == null ? undefined : LevelEnumFromJSON(json['levelEnum']),
-        'name': json['name'] == null ? undefined : json['name'],
-        'result': json['result'] == null ? undefined : json['result'],
+        'levelEnum': !exists(json, 'levelEnum') ? undefined : LevelEnumFromJSON(json['levelEnum']),
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'result': !exists(json, 'result') ? undefined : json['result'],
     };
 }
 
-export function ValidationResultToJSON(json: any): ValidationResult {
-    return ValidationResultToJSONTyped(json, false);
-}
-
-export function ValidationResultToJSONTyped(value?: ValidationResult | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ValidationResultToJSON(value?: ValidationResult | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'levelEnum': LevelEnumToJSON(value['levelEnum']),
-        'name': value['name'],
-        'result': value['result'],
+        'levelEnum': LevelEnumToJSON(value.levelEnum),
+        'name': value.name,
+        'result': value.result,
     };
 }
 

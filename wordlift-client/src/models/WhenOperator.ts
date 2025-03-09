@@ -25,17 +25,6 @@ export const WhenOperator = {
 export type WhenOperator = typeof WhenOperator[keyof typeof WhenOperator];
 
 
-export function instanceOfWhenOperator(value: any): boolean {
-    for (const key in WhenOperator) {
-        if (Object.prototype.hasOwnProperty.call(WhenOperator, key)) {
-            if (WhenOperator[key as keyof typeof WhenOperator] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function WhenOperatorFromJSON(json: any): WhenOperator {
     return WhenOperatorFromJSONTyped(json, false);
 }
@@ -46,9 +35,5 @@ export function WhenOperatorFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function WhenOperatorToJSON(value?: WhenOperator | null): any {
     return value as any;
-}
-
-export function WhenOperatorToJSONTyped(value: any, ignoreDiscriminator: boolean): WhenOperator {
-    return value as WhenOperator;
 }
 

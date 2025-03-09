@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { ValidationTypeEnum } from './ValidationTypeEnum';
 import {
     ValidationTypeEnumFromJSON,
     ValidationTypeEnumFromJSONTyped,
     ValidationTypeEnumToJSON,
-    ValidationTypeEnumToJSONTyped,
 } from './ValidationTypeEnum';
 
 /**
@@ -47,13 +46,13 @@ export interface ValidationFix {
     _with?: string;
 }
 
-
-
 /**
  * Check if a given object implements the ValidationFix interface.
  */
-export function instanceOfValidationFix(value: object): value is ValidationFix {
-    return true;
+export function instanceOfValidationFix(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ValidationFixFromJSON(json: any): ValidationFix {
@@ -61,31 +60,29 @@ export function ValidationFixFromJSON(json: any): ValidationFix {
 }
 
 export function ValidationFixFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidationFix {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'type': json['type'] == null ? undefined : ValidationTypeEnumFromJSON(json['type']),
-        'what': json['what'] == null ? undefined : json['what'],
-        '_with': json['with'] == null ? undefined : json['with'],
+        'type': !exists(json, 'type') ? undefined : ValidationTypeEnumFromJSON(json['type']),
+        'what': !exists(json, 'what') ? undefined : json['what'],
+        '_with': !exists(json, 'with') ? undefined : json['with'],
     };
 }
 
-export function ValidationFixToJSON(json: any): ValidationFix {
-    return ValidationFixToJSONTyped(json, false);
-}
-
-export function ValidationFixToJSONTyped(value?: ValidationFix | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ValidationFixToJSON(value?: ValidationFix | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'type': ValidationTypeEnumToJSON(value['type']),
-        'what': value['what'],
-        'with': value['_with'],
+        'type': ValidationTypeEnumToJSON(value.type),
+        'what': value.what,
+        'with': value._with,
     };
 }
 

@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { Item } from './Item';
-import {
-    ItemFromJSON,
-    ItemFromJSONTyped,
-    ItemToJSON,
-    ItemToJSONTyped,
-} from './Item';
+import { exists, mapValues } from '../runtime';
 import type { AnchorText } from './AnchorText';
 import {
     AnchorTextFromJSON,
     AnchorTextFromJSONTyped,
     AnchorTextToJSON,
-    AnchorTextToJSONTyped,
 } from './AnchorText';
+import type { Item } from './Item';
+import {
+    ItemFromJSON,
+    ItemFromJSONTyped,
+    ItemToJSON,
+} from './Item';
 
 /**
  * An Internal Links request.
@@ -57,9 +55,11 @@ export interface InternalLinkRequest {
 /**
  * Check if a given object implements the InternalLinkRequest interface.
  */
-export function instanceOfInternalLinkRequest(value: object): value is InternalLinkRequest {
-    if (!('items' in value) || value['items'] === undefined) return false;
-    return true;
+export function instanceOfInternalLinkRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "items" in value;
+
+    return isInstance;
 }
 
 export function InternalLinkRequestFromJSON(json: any): InternalLinkRequest {
@@ -67,31 +67,29 @@ export function InternalLinkRequestFromJSON(json: any): InternalLinkRequest {
 }
 
 export function InternalLinkRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): InternalLinkRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'anchorText': json['anchor_text'] == null ? undefined : AnchorTextFromJSON(json['anchor_text']),
+        'anchorText': !exists(json, 'anchor_text') ? undefined : AnchorTextFromJSON(json['anchor_text']),
         'items': ((json['items'] as Array<any>).map(ItemFromJSON)),
-        'template': json['template'] == null ? undefined : json['template'],
+        'template': !exists(json, 'template') ? undefined : json['template'],
     };
 }
 
-export function InternalLinkRequestToJSON(json: any): InternalLinkRequest {
-    return InternalLinkRequestToJSONTyped(json, false);
-}
-
-export function InternalLinkRequestToJSONTyped(value?: InternalLinkRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InternalLinkRequestToJSON(value?: InternalLinkRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'anchor_text': AnchorTextToJSON(value['anchorText']),
-        'items': ((value['items'] as Array<any>).map(ItemToJSON)),
-        'template': value['template'],
+        'anchor_text': AnchorTextToJSON(value.anchorText),
+        'items': ((value.items as Array<any>).map(ItemToJSON)),
+        'template': value.template,
     };
 }
 

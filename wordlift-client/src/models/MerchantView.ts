@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * An array of objects.
  * @export
@@ -238,14 +238,16 @@ export type MerchantViewUrlStrategyEnum = typeof MerchantViewUrlStrategyEnum[key
 /**
  * Check if a given object implements the MerchantView interface.
  */
-export function instanceOfMerchantView(value: object): value is MerchantView {
-    if (!('accessToken' in value) || value['accessToken'] === undefined) return false;
-    if (!('defaultProductsFilterAction' in value) || value['defaultProductsFilterAction'] === undefined) return false;
-    if (!('deleted' in value) || value['deleted'] === undefined) return false;
-    if (!('googleMerchantId' in value) || value['googleMerchantId'] === undefined) return false;
-    if (!('publisherName' in value) || value['publisherName'] === undefined) return false;
-    if (!('refreshToken' in value) || value['refreshToken'] === undefined) return false;
-    return true;
+export function instanceOfMerchantView(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessToken" in value;
+    isInstance = isInstance && "defaultProductsFilterAction" in value;
+    isInstance = isInstance && "deleted" in value;
+    isInstance = isInstance && "googleMerchantId" in value;
+    isInstance = isInstance && "publisherName" in value;
+    isInstance = isInstance && "refreshToken" in value;
+
+    return isInstance;
 }
 
 export function MerchantViewFromJSON(json: any): MerchantView {
@@ -253,82 +255,80 @@ export function MerchantViewFromJSON(json: any): MerchantView {
 }
 
 export function MerchantViewFromJSONTyped(json: any, ignoreDiscriminator: boolean): MerchantView {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accessToken': json['access_token'],
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
-        'automaticSynchronization': json['automatic_synchronization'] == null ? undefined : json['automatic_synchronization'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'customSeller': json['custom_seller'] == null ? undefined : json['custom_seller'],
-        'datasetDomain': json['dataset_domain'] == null ? undefined : json['dataset_domain'],
-        'datasetName': json['dataset_name'] == null ? undefined : json['dataset_name'],
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
+        'automaticSynchronization': !exists(json, 'automatic_synchronization') ? undefined : json['automatic_synchronization'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'customSeller': !exists(json, 'custom_seller') ? undefined : json['custom_seller'],
+        'datasetDomain': !exists(json, 'dataset_domain') ? undefined : json['dataset_domain'],
+        'datasetName': !exists(json, 'dataset_name') ? undefined : json['dataset_name'],
         'defaultProductsFilterAction': json['default_products_filter_action'],
         'deleted': json['deleted'],
-        'deletedAt': json['deleted_at'] == null ? undefined : (new Date(json['deleted_at'])),
+        'deletedAt': !exists(json, 'deleted_at') ? undefined : (new Date(json['deleted_at'])),
         'googleMerchantId': json['google_merchant_id'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'ignoreBrand': json['ignore_brand'] == null ? undefined : json['ignore_brand'],
-        'ignoreImage': json['ignore_image'] == null ? undefined : json['ignore_image'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'ignoreBrand': !exists(json, 'ignore_brand') ? undefined : json['ignore_brand'],
+        'ignoreImage': !exists(json, 'ignore_image') ? undefined : json['ignore_image'],
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
         'publisherName': json['publisher_name'],
         'refreshToken': json['refresh_token'],
-        'sid': json['sid'] == null ? undefined : json['sid'],
-        'syncHasErrors': json['sync_has_errors'] == null ? undefined : json['sync_has_errors'],
-        'syncId': json['sync_id'] == null ? undefined : json['sync_id'],
-        'syncProductsCreated': json['sync_products_created'] == null ? undefined : json['sync_products_created'],
-        'syncProductsDeleted': json['sync_products_deleted'] == null ? undefined : json['sync_products_deleted'],
-        'syncProductsErrored': json['sync_products_errored'] == null ? undefined : json['sync_products_errored'],
-        'syncProductsSkipped': json['sync_products_skipped'] == null ? undefined : json['sync_products_skipped'],
-        'syncProductsTotal': json['sync_products_total'] == null ? undefined : json['sync_products_total'],
-        'syncProductsUnchanged': json['sync_products_unchanged'] == null ? undefined : json['sync_products_unchanged'],
-        'syncProductsUpdated': json['sync_products_updated'] == null ? undefined : json['sync_products_updated'],
-        'syncStartedAt': json['sync_started_at'] == null ? undefined : (new Date(json['sync_started_at'])),
-        'syncStoppedAt': json['sync_stopped_at'] == null ? undefined : (new Date(json['sync_stopped_at'])),
-        'url': json['url'] == null ? undefined : json['url'],
-        'urlStrategy': json['url_strategy'] == null ? undefined : json['url_strategy'],
-        'writerService': json['writer_service'] == null ? undefined : json['writer_service'],
+        'sid': !exists(json, 'sid') ? undefined : json['sid'],
+        'syncHasErrors': !exists(json, 'sync_has_errors') ? undefined : json['sync_has_errors'],
+        'syncId': !exists(json, 'sync_id') ? undefined : json['sync_id'],
+        'syncProductsCreated': !exists(json, 'sync_products_created') ? undefined : json['sync_products_created'],
+        'syncProductsDeleted': !exists(json, 'sync_products_deleted') ? undefined : json['sync_products_deleted'],
+        'syncProductsErrored': !exists(json, 'sync_products_errored') ? undefined : json['sync_products_errored'],
+        'syncProductsSkipped': !exists(json, 'sync_products_skipped') ? undefined : json['sync_products_skipped'],
+        'syncProductsTotal': !exists(json, 'sync_products_total') ? undefined : json['sync_products_total'],
+        'syncProductsUnchanged': !exists(json, 'sync_products_unchanged') ? undefined : json['sync_products_unchanged'],
+        'syncProductsUpdated': !exists(json, 'sync_products_updated') ? undefined : json['sync_products_updated'],
+        'syncStartedAt': !exists(json, 'sync_started_at') ? undefined : (new Date(json['sync_started_at'])),
+        'syncStoppedAt': !exists(json, 'sync_stopped_at') ? undefined : (new Date(json['sync_stopped_at'])),
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'urlStrategy': !exists(json, 'url_strategy') ? undefined : json['url_strategy'],
+        'writerService': !exists(json, 'writer_service') ? undefined : json['writer_service'],
     };
 }
 
-export function MerchantViewToJSON(json: any): MerchantView {
-    return MerchantViewToJSONTyped(json, false);
-}
-
-export function MerchantViewToJSONTyped(value?: Omit<MerchantView, 'account_id'|'created_at'|'deleted_at'|'id'|'modified_at'|'sync_started_at'|'sync_stopped_at'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function MerchantViewToJSON(value?: MerchantView | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'access_token': value['accessToken'],
-        'automatic_synchronization': value['automaticSynchronization'],
-        'custom_seller': value['customSeller'],
-        'dataset_domain': value['datasetDomain'],
-        'dataset_name': value['datasetName'],
-        'default_products_filter_action': value['defaultProductsFilterAction'],
-        'deleted': value['deleted'],
-        'google_merchant_id': value['googleMerchantId'],
-        'ignore_brand': value['ignoreBrand'],
-        'ignore_image': value['ignoreImage'],
-        'publisher_name': value['publisherName'],
-        'refresh_token': value['refreshToken'],
-        'sid': value['sid'],
-        'sync_has_errors': value['syncHasErrors'],
-        'sync_id': value['syncId'],
-        'sync_products_created': value['syncProductsCreated'],
-        'sync_products_deleted': value['syncProductsDeleted'],
-        'sync_products_errored': value['syncProductsErrored'],
-        'sync_products_skipped': value['syncProductsSkipped'],
-        'sync_products_total': value['syncProductsTotal'],
-        'sync_products_unchanged': value['syncProductsUnchanged'],
-        'sync_products_updated': value['syncProductsUpdated'],
-        'url': value['url'],
-        'url_strategy': value['urlStrategy'],
-        'writer_service': value['writerService'],
+        'access_token': value.accessToken,
+        'automatic_synchronization': value.automaticSynchronization,
+        'custom_seller': value.customSeller,
+        'dataset_domain': value.datasetDomain,
+        'dataset_name': value.datasetName,
+        'default_products_filter_action': value.defaultProductsFilterAction,
+        'deleted': value.deleted,
+        'google_merchant_id': value.googleMerchantId,
+        'ignore_brand': value.ignoreBrand,
+        'ignore_image': value.ignoreImage,
+        'publisher_name': value.publisherName,
+        'refresh_token': value.refreshToken,
+        'sid': value.sid,
+        'sync_has_errors': value.syncHasErrors,
+        'sync_id': value.syncId,
+        'sync_products_created': value.syncProductsCreated,
+        'sync_products_deleted': value.syncProductsDeleted,
+        'sync_products_errored': value.syncProductsErrored,
+        'sync_products_skipped': value.syncProductsSkipped,
+        'sync_products_total': value.syncProductsTotal,
+        'sync_products_unchanged': value.syncProductsUnchanged,
+        'sync_products_updated': value.syncProductsUpdated,
+        'url': value.url,
+        'url_strategy': value.urlStrategy,
+        'writer_service': value.writerService,
     };
 }
 

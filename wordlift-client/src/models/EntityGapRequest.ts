@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,10 +60,12 @@ export interface EntityGapRequest {
 /**
  * Check if a given object implements the EntityGapRequest interface.
  */
-export function instanceOfEntityGapRequest(value: object): value is EntityGapRequest {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    if (!('query' in value) || value['query'] === undefined) return false;
-    return true;
+export function instanceOfEntityGapRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+    isInstance = isInstance && "query" in value;
+
+    return isInstance;
 }
 
 export function EntityGapRequestFromJSON(json: any): EntityGapRequest {
@@ -71,37 +73,35 @@ export function EntityGapRequestFromJSON(json: any): EntityGapRequest {
 }
 
 export function EntityGapRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EntityGapRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'url': json['url'],
         'query': json['query'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'numberOfEntities': json['number_of_entities'] == null ? undefined : json['number_of_entities'],
-        'queryLocationName': json['query_location_name'] == null ? undefined : json['query_location_name'],
-        'querySearchEngine': json['query_search_engine'] == null ? undefined : json['query_search_engine'],
+        'model': !exists(json, 'model') ? undefined : json['model'],
+        'numberOfEntities': !exists(json, 'number_of_entities') ? undefined : json['number_of_entities'],
+        'queryLocationName': !exists(json, 'query_location_name') ? undefined : json['query_location_name'],
+        'querySearchEngine': !exists(json, 'query_search_engine') ? undefined : json['query_search_engine'],
     };
 }
 
-export function EntityGapRequestToJSON(json: any): EntityGapRequest {
-    return EntityGapRequestToJSONTyped(json, false);
-}
-
-export function EntityGapRequestToJSONTyped(value?: EntityGapRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EntityGapRequestToJSON(value?: EntityGapRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'url': value['url'],
-        'query': value['query'],
-        'model': value['model'],
-        'number_of_entities': value['numberOfEntities'],
-        'query_location_name': value['queryLocationName'],
-        'query_search_engine': value['querySearchEngine'],
+        'url': value.url,
+        'query': value.query,
+        'model': value.model,
+        'number_of_entities': value.numberOfEntities,
+        'query_location_name': value.queryLocationName,
+        'query_search_engine': value.querySearchEngine,
     };
 }
 

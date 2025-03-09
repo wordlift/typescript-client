@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EmbeddingRequest } from './EmbeddingRequest';
 import {
     EmbeddingRequestFromJSON,
     EmbeddingRequestFromJSONTyped,
     EmbeddingRequestToJSON,
-    EmbeddingRequestToJSONTyped,
 } from './EmbeddingRequest';
 
 /**
@@ -85,8 +84,10 @@ export type SitemapImportRequestIdGeneratorEnum = typeof SitemapImportRequestIdG
 /**
  * Check if a given object implements the SitemapImportRequest interface.
  */
-export function instanceOfSitemapImportRequest(value: object): value is SitemapImportRequest {
-    return true;
+export function instanceOfSitemapImportRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SitemapImportRequestFromJSON(json: any): SitemapImportRequest {
@@ -94,39 +95,37 @@ export function SitemapImportRequestFromJSON(json: any): SitemapImportRequest {
 }
 
 export function SitemapImportRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SitemapImportRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embedding': json['embedding'] == null ? undefined : EmbeddingRequestFromJSON(json['embedding']),
-        'idGenerator': json['id_generator'] == null ? undefined : json['id_generator'],
-        'outputTypes': json['output_types'] == null ? undefined : new Set(json['output_types']),
-        'overwrite': json['overwrite'] == null ? undefined : json['overwrite'],
-        'sitemapUrl': json['sitemap_url'] == null ? undefined : json['sitemap_url'],
-        'sitemapUrlRegex': json['sitemap_url_regex'] == null ? undefined : json['sitemap_url_regex'],
-        'urls': json['urls'] == null ? undefined : new Set(json['urls']),
+        'embedding': !exists(json, 'embedding') ? undefined : EmbeddingRequestFromJSON(json['embedding']),
+        'idGenerator': !exists(json, 'id_generator') ? undefined : json['id_generator'],
+        'outputTypes': !exists(json, 'output_types') ? undefined : json['output_types'],
+        'overwrite': !exists(json, 'overwrite') ? undefined : json['overwrite'],
+        'sitemapUrl': !exists(json, 'sitemap_url') ? undefined : json['sitemap_url'],
+        'sitemapUrlRegex': !exists(json, 'sitemap_url_regex') ? undefined : json['sitemap_url_regex'],
+        'urls': !exists(json, 'urls') ? undefined : json['urls'],
     };
 }
 
-export function SitemapImportRequestToJSON(json: any): SitemapImportRequest {
-    return SitemapImportRequestToJSONTyped(json, false);
-}
-
-export function SitemapImportRequestToJSONTyped(value?: SitemapImportRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SitemapImportRequestToJSON(value?: SitemapImportRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'embedding': EmbeddingRequestToJSON(value['embedding']),
-        'id_generator': value['idGenerator'],
-        'output_types': value['outputTypes'] == null ? undefined : Array.from(value['outputTypes'] as Set<any>),
-        'overwrite': value['overwrite'],
-        'sitemap_url': value['sitemapUrl'],
-        'sitemap_url_regex': value['sitemapUrlRegex'],
-        'urls': value['urls'] == null ? undefined : Array.from(value['urls'] as Set<any>),
+        'embedding': EmbeddingRequestToJSON(value.embedding),
+        'id_generator': value.idGenerator,
+        'output_types': value.outputTypes === undefined ? undefined : Array.from(value.outputTypes as Set<any>),
+        'overwrite': value.overwrite,
+        'sitemap_url': value.sitemapUrl,
+        'sitemap_url_regex': value.sitemapUrlRegex,
+        'urls': value.urls === undefined ? undefined : Array.from(value.urls as Set<any>),
     };
 }
 

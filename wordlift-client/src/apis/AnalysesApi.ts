@@ -19,7 +19,7 @@ import type {
   AnalysesResponse,
   Request,
   Response,
-} from '../models/index';
+} from '../models';
 import {
     AnalysesRequestFromJSON,
     AnalysesRequestToJSON,
@@ -29,7 +29,7 @@ import {
     RequestToJSON,
     ResponseFromJSON,
     ResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface AnalyseRequest {
     request: Request;
@@ -57,11 +57,8 @@ export class AnalysesApi extends runtime.BaseAPI {
      * Analyse content
      */
     async analyseRaw(requestParameters: AnalyseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Response>> {
-        if (requestParameters['request'] == null) {
-            throw new runtime.RequiredError(
-                'request',
-                'Required parameter "request" was null or undefined when calling analyse().'
-            );
+        if (requestParameters.request === null || requestParameters.request === undefined) {
+            throw new runtime.RequiredError('request','Required parameter requestParameters.request was null or undefined when calling analyse.');
         }
 
         const queryParameters: any = {};
@@ -71,7 +68,7 @@ export class AnalysesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -79,7 +76,7 @@ export class AnalysesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RequestToJSON(requestParameters['request']),
+            body: RequestToJSON(requestParameters.request),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ResponseFromJSON(jsonValue));
@@ -99,11 +96,8 @@ export class AnalysesApi extends runtime.BaseAPI {
      * Create
      */
     async createRaw(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AnalysesResponse>> {
-        if (requestParameters['analysesRequest'] == null) {
-            throw new runtime.RequiredError(
-                'analysesRequest',
-                'Required parameter "analysesRequest" was null or undefined when calling create().'
-            );
+        if (requestParameters.analysesRequest === null || requestParameters.analysesRequest === undefined) {
+            throw new runtime.RequiredError('analysesRequest','Required parameter requestParameters.analysesRequest was null or undefined when calling create.');
         }
 
         const queryParameters: any = {};
@@ -113,7 +107,7 @@ export class AnalysesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -121,7 +115,7 @@ export class AnalysesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AnalysesRequestToJSON(requestParameters['analysesRequest']),
+            body: AnalysesRequestToJSON(requestParameters.analysesRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AnalysesResponseFromJSON(jsonValue));
@@ -141,11 +135,8 @@ export class AnalysesApi extends runtime.BaseAPI {
      * Analyse and Merge
      */
     async mergeRaw(requestParameters: MergeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['request'] == null) {
-            throw new runtime.RequiredError(
-                'request',
-                'Required parameter "request" was null or undefined when calling merge().'
-            );
+        if (requestParameters.request === null || requestParameters.request === undefined) {
+            throw new runtime.RequiredError('request','Required parameter requestParameters.request was null or undefined when calling merge.');
         }
 
         const queryParameters: any = {};
@@ -155,7 +146,7 @@ export class AnalysesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -163,7 +154,7 @@ export class AnalysesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RequestToJSON(requestParameters['request']),
+            body: RequestToJSON(requestParameters.request),
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {
@@ -187,11 +178,8 @@ export class AnalysesApi extends runtime.BaseAPI {
      * Analyse Web Page
      */
     async v2AnalysisRaw(requestParameters: V2AnalysisRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Response>> {
-        if (requestParameters['request'] == null) {
-            throw new runtime.RequiredError(
-                'request',
-                'Required parameter "request" was null or undefined when calling v2Analysis().'
-            );
+        if (requestParameters.request === null || requestParameters.request === undefined) {
+            throw new runtime.RequiredError('request','Required parameter requestParameters.request was null or undefined when calling v2Analysis.');
         }
 
         const queryParameters: any = {};
@@ -201,7 +189,7 @@ export class AnalysesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -209,7 +197,7 @@ export class AnalysesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RequestToJSON(requestParameters['request']),
+            body: RequestToJSON(requestParameters.request),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ResponseFromJSON(jsonValue));

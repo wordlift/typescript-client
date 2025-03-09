@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   ContentGenerationStats,
-} from '../models/index';
+} from '../models';
 import {
     ContentGenerationStatsFromJSON,
     ContentGenerationStatsToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface Get4Request {
     contentGenerationId: number;
@@ -35,11 +35,8 @@ export class ContentGenerationStatsApi extends runtime.BaseAPI {
      * Get
      */
     async get4Raw(requestParameters: Get4Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentGenerationStats>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling get4().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling get4.');
         }
 
         const queryParameters: any = {};
@@ -47,11 +44,11 @@ export class ContentGenerationStatsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/stats`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/stats`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

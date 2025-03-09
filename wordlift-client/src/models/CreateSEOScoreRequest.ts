@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,8 +48,10 @@ export interface CreateSEOScoreRequest {
 /**
  * Check if a given object implements the CreateSEOScoreRequest interface.
  */
-export function instanceOfCreateSEOScoreRequest(value: object): value is CreateSEOScoreRequest {
-    return true;
+export function instanceOfCreateSEOScoreRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function CreateSEOScoreRequestFromJSON(json: any): CreateSEOScoreRequest {
@@ -57,33 +59,31 @@ export function CreateSEOScoreRequestFromJSON(json: any): CreateSEOScoreRequest 
 }
 
 export function CreateSEOScoreRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateSEOScoreRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'url': json['url'] == null ? undefined : json['url'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'keyword': json['keyword'] == null ? undefined : json['keyword'],
-        'descriptionNarrative': json['description_narrative'] == null ? undefined : json['description_narrative'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'keyword': !exists(json, 'keyword') ? undefined : json['keyword'],
+        'descriptionNarrative': !exists(json, 'description_narrative') ? undefined : json['description_narrative'],
     };
 }
 
-export function CreateSEOScoreRequestToJSON(json: any): CreateSEOScoreRequest {
-    return CreateSEOScoreRequestToJSONTyped(json, false);
-}
-
-export function CreateSEOScoreRequestToJSONTyped(value?: CreateSEOScoreRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function CreateSEOScoreRequestToJSON(value?: CreateSEOScoreRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'url': value['url'],
-        'text': value['text'],
-        'keyword': value['keyword'],
-        'description_narrative': value['descriptionNarrative'],
+        'url': value.url,
+        'text': value.text,
+        'keyword': value.keyword,
+        'description_narrative': value.descriptionNarrative,
     };
 }
 

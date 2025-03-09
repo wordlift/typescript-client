@@ -18,7 +18,7 @@ import type {
   AskRequest,
   AskResponse,
   HTTPValidationError,
-} from '../models/index';
+} from '../models';
 import {
     AskRequestFromJSON,
     AskRequestToJSON,
@@ -26,7 +26,7 @@ import {
     AskResponseToJSON,
     HTTPValidationErrorFromJSON,
     HTTPValidationErrorToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface AskRequestApiAskPostRequest {
     askRequest: AskRequest;
@@ -42,11 +42,8 @@ export class AgentApi extends runtime.BaseAPI {
      * Ask Request
      */
     async askRequestApiAskPostRaw(requestParameters: AskRequestApiAskPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AskResponse>> {
-        if (requestParameters['askRequest'] == null) {
-            throw new runtime.RequiredError(
-                'askRequest',
-                'Required parameter "askRequest" was null or undefined when calling askRequestApiAskPost().'
-            );
+        if (requestParameters.askRequest === null || requestParameters.askRequest === undefined) {
+            throw new runtime.RequiredError('askRequest','Required parameter requestParameters.askRequest was null or undefined when calling askRequestApiAskPost.');
         }
 
         const queryParameters: any = {};
@@ -56,7 +53,7 @@ export class AgentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -64,7 +61,7 @@ export class AgentApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AskRequestToJSON(requestParameters['askRequest']),
+            body: AskRequestToJSON(requestParameters.askRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AskResponseFromJSON(jsonValue));

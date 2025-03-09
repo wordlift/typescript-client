@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,8 +42,10 @@ export interface UpdateAccountRequest {
 /**
  * Check if a given object implements the UpdateAccountRequest interface.
  */
-export function instanceOfUpdateAccountRequest(value: object): value is UpdateAccountRequest {
-    return true;
+export function instanceOfUpdateAccountRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function UpdateAccountRequestFromJSON(json: any): UpdateAccountRequest {
@@ -51,31 +53,29 @@ export function UpdateAccountRequestFromJSON(json: any): UpdateAccountRequest {
 }
 
 export function UpdateAccountRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateAccountRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'country': json['country'] == null ? undefined : json['country'],
-        'language': json['language'] == null ? undefined : json['language'],
-        'url': json['url'] == null ? undefined : json['url'],
+        'country': !exists(json, 'country') ? undefined : json['country'],
+        'language': !exists(json, 'language') ? undefined : json['language'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
     };
 }
 
-export function UpdateAccountRequestToJSON(json: any): UpdateAccountRequest {
-    return UpdateAccountRequestToJSONTyped(json, false);
-}
-
-export function UpdateAccountRequestToJSONTyped(value?: UpdateAccountRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function UpdateAccountRequestToJSON(value?: UpdateAccountRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'country': value['country'],
-        'language': value['language'],
-        'url': value['url'],
+        'country': value.country,
+        'language': value.language,
+        'url': value.url,
     };
 }
 

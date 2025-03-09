@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   PageWebsite,
   PageWebsiteSearch,
-} from '../models/index';
+} from '../models';
 import {
     PageWebsiteFromJSON,
     PageWebsiteToJSON,
     PageWebsiteSearchFromJSON,
     PageWebsiteSearchToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListWebsiteSearchRequest {
     website: string;
@@ -50,75 +50,60 @@ export class GoogleSearchConsoleApi extends runtime.BaseAPI {
      * List Website Search data
      */
     async listWebsiteSearchRaw(requestParameters: ListWebsiteSearchRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWebsiteSearch>> {
-        if (requestParameters['website'] == null) {
-            throw new runtime.RequiredError(
-                'website',
-                'Required parameter "website" was null or undefined when calling listWebsiteSearch().'
-            );
+        if (requestParameters.website === null || requestParameters.website === undefined) {
+            throw new runtime.RequiredError('website','Required parameter requestParameters.website was null or undefined when calling listWebsiteSearch.');
         }
 
-        if (requestParameters['since'] == null) {
-            throw new runtime.RequiredError(
-                'since',
-                'Required parameter "since" was null or undefined when calling listWebsiteSearch().'
-            );
+        if (requestParameters.since === null || requestParameters.since === undefined) {
+            throw new runtime.RequiredError('since','Required parameter requestParameters.since was null or undefined when calling listWebsiteSearch.');
         }
 
-        if (requestParameters['until'] == null) {
-            throw new runtime.RequiredError(
-                'until',
-                'Required parameter "until" was null or undefined when calling listWebsiteSearch().'
-            );
+        if (requestParameters.until === null || requestParameters.until === undefined) {
+            throw new runtime.RequiredError('until','Required parameter requestParameters.until was null or undefined when calling listWebsiteSearch.');
         }
 
-        if (requestParameters['dimensions'] == null) {
-            throw new runtime.RequiredError(
-                'dimensions',
-                'Required parameter "dimensions" was null or undefined when calling listWebsiteSearch().'
-            );
+        if (requestParameters.dimensions === null || requestParameters.dimensions === undefined) {
+            throw new runtime.RequiredError('dimensions','Required parameter requestParameters.dimensions was null or undefined when calling listWebsiteSearch.');
         }
 
-        if (requestParameters['googleAccessToken'] == null) {
-            throw new runtime.RequiredError(
-                'googleAccessToken',
-                'Required parameter "googleAccessToken" was null or undefined when calling listWebsiteSearch().'
-            );
+        if (requestParameters.googleAccessToken === null || requestParameters.googleAccessToken === undefined) {
+            throw new runtime.RequiredError('googleAccessToken','Required parameter requestParameters.googleAccessToken was null or undefined when calling listWebsiteSearch.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['website'] != null) {
-            queryParameters['website'] = requestParameters['website'];
+        if (requestParameters.website !== undefined) {
+            queryParameters['website'] = requestParameters.website;
         }
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['since'] != null) {
-            queryParameters['since'] = requestParameters['since'];
+        if (requestParameters.since !== undefined) {
+            queryParameters['since'] = requestParameters.since;
         }
 
-        if (requestParameters['until'] != null) {
-            queryParameters['until'] = requestParameters['until'];
+        if (requestParameters.until !== undefined) {
+            queryParameters['until'] = requestParameters.until;
         }
 
-        if (requestParameters['dimensions'] != null) {
-            queryParameters['dimensions'] = requestParameters['dimensions'];
+        if (requestParameters.dimensions) {
+            queryParameters['dimensions'] = requestParameters.dimensions;
         }
 
-        if (requestParameters['googleAccessToken'] != null) {
-            queryParameters['google_access_token'] = requestParameters['googleAccessToken'];
+        if (requestParameters.googleAccessToken !== undefined) {
+            queryParameters['google_access_token'] = requestParameters.googleAccessToken;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -145,27 +130,24 @@ export class GoogleSearchConsoleApi extends runtime.BaseAPI {
      * List
      */
     async listWebsitesRaw(requestParameters: ListWebsitesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWebsite>> {
-        if (requestParameters['googleAccessToken'] == null) {
-            throw new runtime.RequiredError(
-                'googleAccessToken',
-                'Required parameter "googleAccessToken" was null or undefined when calling listWebsites().'
-            );
+        if (requestParameters.googleAccessToken === null || requestParameters.googleAccessToken === undefined) {
+            throw new runtime.RequiredError('googleAccessToken','Required parameter requestParameters.googleAccessToken was null or undefined when calling listWebsites.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['googleAccessToken'] != null) {
-            queryParameters['google_access_token'] = requestParameters['googleAccessToken'];
+        if (requestParameters.googleAccessToken !== undefined) {
+            queryParameters['google_access_token'] = requestParameters.googleAccessToken;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

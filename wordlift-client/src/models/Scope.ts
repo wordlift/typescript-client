@@ -24,17 +24,6 @@ export const Scope = {
 export type Scope = typeof Scope[keyof typeof Scope];
 
 
-export function instanceOfScope(value: any): boolean {
-    for (const key in Scope) {
-        if (Object.prototype.hasOwnProperty.call(Scope, key)) {
-            if (Scope[key as keyof typeof Scope] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function ScopeFromJSON(json: any): Scope {
     return ScopeFromJSONTyped(json, false);
 }
@@ -45,9 +34,5 @@ export function ScopeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sco
 
 export function ScopeToJSON(value?: Scope | null): any {
     return value as any;
-}
-
-export function ScopeToJSONTyped(value: any, ignoreDiscriminator: boolean): Scope {
-    return value as Scope;
 }
 

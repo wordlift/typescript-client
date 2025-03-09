@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   InspectResponse,
-} from '../models/index';
+} from '../models';
 import {
     InspectResponseFromJSON,
     InspectResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetInspectRequest {
     u: string;
@@ -38,38 +38,32 @@ export class InspectorApi extends runtime.BaseAPI {
      * Inspect
      */
     async getInspectRaw(requestParameters: GetInspectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InspectResponse>> {
-        if (requestParameters['u'] == null) {
-            throw new runtime.RequiredError(
-                'u',
-                'Required parameter "u" was null or undefined when calling getInspect().'
-            );
+        if (requestParameters.u === null || requestParameters.u === undefined) {
+            throw new runtime.RequiredError('u','Required parameter requestParameters.u was null or undefined when calling getInspect.');
         }
 
-        if (requestParameters['f'] == null) {
-            throw new runtime.RequiredError(
-                'f',
-                'Required parameter "f" was null or undefined when calling getInspect().'
-            );
+        if (requestParameters.f === null || requestParameters.f === undefined) {
+            throw new runtime.RequiredError('f','Required parameter requestParameters.f was null or undefined when calling getInspect.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['u'] != null) {
-            queryParameters['u'] = requestParameters['u'];
+        if (requestParameters.u !== undefined) {
+            queryParameters['u'] = requestParameters.u;
         }
 
-        if (requestParameters['f'] != null) {
-            queryParameters['f'] = requestParameters['f'];
+        if (requestParameters.f !== undefined) {
+            queryParameters['f'] = requestParameters.f;
         }
 
-        if (requestParameters['classes'] != null) {
-            queryParameters['classes'] = requestParameters['classes'];
+        if (requestParameters.classes) {
+            queryParameters['classes'] = requestParameters.classes;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -103,13 +97,13 @@ export const GetInspectFEnum = {
     BrowserResponse: 'browser-response',
     JenaGraph: 'jena-graph',
     Links: 'links',
-    BrowserResponse2: 'browser-response',
+    BrowserResponse: 'browser-response',
     LinguaLanguageDetection: 'lingua-language-detection',
     LanguageDetection: 'language-detection',
     RedlinkContentAnalysis: 'redlink-content-analysis',
     Summarize: 'summarize',
     Text: 'text',
-    Validator2: 'validator',
+    Validator: 'validator',
     Xmltei: 'xmltei',
     Classify: 'classify'
 } as const;

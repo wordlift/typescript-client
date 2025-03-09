@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface Response2 {
 /**
  * Check if a given object implements the Response2 interface.
  */
-export function instanceOfResponse2(value: object): value is Response2 {
-    return true;
+export function instanceOfResponse2(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Response2FromJSON(json: any): Response2 {
@@ -39,27 +41,25 @@ export function Response2FromJSON(json: any): Response2 {
 }
 
 export function Response2FromJSONTyped(json: any, ignoreDiscriminator: boolean): Response2 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'key': json['key'] == null ? undefined : json['key'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
     };
 }
 
-export function Response2ToJSON(json: any): Response2 {
-    return Response2ToJSONTyped(json, false);
-}
-
-export function Response2ToJSONTyped(value?: Response2 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Response2ToJSON(value?: Response2 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'key': value['key'],
+        'key': value.key,
     };
 }
 

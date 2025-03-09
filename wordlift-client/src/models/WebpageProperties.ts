@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,11 +48,13 @@ export interface WebpageProperties {
 /**
  * Check if a given object implements the WebpageProperties interface.
  */
-export function instanceOfWebpageProperties(value: object): value is WebpageProperties {
-    if (!('entities' in value) || value['entities'] === undefined) return false;
-    if (!('iri' in value) || value['iri'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfWebpageProperties(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "entities" in value;
+    isInstance = isInstance && "iri" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function WebpagePropertiesFromJSON(json: any): WebpageProperties {
@@ -60,33 +62,31 @@ export function WebpagePropertiesFromJSON(json: any): WebpageProperties {
 }
 
 export function WebpagePropertiesFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebpageProperties {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'entities': new Set(json['entities']),
+        'entities': json['entities'],
         'iri': json['iri'],
-        'query': json['query'] == null ? undefined : json['query'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
         'url': json['url'],
     };
 }
 
-export function WebpagePropertiesToJSON(json: any): WebpageProperties {
-    return WebpagePropertiesToJSONTyped(json, false);
-}
-
-export function WebpagePropertiesToJSONTyped(value?: WebpageProperties | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WebpagePropertiesToJSON(value?: WebpageProperties | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'entities': Array.from(value['entities'] as Set<any>),
-        'iri': value['iri'],
-        'query': value['query'],
-        'url': value['url'],
+        'entities': Array.from(value.entities as Set<any>),
+        'iri': value.iri,
+        'query': value.query,
+        'url': value.url,
     };
 }
 

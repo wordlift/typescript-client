@@ -18,7 +18,7 @@ import type {
   Merchant,
   MerchantRequest,
   PageMerchantView,
-} from '../models/index';
+} from '../models';
 import {
     MerchantFromJSON,
     MerchantToJSON,
@@ -26,7 +26,7 @@ import {
     MerchantRequestToJSON,
     PageMerchantViewFromJSON,
     PageMerchantViewToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateMerchantRequest {
     merchantRequest: MerchantRequest;
@@ -61,11 +61,8 @@ export class MerchantsApi extends runtime.BaseAPI {
      * Create
      */
     async createMerchantRaw(requestParameters: CreateMerchantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Merchant>> {
-        if (requestParameters['merchantRequest'] == null) {
-            throw new runtime.RequiredError(
-                'merchantRequest',
-                'Required parameter "merchantRequest" was null or undefined when calling createMerchant().'
-            );
+        if (requestParameters.merchantRequest === null || requestParameters.merchantRequest === undefined) {
+            throw new runtime.RequiredError('merchantRequest','Required parameter requestParameters.merchantRequest was null or undefined when calling createMerchant.');
         }
 
         const queryParameters: any = {};
@@ -75,7 +72,7 @@ export class MerchantsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -83,7 +80,7 @@ export class MerchantsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MerchantRequestToJSON(requestParameters['merchantRequest']),
+            body: MerchantRequestToJSON(requestParameters.merchantRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MerchantFromJSON(jsonValue));
@@ -103,11 +100,8 @@ export class MerchantsApi extends runtime.BaseAPI {
      * Delete by id
      */
     async deleteMerchantRaw(requestParameters: DeleteMerchantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteMerchant().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteMerchant.');
         }
 
         const queryParameters: any = {};
@@ -115,11 +109,11 @@ export class MerchantsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -141,11 +135,8 @@ export class MerchantsApi extends runtime.BaseAPI {
      * Get by id
      */
     async getMerchantRaw(requestParameters: GetMerchantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Merchant>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getMerchant().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getMerchant.');
         }
 
         const queryParameters: any = {};
@@ -153,11 +144,11 @@ export class MerchantsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -182,22 +173,22 @@ export class MerchantsApi extends runtime.BaseAPI {
     async listMerchantsRaw(requestParameters: ListMerchantsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageMerchantView>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['deleted'] != null) {
-            queryParameters['deleted'] = requestParameters['deleted'];
+        if (requestParameters.deleted !== undefined) {
+            queryParameters['deleted'] = requestParameters.deleted;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -224,18 +215,12 @@ export class MerchantsApi extends runtime.BaseAPI {
      * Update
      */
     async updateMerchantRaw(requestParameters: UpdateMerchantRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Merchant>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateMerchant().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateMerchant.');
         }
 
-        if (requestParameters['merchantRequest'] == null) {
-            throw new runtime.RequiredError(
-                'merchantRequest',
-                'Required parameter "merchantRequest" was null or undefined when calling updateMerchant().'
-            );
+        if (requestParameters.merchantRequest === null || requestParameters.merchantRequest === undefined) {
+            throw new runtime.RequiredError('merchantRequest','Required parameter requestParameters.merchantRequest was null or undefined when calling updateMerchant.');
         }
 
         const queryParameters: any = {};
@@ -245,15 +230,15 @@ export class MerchantsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/merchants/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: MerchantRequestToJSON(requestParameters['merchantRequest']),
+            body: MerchantRequestToJSON(requestParameters.merchantRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MerchantFromJSON(jsonValue));

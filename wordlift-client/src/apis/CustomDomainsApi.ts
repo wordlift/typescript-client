@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   DomainValidationRequest,
-} from '../models/index';
+} from '../models';
 import {
     DomainValidationRequestFromJSON,
     DomainValidationRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ValidateRequest {
     domainValidationRequest: DomainValidationRequest;
@@ -36,11 +36,8 @@ export class CustomDomainsApi extends runtime.BaseAPI {
      * Validate
      */
     async validateRaw(requestParameters: ValidateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['domainValidationRequest'] == null) {
-            throw new runtime.RequiredError(
-                'domainValidationRequest',
-                'Required parameter "domainValidationRequest" was null or undefined when calling validate().'
-            );
+        if (requestParameters.domainValidationRequest === null || requestParameters.domainValidationRequest === undefined) {
+            throw new runtime.RequiredError('domainValidationRequest','Required parameter requestParameters.domainValidationRequest was null or undefined when calling validate.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class CustomDomainsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class CustomDomainsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DomainValidationRequestToJSON(requestParameters['domainValidationRequest']),
+            body: DomainValidationRequestToJSON(requestParameters.domainValidationRequest),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

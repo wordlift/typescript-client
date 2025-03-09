@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -47,10 +47,12 @@ export type IncludeExcludeRequestFlagEnum = typeof IncludeExcludeRequestFlagEnum
 /**
  * Check if a given object implements the IncludeExcludeRequest interface.
  */
-export function instanceOfIncludeExcludeRequest(value: object): value is IncludeExcludeRequest {
-    if (!('flag' in value) || value['flag'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfIncludeExcludeRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "flag" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function IncludeExcludeRequestFromJSON(json: any): IncludeExcludeRequest {
@@ -58,7 +60,7 @@ export function IncludeExcludeRequestFromJSON(json: any): IncludeExcludeRequest 
 }
 
 export function IncludeExcludeRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): IncludeExcludeRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -68,19 +70,17 @@ export function IncludeExcludeRequestFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function IncludeExcludeRequestToJSON(json: any): IncludeExcludeRequest {
-    return IncludeExcludeRequestToJSONTyped(json, false);
-}
-
-export function IncludeExcludeRequestToJSONTyped(value?: IncludeExcludeRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function IncludeExcludeRequestToJSON(value?: IncludeExcludeRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'flag': value['flag'],
-        'url': value['url'],
+        'flag': value.flag,
+        'url': value.url,
     };
 }
 

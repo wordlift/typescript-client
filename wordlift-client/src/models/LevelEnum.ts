@@ -24,17 +24,6 @@ export const LevelEnum = {
 export type LevelEnum = typeof LevelEnum[keyof typeof LevelEnum];
 
 
-export function instanceOfLevelEnum(value: any): boolean {
-    for (const key in LevelEnum) {
-        if (Object.prototype.hasOwnProperty.call(LevelEnum, key)) {
-            if (LevelEnum[key as keyof typeof LevelEnum] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function LevelEnumFromJSON(json: any): LevelEnum {
     return LevelEnumFromJSONTyped(json, false);
 }
@@ -45,9 +34,5 @@ export function LevelEnumFromJSONTyped(json: any, ignoreDiscriminator: boolean):
 
 export function LevelEnumToJSON(value?: LevelEnum | null): any {
     return value as any;
-}
-
-export function LevelEnumToJSONTyped(value: any, ignoreDiscriminator: boolean): LevelEnum {
-    return value as LevelEnum;
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Word bias.
  * @export
@@ -72,13 +72,15 @@ export interface Word {
 /**
  * Check if a given object implements the Word interface.
  */
-export function instanceOfWord(value: object): value is Word {
-    if (!('bias' in value) || value['bias'] === undefined) return false;
-    if (!('cluster' in value) || value['cluster'] === undefined) return false;
-    if (!('contentGenerationId' in value) || value['contentGenerationId'] === undefined) return false;
-    if (!('tokenId' in value) || value['tokenId'] === undefined) return false;
-    if (!('word' in value) || value['word'] === undefined) return false;
-    return true;
+export function instanceOfWord(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "bias" in value;
+    isInstance = isInstance && "cluster" in value;
+    isInstance = isInstance && "contentGenerationId" in value;
+    isInstance = isInstance && "tokenId" in value;
+    isInstance = isInstance && "word" in value;
+
+    return isInstance;
 }
 
 export function WordFromJSON(json: any): Word {
@@ -86,7 +88,7 @@ export function WordFromJSON(json: any): Word {
 }
 
 export function WordFromJSONTyped(json: any, ignoreDiscriminator: boolean): Word {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -94,29 +96,27 @@ export function WordFromJSONTyped(json: any, ignoreDiscriminator: boolean): Word
         'bias': json['bias'],
         'cluster': json['cluster'],
         'contentGenerationId': json['content_generation_id'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'id': json['id'] == null ? undefined : json['id'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
         'tokenId': json['token_id'],
         'word': json['word'],
     };
 }
 
-export function WordToJSON(json: any): Word {
-    return WordToJSONTyped(json, false);
-}
-
-export function WordToJSONTyped(value?: Omit<Word, 'content_generation_id'|'created_at'|'id'|'modified_at'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WordToJSON(value?: Word | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'bias': value['bias'],
-        'cluster': value['cluster'],
-        'token_id': value['tokenId'],
-        'word': value['word'],
+        'bias': value.bias,
+        'cluster': value.cluster,
+        'token_id': value.tokenId,
+        'word': value.word,
     };
 }
 

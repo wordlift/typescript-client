@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   BatchRequest,
-} from '../models/index';
+} from '../models';
 import {
     BatchRequestFromJSON,
     BatchRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateOrUpdateEntities1Request {
     batchRequest: Array<BatchRequest>;
@@ -46,11 +46,8 @@ export class DatasetApi extends runtime.BaseAPI {
      * Create or update many
      */
     async createOrUpdateEntities1Raw(requestParameters: CreateOrUpdateEntities1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters['batchRequest'] == null) {
-            throw new runtime.RequiredError(
-                'batchRequest',
-                'Required parameter "batchRequest" was null or undefined when calling createOrUpdateEntities1().'
-            );
+        if (requestParameters.batchRequest === null || requestParameters.batchRequest === undefined) {
+            throw new runtime.RequiredError('batchRequest','Required parameter requestParameters.batchRequest was null or undefined when calling createOrUpdateEntities1.');
         }
 
         const queryParameters: any = {};
@@ -60,7 +57,7 @@ export class DatasetApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -68,7 +65,7 @@ export class DatasetApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['batchRequest']!.map(BatchRequestToJSON),
+            body: requestParameters.batchRequest.map(BatchRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
@@ -88,28 +85,22 @@ export class DatasetApi extends runtime.BaseAPI {
      * Create or update one
      */
     async createOrUpdateEntityRaw(requestParameters: CreateOrUpdateEntityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['uri'] == null) {
-            throw new runtime.RequiredError(
-                'uri',
-                'Required parameter "uri" was null or undefined when calling createOrUpdateEntity().'
-            );
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling createOrUpdateEntity.');
         }
 
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling createOrUpdateEntity().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling createOrUpdateEntity.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['uri'] != null) {
-            queryParameters['uri'] = requestParameters['uri'];
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
         }
 
-        if (requestParameters['_private'] != null) {
-            queryParameters['private'] = requestParameters['_private'];
+        if (requestParameters._private !== undefined) {
+            queryParameters['private'] = requestParameters._private;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -117,7 +108,7 @@ export class DatasetApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/ld+json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -125,7 +116,7 @@ export class DatasetApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['body'] as any,
+            body: requestParameters.body as any,
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -149,7 +140,7 @@ export class DatasetApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -175,23 +166,20 @@ export class DatasetApi extends runtime.BaseAPI {
      * Delete one
      */
     async deleteEntityRaw(requestParameters: DeleteEntityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['uri'] == null) {
-            throw new runtime.RequiredError(
-                'uri',
-                'Required parameter "uri" was null or undefined when calling deleteEntity().'
-            );
+        if (requestParameters.uri === null || requestParameters.uri === undefined) {
+            throw new runtime.RequiredError('uri','Required parameter requestParameters.uri was null or undefined when calling deleteEntity.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['uri'] != null) {
-            queryParameters['uri'] = requestParameters['uri'];
+        if (requestParameters.uri !== undefined) {
+            queryParameters['uri'] = requestParameters.uri;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

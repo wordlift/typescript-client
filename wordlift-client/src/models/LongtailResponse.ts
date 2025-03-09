@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { Entity1 } from './Entity1';
 import {
     Entity1FromJSON,
     Entity1FromJSONTyped,
     Entity1ToJSON,
-    Entity1ToJSONTyped,
 } from './Entity1';
 
 /**
@@ -44,8 +43,10 @@ export interface LongtailResponse {
 /**
  * Check if a given object implements the LongtailResponse interface.
  */
-export function instanceOfLongtailResponse(value: object): value is LongtailResponse {
-    return true;
+export function instanceOfLongtailResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function LongtailResponseFromJSON(json: any): LongtailResponse {
@@ -53,29 +54,27 @@ export function LongtailResponseFromJSON(json: any): LongtailResponse {
 }
 
 export function LongtailResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): LongtailResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'summary': json['summary'] == null ? undefined : json['summary'],
-        'entities': json['entities'] == null ? undefined : ((json['entities'] as Array<any>).map(Entity1FromJSON)),
+        'summary': !exists(json, 'summary') ? undefined : json['summary'],
+        'entities': !exists(json, 'entities') ? undefined : ((json['entities'] as Array<any>).map(Entity1FromJSON)),
     };
 }
 
-export function LongtailResponseToJSON(json: any): LongtailResponse {
-    return LongtailResponseToJSONTyped(json, false);
-}
-
-export function LongtailResponseToJSONTyped(value?: LongtailResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function LongtailResponseToJSON(value?: LongtailResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'summary': value['summary'],
-        'entities': value['entities'] == null ? undefined : ((value['entities'] as Array<any>).map(Entity1ToJSON)),
+        'summary': value.summary,
+        'entities': value.entities === undefined ? undefined : ((value.entities as Array<any>).map(Entity1ToJSON)),
     };
 }
 

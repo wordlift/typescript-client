@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,9 +42,11 @@ export interface AskRequest {
 /**
  * Check if a given object implements the AskRequest interface.
  */
-export function instanceOfAskRequest(value: object): value is AskRequest {
-    if (!('message' in value) || value['message'] === undefined) return false;
-    return true;
+export function instanceOfAskRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "message" in value;
+
+    return isInstance;
 }
 
 export function AskRequestFromJSON(json: any): AskRequest {
@@ -52,31 +54,29 @@ export function AskRequestFromJSON(json: any): AskRequest {
 }
 
 export function AskRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AskRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'message': json['message'],
-        'model': json['model'] == null ? undefined : json['model'],
-        'security': json['security'] == null ? undefined : json['security'],
+        'model': !exists(json, 'model') ? undefined : json['model'],
+        'security': !exists(json, 'security') ? undefined : json['security'],
     };
 }
 
-export function AskRequestToJSON(json: any): AskRequest {
-    return AskRequestToJSONTyped(json, false);
-}
-
-export function AskRequestToJSONTyped(value?: AskRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AskRequestToJSON(value?: AskRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'message': value['message'],
-        'model': value['model'],
-        'security': value['security'],
+        'message': value.message,
+        'model': value.model,
+        'security': value.security,
     };
 }
 

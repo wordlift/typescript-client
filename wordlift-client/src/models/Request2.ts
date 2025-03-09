@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface Request2 {
 /**
  * Check if a given object implements the Request2 interface.
  */
-export function instanceOfRequest2(value: object): value is Request2 {
-    return true;
+export function instanceOfRequest2(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function Request2FromJSON(json: any): Request2 {
@@ -39,27 +41,25 @@ export function Request2FromJSON(json: any): Request2 {
 }
 
 export function Request2FromJSONTyped(json: any, ignoreDiscriminator: boolean): Request2 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'redeemCode': json['redeem_code'] == null ? undefined : json['redeem_code'],
+        'redeemCode': !exists(json, 'redeem_code') ? undefined : json['redeem_code'],
     };
 }
 
-export function Request2ToJSON(json: any): Request2 {
-    return Request2ToJSONTyped(json, false);
-}
-
-export function Request2ToJSONTyped(value?: Request2 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Request2ToJSON(value?: Request2 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'redeem_code': value['redeemCode'],
+        'redeem_code': value.redeemCode,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Account statistics
  * @export
@@ -48,12 +48,14 @@ export interface AccountStats {
 /**
  * Check if a given object implements the AccountStats interface.
  */
-export function instanceOfAccountStats(value: object): value is AccountStats {
-    if (!('entities' in value) || value['entities'] === undefined) return false;
-    if (!('entitiesWithUrl' in value) || value['entitiesWithUrl'] === undefined) return false;
-    if (!('productGroups' in value) || value['productGroups'] === undefined) return false;
-    if (!('products' in value) || value['products'] === undefined) return false;
-    return true;
+export function instanceOfAccountStats(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "entities" in value;
+    isInstance = isInstance && "entitiesWithUrl" in value;
+    isInstance = isInstance && "productGroups" in value;
+    isInstance = isInstance && "products" in value;
+
+    return isInstance;
 }
 
 export function AccountStatsFromJSON(json: any): AccountStats {
@@ -61,7 +63,7 @@ export function AccountStatsFromJSON(json: any): AccountStats {
 }
 
 export function AccountStatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountStats {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -73,21 +75,19 @@ export function AccountStatsFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function AccountStatsToJSON(json: any): AccountStats {
-    return AccountStatsToJSONTyped(json, false);
-}
-
-export function AccountStatsToJSONTyped(value?: AccountStats | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AccountStatsToJSON(value?: AccountStats | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'entities': value['entities'],
-        'entities_with_url': value['entitiesWithUrl'],
-        'product_groups': value['productGroups'],
-        'products': value['products'],
+        'entities': value.entities,
+        'entities_with_url': value.entitiesWithUrl,
+        'product_groups': value.productGroups,
+        'products': value.products,
     };
 }
 

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   ClassificationRequest,
   ClassificationResponse,
-} from '../models/index';
+} from '../models';
 import {
     ClassificationRequestFromJSON,
     ClassificationRequestToJSON,
     ClassificationResponseFromJSON,
     ClassificationResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ClassifyUsingPostRequest {
     body: ClassificationRequest;
@@ -41,21 +41,18 @@ export class ClassificationsApi extends runtime.BaseAPI {
      * Create
      */
     async classifyUsingPostRaw(requestParameters: ClassifyUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ClassificationResponse>> {
-        if (requestParameters['body'] == null) {
-            throw new runtime.RequiredError(
-                'body',
-                'Required parameter "body" was null or undefined when calling classifyUsingPost().'
-            );
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling classifyUsingPost.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['lang'] != null) {
-            queryParameters['lang'] = requestParameters['lang'];
+        if (requestParameters.lang !== undefined) {
+            queryParameters['lang'] = requestParameters.lang;
         }
 
-        if (requestParameters['multiClass'] != null) {
-            queryParameters['multi_class'] = requestParameters['multiClass'];
+        if (requestParameters.multiClass !== undefined) {
+            queryParameters['multi_class'] = requestParameters.multiClass;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -63,7 +60,7 @@ export class ClassificationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -71,7 +68,7 @@ export class ClassificationsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ClassificationRequestToJSON(requestParameters['body']),
+            body: ClassificationRequestToJSON(requestParameters.body),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ClassificationResponseFromJSON(jsonValue));
@@ -81,16 +78,9 @@ export class ClassificationsApi extends runtime.BaseAPI {
      * Classify the text to provided categories
      * Create
      */
-    async classifyUsingPost(requestParameters: ClassifyUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ClassificationResponse | null | undefined > {
+    async classifyUsingPost(requestParameters: ClassifyUsingPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ClassificationResponse> {
         const response = await this.classifyUsingPostRaw(requestParameters, initOverrides);
-        switch (response.raw.status) {
-            case 200:
-                return await response.value();
-            case 201:
-                return null;
-            default:
-                return await response.value();
-        }
+        return await response.value();
     }
 
 }

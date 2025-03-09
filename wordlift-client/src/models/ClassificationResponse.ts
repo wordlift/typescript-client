@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface ClassificationResponse {
 /**
  * Check if a given object implements the ClassificationResponse interface.
  */
-export function instanceOfClassificationResponse(value: object): value is ClassificationResponse {
-    return true;
+export function instanceOfClassificationResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ClassificationResponseFromJSON(json: any): ClassificationResponse {
@@ -45,29 +47,27 @@ export function ClassificationResponseFromJSON(json: any): ClassificationRespons
 }
 
 export function ClassificationResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClassificationResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'labels': json['labels'] == null ? undefined : json['labels'],
-        'scores': json['scores'] == null ? undefined : json['scores'],
+        'labels': !exists(json, 'labels') ? undefined : json['labels'],
+        'scores': !exists(json, 'scores') ? undefined : json['scores'],
     };
 }
 
-export function ClassificationResponseToJSON(json: any): ClassificationResponse {
-    return ClassificationResponseToJSONTyped(json, false);
-}
-
-export function ClassificationResponseToJSONTyped(value?: ClassificationResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ClassificationResponseToJSON(value?: ClassificationResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'labels': value['labels'],
-        'scores': value['scores'],
+        'labels': value.labels,
+        'scores': value.scores,
     };
 }
 

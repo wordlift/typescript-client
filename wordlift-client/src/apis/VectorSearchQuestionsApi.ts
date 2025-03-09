@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   PageVectorSearchQuestionResponseItem,
   VectorSearchQuestionRequest,
-} from '../models/index';
+} from '../models';
 import {
     PageVectorSearchQuestionResponseItemFromJSON,
     PageVectorSearchQuestionResponseItemToJSON,
     VectorSearchQuestionRequestFromJSON,
     VectorSearchQuestionRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateVectorSearchQuestionRequest {
     vectorSearchQuestionRequest: VectorSearchQuestionRequest;
@@ -38,11 +38,8 @@ export class VectorSearchQuestionsApi extends runtime.BaseAPI {
      * Create
      */
     async createVectorSearchQuestionRaw(requestParameters: CreateVectorSearchQuestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageVectorSearchQuestionResponseItem>> {
-        if (requestParameters['vectorSearchQuestionRequest'] == null) {
-            throw new runtime.RequiredError(
-                'vectorSearchQuestionRequest',
-                'Required parameter "vectorSearchQuestionRequest" was null or undefined when calling createVectorSearchQuestion().'
-            );
+        if (requestParameters.vectorSearchQuestionRequest === null || requestParameters.vectorSearchQuestionRequest === undefined) {
+            throw new runtime.RequiredError('vectorSearchQuestionRequest','Required parameter requestParameters.vectorSearchQuestionRequest was null or undefined when calling createVectorSearchQuestion.');
         }
 
         const queryParameters: any = {};
@@ -52,7 +49,7 @@ export class VectorSearchQuestionsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -60,7 +57,7 @@ export class VectorSearchQuestionsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: VectorSearchQuestionRequestToJSON(requestParameters['vectorSearchQuestionRequest']),
+            body: VectorSearchQuestionRequestToJSON(requestParameters.vectorSearchQuestionRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PageVectorSearchQuestionResponseItemFromJSON(jsonValue));

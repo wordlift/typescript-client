@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,8 +60,10 @@ export interface ProblemDetail {
 /**
  * Check if a given object implements the ProblemDetail interface.
  */
-export function instanceOfProblemDetail(value: object): value is ProblemDetail {
-    return true;
+export function instanceOfProblemDetail(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ProblemDetailFromJSON(json: any): ProblemDetail {
@@ -69,37 +71,35 @@ export function ProblemDetailFromJSON(json: any): ProblemDetail {
 }
 
 export function ProblemDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProblemDetail {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'detail': json['detail'] == null ? undefined : json['detail'],
-        'instance': json['instance'] == null ? undefined : json['instance'],
-        'properties': json['properties'] == null ? undefined : json['properties'],
-        'status': json['status'] == null ? undefined : json['status'],
-        'title': json['title'] == null ? undefined : json['title'],
-        'type': json['type'] == null ? undefined : json['type'],
+        'detail': !exists(json, 'detail') ? undefined : json['detail'],
+        'instance': !exists(json, 'instance') ? undefined : json['instance'],
+        'properties': !exists(json, 'properties') ? undefined : json['properties'],
+        'status': !exists(json, 'status') ? undefined : json['status'],
+        'title': !exists(json, 'title') ? undefined : json['title'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
     };
 }
 
-export function ProblemDetailToJSON(json: any): ProblemDetail {
-    return ProblemDetailToJSONTyped(json, false);
-}
-
-export function ProblemDetailToJSONTyped(value?: ProblemDetail | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ProblemDetailToJSON(value?: ProblemDetail | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'detail': value['detail'],
-        'instance': value['instance'],
-        'properties': value['properties'],
-        'status': value['status'],
-        'title': value['title'],
-        'type': value['type'],
+        'detail': value.detail,
+        'instance': value.instance,
+        'properties': value.properties,
+        'status': value.status,
+        'title': value.title,
+        'type': value.type,
     };
 }
 

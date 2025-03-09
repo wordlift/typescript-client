@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The analysis request.
  * @export
@@ -84,8 +84,10 @@ export interface AnalysesRequest {
 /**
  * Check if a given object implements the AnalysesRequest interface.
  */
-export function instanceOfAnalysesRequest(value: object): value is AnalysesRequest {
-    return true;
+export function instanceOfAnalysesRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnalysesRequestFromJSON(json: any): AnalysesRequest {
@@ -93,45 +95,43 @@ export function AnalysesRequestFromJSON(json: any): AnalysesRequest {
 }
 
 export function AnalysesRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalysesRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'text': json['text'] == null ? undefined : json['text'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'query': json['query'] == null ? undefined : json['query'],
-        'html': json['html'] == null ? undefined : json['html'],
-        'languageCode': json['language_code'] == null ? undefined : json['language_code'],
-        'queryLocationName': json['query_location_name'] == null ? undefined : json['query_location_name'],
-        'querySearchEngine': json['query_search_engine'] == null ? undefined : json['query_search_engine'],
-        'linkedData': json['linked_data'] == null ? undefined : json['linked_data'],
-        'localData': json['local_data'] == null ? undefined : json['local_data'],
-        'networkData': json['network_data'] == null ? undefined : json['network_data'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
+        'html': !exists(json, 'html') ? undefined : json['html'],
+        'languageCode': !exists(json, 'language_code') ? undefined : json['language_code'],
+        'queryLocationName': !exists(json, 'query_location_name') ? undefined : json['query_location_name'],
+        'querySearchEngine': !exists(json, 'query_search_engine') ? undefined : json['query_search_engine'],
+        'linkedData': !exists(json, 'linked_data') ? undefined : json['linked_data'],
+        'localData': !exists(json, 'local_data') ? undefined : json['local_data'],
+        'networkData': !exists(json, 'network_data') ? undefined : json['network_data'],
     };
 }
 
-export function AnalysesRequestToJSON(json: any): AnalysesRequest {
-    return AnalysesRequestToJSONTyped(json, false);
-}
-
-export function AnalysesRequestToJSONTyped(value?: AnalysesRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnalysesRequestToJSON(value?: AnalysesRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'text': value['text'],
-        'url': value['url'],
-        'query': value['query'],
-        'html': value['html'],
-        'language_code': value['languageCode'],
-        'query_location_name': value['queryLocationName'],
-        'query_search_engine': value['querySearchEngine'],
-        'linked_data': value['linkedData'],
-        'local_data': value['localData'],
-        'network_data': value['networkData'],
+        'text': value.text,
+        'url': value.url,
+        'query': value.query,
+        'html': value.html,
+        'language_code': value.languageCode,
+        'query_location_name': value.queryLocationName,
+        'query_search_engine': value.querySearchEngine,
+        'linked_data': value.linkedData,
+        'local_data': value.localData,
+        'network_data': value.networkData,
     };
 }
 

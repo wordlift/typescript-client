@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The html fragment or html page to analyze.
  * @export
@@ -36,8 +36,10 @@ export interface Html {
 /**
  * Check if a given object implements the Html interface.
  */
-export function instanceOfHtml(value: object): value is Html {
-    return true;
+export function instanceOfHtml(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function HtmlFromJSON(json: any): Html {
@@ -45,29 +47,27 @@ export function HtmlFromJSON(json: any): Html {
 }
 
 export function HtmlFromJSONTyped(json: any, ignoreDiscriminator: boolean): Html {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'fragment': json['fragment'] == null ? undefined : json['fragment'],
-        'page': json['page'] == null ? undefined : json['page'],
+        'fragment': !exists(json, 'fragment') ? undefined : json['fragment'],
+        'page': !exists(json, 'page') ? undefined : json['page'],
     };
 }
 
-export function HtmlToJSON(json: any): Html {
-    return HtmlToJSONTyped(json, false);
-}
-
-export function HtmlToJSONTyped(value?: Html | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function HtmlToJSON(value?: Html | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'fragment': value['fragment'],
-        'page': value['page'],
+        'fragment': value.fragment,
+        'page': value.page,
     };
 }
 

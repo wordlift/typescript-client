@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { InternalLinkDestination } from './InternalLinkDestination';
 import {
     InternalLinkDestinationFromJSON,
     InternalLinkDestinationFromJSONTyped,
     InternalLinkDestinationToJSON,
-    InternalLinkDestinationToJSONTyped,
 } from './InternalLinkDestination';
 import type { InternalLinkSource } from './InternalLinkSource';
 import {
     InternalLinkSourceFromJSON,
     InternalLinkSourceFromJSONTyped,
     InternalLinkSourceToJSON,
-    InternalLinkSourceToJSONTyped,
 } from './InternalLinkSource';
 
 /**
@@ -51,10 +49,12 @@ export interface InternalLink {
 /**
  * Check if a given object implements the InternalLink interface.
  */
-export function instanceOfInternalLink(value: object): value is InternalLink {
-    if (!('destinations' in value) || value['destinations'] === undefined) return false;
-    if (!('source' in value) || value['source'] === undefined) return false;
-    return true;
+export function instanceOfInternalLink(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "destinations" in value;
+    isInstance = isInstance && "source" in value;
+
+    return isInstance;
 }
 
 export function InternalLinkFromJSON(json: any): InternalLink {
@@ -62,7 +62,7 @@ export function InternalLinkFromJSON(json: any): InternalLink {
 }
 
 export function InternalLinkFromJSONTyped(json: any, ignoreDiscriminator: boolean): InternalLink {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -72,19 +72,17 @@ export function InternalLinkFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function InternalLinkToJSON(json: any): InternalLink {
-    return InternalLinkToJSONTyped(json, false);
-}
-
-export function InternalLinkToJSONTyped(value?: InternalLink | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InternalLinkToJSON(value?: InternalLink | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'destinations': ((value['destinations'] as Array<any>).map(InternalLinkDestinationToJSON)),
-        'source': InternalLinkSourceToJSON(value['source']),
+        'destinations': ((value.destinations as Array<any>).map(InternalLinkDestinationToJSON)),
+        'source': InternalLinkSourceToJSON(value.source),
     };
 }
 

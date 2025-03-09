@@ -27,11 +27,8 @@ export class ContentGenerationRecordsExportApi extends runtime.BaseAPI {
     /**
      */
     async _exportRaw(requestParameters: ExportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters['contentGenerationId'] == null) {
-            throw new runtime.RequiredError(
-                'contentGenerationId',
-                'Required parameter "contentGenerationId" was null or undefined when calling _export().'
-            );
+        if (requestParameters.contentGenerationId === null || requestParameters.contentGenerationId === undefined) {
+            throw new runtime.RequiredError('contentGenerationId','Required parameter requestParameters.contentGenerationId was null or undefined when calling _export.');
         }
 
         const queryParameters: any = {};
@@ -39,11 +36,11 @@ export class ContentGenerationRecordsExportApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/content-generations/{contentGenerationId}/records.tsv`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters['contentGenerationId']))),
+            path: `/content-generations/{contentGenerationId}/records.tsv`.replace(`{${"contentGenerationId"}}`, encodeURIComponent(String(requestParameters.contentGenerationId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

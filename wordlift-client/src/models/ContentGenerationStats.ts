@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Statistics about a Content Generation Project.
  * @export
@@ -54,8 +54,10 @@ export interface ContentGenerationStats {
 /**
  * Check if a given object implements the ContentGenerationStats interface.
  */
-export function instanceOfContentGenerationStats(value: object): value is ContentGenerationStats {
-    return true;
+export function instanceOfContentGenerationStats(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ContentGenerationStatsFromJSON(json: any): ContentGenerationStats {
@@ -63,35 +65,33 @@ export function ContentGenerationStatsFromJSON(json: any): ContentGenerationStat
 }
 
 export function ContentGenerationStatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentGenerationStats {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accepted': json['accepted'] == null ? undefined : json['accepted'],
-        'errors': json['errors'] == null ? undefined : json['errors'],
-        'total': json['total'] == null ? undefined : json['total'],
-        'valid': json['valid'] == null ? undefined : json['valid'],
-        'warnings': json['warnings'] == null ? undefined : json['warnings'],
+        'accepted': !exists(json, 'accepted') ? undefined : json['accepted'],
+        'errors': !exists(json, 'errors') ? undefined : json['errors'],
+        'total': !exists(json, 'total') ? undefined : json['total'],
+        'valid': !exists(json, 'valid') ? undefined : json['valid'],
+        'warnings': !exists(json, 'warnings') ? undefined : json['warnings'],
     };
 }
 
-export function ContentGenerationStatsToJSON(json: any): ContentGenerationStats {
-    return ContentGenerationStatsToJSONTyped(json, false);
-}
-
-export function ContentGenerationStatsToJSONTyped(value?: ContentGenerationStats | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ContentGenerationStatsToJSON(value?: ContentGenerationStats | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'accepted': value['accepted'],
-        'errors': value['errors'],
-        'total': value['total'],
-        'valid': value['valid'],
-        'warnings': value['warnings'],
+        'accepted': value.accepted,
+        'errors': value.errors,
+        'total': value.total,
+        'valid': value.valid,
+        'warnings': value.warnings,
     };
 }
 

@@ -18,7 +18,7 @@ import type {
   Event,
   Request1,
   Response1,
-} from '../models/index';
+} from '../models';
 import {
     EventFromJSON,
     EventToJSON,
@@ -26,7 +26,7 @@ import {
     Request1ToJSON,
     Response1FromJSON,
     Response1ToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateEventRequest {
     request1: Request1;
@@ -50,11 +50,8 @@ export class PluginEventsApi extends runtime.BaseAPI {
      * Create
      */
     async createEventRaw(requestParameters: CreateEventRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Event>> {
-        if (requestParameters['request1'] == null) {
-            throw new runtime.RequiredError(
-                'request1',
-                'Required parameter "request1" was null or undefined when calling createEvent().'
-            );
+        if (requestParameters.request1 === null || requestParameters.request1 === undefined) {
+            throw new runtime.RequiredError('request1','Required parameter requestParameters.request1 was null or undefined when calling createEvent.');
         }
 
         const queryParameters: any = {};
@@ -64,7 +61,7 @@ export class PluginEventsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -72,7 +69,7 @@ export class PluginEventsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: Request1ToJSON(requestParameters['request1']),
+            body: Request1ToJSON(requestParameters.request1),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => EventFromJSON(jsonValue));
@@ -94,30 +91,30 @@ export class PluginEventsApi extends runtime.BaseAPI {
     async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Response1>> {
         const queryParameters: any = {};
 
-        if (requestParameters['url'] != null) {
-            queryParameters['url'] = requestParameters['url'];
+        if (requestParameters.url) {
+            queryParameters['url'] = requestParameters.url;
         }
 
-        if (requestParameters['dateGreaterThan'] != null) {
-            queryParameters['date_greater_than'] = (requestParameters['dateGreaterThan'] as any).toISOString();
+        if (requestParameters.dateGreaterThan !== undefined) {
+            queryParameters['date_greater_than'] = (requestParameters.dateGreaterThan as any).toISOString();
         }
 
-        if (requestParameters['dateLessThan'] != null) {
-            queryParameters['date_less_than'] = (requestParameters['dateLessThan'] as any).toISOString();
+        if (requestParameters.dateLessThan !== undefined) {
+            queryParameters['date_less_than'] = (requestParameters.dateLessThan as any).toISOString();
         }
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

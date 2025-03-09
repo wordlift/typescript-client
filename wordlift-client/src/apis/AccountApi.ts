@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   AccountInfo,
-} from '../models/index';
+} from '../models';
 import {
     AccountInfoFromJSON,
     AccountInfoToJSON,
-} from '../models/index';
+} from '../models';
 
 /**
  * 
@@ -37,7 +37,7 @@ export class AccountApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   WebAsync,
-} from '../models/index';
+} from '../models';
 import {
     WebAsyncFromJSON,
     WebAsyncToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetWebAsyncRequest {
     id: string;
@@ -36,11 +36,8 @@ export class WebAsyncsMetadataApi extends runtime.BaseAPI {
      * Get by id
      */
     async getWebAsyncRaw(requestParameters: GetWebAsyncRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WebAsync>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getWebAsync().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getWebAsync.');
         }
 
         const queryParameters: any = {};
@@ -48,11 +45,11 @@ export class WebAsyncsMetadataApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/webasyncs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/webasyncs/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -80,7 +77,7 @@ export class WebAsyncsMetadataApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

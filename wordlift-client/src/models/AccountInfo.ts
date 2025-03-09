@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { NetworkAccountInfo } from './NetworkAccountInfo';
 import {
     NetworkAccountInfoFromJSON,
     NetworkAccountInfoFromJSONTyped,
     NetworkAccountInfoToJSON,
-    NetworkAccountInfoToJSONTyped,
 } from './NetworkAccountInfo';
 
 /**
@@ -116,12 +115,14 @@ export interface AccountInfo {
 /**
  * Check if a given object implements the AccountInfo interface.
  */
-export function instanceOfAccountInfo(value: object): value is AccountInfo {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    if (!('datasetUri' in value) || value['datasetUri'] === undefined) return false;
-    if (!('networks' in value) || value['networks'] === undefined) return false;
-    if (!('subscriptionId' in value) || value['subscriptionId'] === undefined) return false;
-    return true;
+export function instanceOfAccountInfo(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accountId" in value;
+    isInstance = isInstance && "datasetUri" in value;
+    isInstance = isInstance && "networks" in value;
+    isInstance = isInstance && "subscriptionId" in value;
+
+    return isInstance;
 }
 
 export function AccountInfoFromJSON(json: any): AccountInfo {
@@ -129,40 +130,38 @@ export function AccountInfoFromJSON(json: any): AccountInfo {
 }
 
 export function AccountInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountInfo {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accountId': json['accountId'],
-        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
+        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
         'datasetUri': json['datasetUri'],
-        'features': json['features'] == null ? undefined : json['features'],
-        'googleSearchConsoleSiteUrl': json['googleSearchConsoleSiteUrl'] == null ? undefined : json['googleSearchConsoleSiteUrl'],
-        'includeExcludeDefault': json['includeExcludeDefault'] == null ? undefined : json['includeExcludeDefault'],
-        'key': json['key'] == null ? undefined : json['key'],
-        'language': json['language'] == null ? undefined : json['language'],
+        'features': !exists(json, 'features') ? undefined : json['features'],
+        'googleSearchConsoleSiteUrl': !exists(json, 'googleSearchConsoleSiteUrl') ? undefined : json['googleSearchConsoleSiteUrl'],
+        'includeExcludeDefault': !exists(json, 'includeExcludeDefault') ? undefined : json['includeExcludeDefault'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
+        'language': !exists(json, 'language') ? undefined : json['language'],
         'networks': ((json['networks'] as Array<any>).map(NetworkAccountInfoFromJSON)),
-        'ngDatasetId': json['ngDatasetId'] == null ? undefined : json['ngDatasetId'],
+        'ngDatasetId': !exists(json, 'ngDatasetId') ? undefined : json['ngDatasetId'],
         'subscriptionId': json['subscriptionId'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'wpAdmin': json['wpAdmin'] == null ? undefined : json['wpAdmin'],
-        'wpJson': json['wpJson'] == null ? undefined : json['wpJson'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'wpAdmin': !exists(json, 'wpAdmin') ? undefined : json['wpAdmin'],
+        'wpJson': !exists(json, 'wpJson') ? undefined : json['wpJson'],
     };
 }
 
-export function AccountInfoToJSON(json: any): AccountInfo {
-    return AccountInfoToJSONTyped(json, false);
-}
-
-export function AccountInfoToJSONTyped(value?: Omit<AccountInfo, 'accountId'|'datasetId'|'datasetUri'|'features'|'googleSearchConsoleSiteUrl'|'includeExcludeDefault'|'key'|'language'|'networks'|'subscriptionId'|'url'|'wpAdmin'|'wpJson'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AccountInfoToJSON(value?: AccountInfo | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'ngDatasetId': value['ngDatasetId'],
+        'ngDatasetId': value.ngDatasetId,
     };
 }
 

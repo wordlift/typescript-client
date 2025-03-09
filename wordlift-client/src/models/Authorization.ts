@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { AuthorizationStatus } from './AuthorizationStatus';
 import {
     AuthorizationStatusFromJSON,
     AuthorizationStatusFromJSONTyped,
     AuthorizationStatusToJSON,
-    AuthorizationStatusToJSONTyped,
 } from './AuthorizationStatus';
 
 /**
@@ -53,16 +52,16 @@ export interface Authorization {
     status: AuthorizationStatus;
 }
 
-
-
 /**
  * Check if a given object implements the Authorization interface.
  */
-export function instanceOfAuthorization(value: object): value is Authorization {
-    if (!('accessTokenIssuedAt' in value) || value['accessTokenIssuedAt'] === undefined) return false;
-    if (!('account' in value) || value['account'] === undefined) return false;
-    if (!('status' in value) || value['status'] === undefined) return false;
-    return true;
+export function instanceOfAuthorization(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accessTokenIssuedAt" in value;
+    isInstance = isInstance && "account" in value;
+    isInstance = isInstance && "status" in value;
+
+    return isInstance;
 }
 
 export function AuthorizationFromJSON(json: any): Authorization {
@@ -70,30 +69,28 @@ export function AuthorizationFromJSON(json: any): Authorization {
 }
 
 export function AuthorizationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Authorization {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accessTokenIssuedAt': (new Date(json['access_token_issued_at'])),
         'account': json['account'],
-        'refreshTokenIssuedAt': json['refresh_token_issued_at'] == null ? undefined : (new Date(json['refresh_token_issued_at'])),
+        'refreshTokenIssuedAt': !exists(json, 'refresh_token_issued_at') ? undefined : (new Date(json['refresh_token_issued_at'])),
         'status': AuthorizationStatusFromJSON(json['status']),
     };
 }
 
-export function AuthorizationToJSON(json: any): Authorization {
-    return AuthorizationToJSONTyped(json, false);
-}
-
-export function AuthorizationToJSONTyped(value?: Omit<Authorization, 'access_token_issued_at'|'account'|'refresh_token_issued_at'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AuthorizationToJSON(value?: Authorization | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'status': AuthorizationStatusToJSON(value['status']),
+        'status': AuthorizationStatusToJSON(value.status),
     };
 }
 

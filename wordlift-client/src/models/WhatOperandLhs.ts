@@ -25,17 +25,6 @@ export const WhatOperandLhs = {
 export type WhatOperandLhs = typeof WhatOperandLhs[keyof typeof WhatOperandLhs];
 
 
-export function instanceOfWhatOperandLhs(value: any): boolean {
-    for (const key in WhatOperandLhs) {
-        if (Object.prototype.hasOwnProperty.call(WhatOperandLhs, key)) {
-            if (WhatOperandLhs[key as keyof typeof WhatOperandLhs] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function WhatOperandLhsFromJSON(json: any): WhatOperandLhs {
     return WhatOperandLhsFromJSONTyped(json, false);
 }
@@ -46,9 +35,5 @@ export function WhatOperandLhsFromJSONTyped(json: any, ignoreDiscriminator: bool
 
 export function WhatOperandLhsToJSON(value?: WhatOperandLhs | null): any {
     return value as any;
-}
-
-export function WhatOperandLhsToJSONTyped(value: any, ignoreDiscriminator: boolean): WhatOperandLhs {
-    return value as WhatOperandLhs;
 }
 

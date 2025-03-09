@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { FilterValue } from './FilterValue';
 import {
     FilterValueFromJSON,
     FilterValueFromJSONTyped,
     FilterValueToJSON,
-    FilterValueToJSONTyped,
 } from './FilterValue';
 
 /**
@@ -81,9 +80,11 @@ export type FilterOperatorEnum = typeof FilterOperatorEnum[keyof typeof FilterOp
 /**
  * Check if a given object implements the Filter interface.
  */
-export function instanceOfFilter(value: object): value is Filter {
-    if (!('operator' in value) || value['operator'] === undefined) return false;
-    return true;
+export function instanceOfFilter(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "operator" in value;
+
+    return isInstance;
 }
 
 export function FilterFromJSON(json: any): Filter {
@@ -91,35 +92,33 @@ export function FilterFromJSON(json: any): Filter {
 }
 
 export function FilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): Filter {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'filters': json['filters'] == null ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
-        'key': json['key'] == null ? undefined : json['key'],
+        'filters': !exists(json, 'filters') ? undefined : ((json['filters'] as Array<any>).map(FilterFromJSON)),
+        'key': !exists(json, 'key') ? undefined : json['key'],
         'operator': json['operator'],
-        'value': json['value'] == null ? undefined : FilterValueFromJSON(json['value']),
-        'valueDate': json['value_date'] == null ? undefined : (new Date(json['value_date'])),
+        'value': !exists(json, 'value') ? undefined : FilterValueFromJSON(json['value']),
+        'valueDate': !exists(json, 'value_date') ? undefined : (new Date(json['value_date'])),
     };
 }
 
-export function FilterToJSON(json: any): Filter {
-    return FilterToJSONTyped(json, false);
-}
-
-export function FilterToJSONTyped(value?: Filter | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FilterToJSON(value?: Filter | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'filters': value['filters'] == null ? undefined : ((value['filters'] as Array<any>).map(FilterToJSON)),
-        'key': value['key'],
-        'operator': value['operator'],
-        'value': FilterValueToJSON(value['value']),
-        'value_date': value['valueDate'] == null ? undefined : ((value['valueDate']).toISOString()),
+        'filters': value.filters === undefined ? undefined : ((value.filters as Array<any>).map(FilterToJSON)),
+        'key': value.key,
+        'operator': value.operator,
+        'value': FilterValueToJSON(value.value),
+        'value_date': value.valueDate === undefined ? undefined : (value.valueDate.toISOString()),
     };
 }
 

@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { NodeRequestMetadataValue } from './NodeRequestMetadataValue';
 import {
     NodeRequestMetadataValueFromJSON,
     NodeRequestMetadataValueFromJSONTyped,
     NodeRequestMetadataValueToJSON,
-    NodeRequestMetadataValueToJSONTyped,
 } from './NodeRequestMetadataValue';
 
 /**
@@ -62,10 +61,12 @@ export interface NodeRequest {
 /**
  * Check if a given object implements the NodeRequest interface.
  */
-export function instanceOfNodeRequest(value: object): value is NodeRequest {
-    if (!('entityId' in value) || value['entityId'] === undefined) return false;
-    if (!('nodeId' in value) || value['nodeId'] === undefined) return false;
-    return true;
+export function instanceOfNodeRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "entityId" in value;
+    isInstance = isInstance && "nodeId" in value;
+
+    return isInstance;
 }
 
 export function NodeRequestFromJSON(json: any): NodeRequest {
@@ -73,35 +74,33 @@ export function NodeRequestFromJSON(json: any): NodeRequest {
 }
 
 export function NodeRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'embeddings': json['embeddings'] == null ? undefined : json['embeddings'],
+        'embeddings': !exists(json, 'embeddings') ? undefined : json['embeddings'],
         'entityId': json['entity_id'],
-        'metadata': json['metadata'] == null ? undefined : (mapValues(json['metadata'], NodeRequestMetadataValueFromJSON)),
+        'metadata': !exists(json, 'metadata') ? undefined : (mapValues(json['metadata'], NodeRequestMetadataValueFromJSON)),
         'nodeId': json['node_id'],
-        'text': json['text'] == null ? undefined : json['text'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
     };
 }
 
-export function NodeRequestToJSON(json: any): NodeRequest {
-    return NodeRequestToJSONTyped(json, false);
-}
-
-export function NodeRequestToJSONTyped(value?: NodeRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function NodeRequestToJSON(value?: NodeRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'embeddings': value['embeddings'],
-        'entity_id': value['entityId'],
-        'metadata': value['metadata'] == null ? undefined : (mapValues(value['metadata'], NodeRequestMetadataValueToJSON)),
-        'node_id': value['nodeId'],
-        'text': value['text'],
+        'embeddings': value.embeddings,
+        'entity_id': value.entityId,
+        'metadata': value.metadata === undefined ? undefined : (mapValues(value.metadata, NodeRequestMetadataValueToJSON)),
+        'node_id': value.nodeId,
+        'text': value.text,
     };
 }
 

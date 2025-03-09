@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   SubmitFactCheck200Response,
   SubmitFactCheckRequest,
-} from '../models/index';
+} from '../models';
 import {
     SubmitFactCheck200ResponseFromJSON,
     SubmitFactCheck200ResponseToJSON,
     SubmitFactCheckRequestFromJSON,
     SubmitFactCheckRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface SubmitFactCheckOperationRequest {
     submitFactCheckRequest: SubmitFactCheckRequest;
@@ -38,11 +38,8 @@ export class FactCheckApi extends runtime.BaseAPI {
      * Submit a fact-checking request
      */
     async submitFactCheckRaw(requestParameters: SubmitFactCheckOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SubmitFactCheck200Response>> {
-        if (requestParameters['submitFactCheckRequest'] == null) {
-            throw new runtime.RequiredError(
-                'submitFactCheckRequest',
-                'Required parameter "submitFactCheckRequest" was null or undefined when calling submitFactCheck().'
-            );
+        if (requestParameters.submitFactCheckRequest === null || requestParameters.submitFactCheckRequest === undefined) {
+            throw new runtime.RequiredError('submitFactCheckRequest','Required parameter requestParameters.submitFactCheckRequest was null or undefined when calling submitFactCheck.');
         }
 
         const queryParameters: any = {};
@@ -52,7 +49,7 @@ export class FactCheckApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -60,7 +57,7 @@ export class FactCheckApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SubmitFactCheckRequestToJSON(requestParameters['submitFactCheckRequest']),
+            body: SubmitFactCheckRequestToJSON(requestParameters.submitFactCheckRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SubmitFactCheck200ResponseFromJSON(jsonValue));

@@ -24,32 +24,18 @@ export function FilterValueFromJSON(json: any): FilterValue {
 }
 
 export function FilterValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): FilterValue {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
-    if (instanceOfArray<number>(json)) {
-        return Array<number>FromJSONTyped(json, true);
-    }
-    if (instanceOfArray<string>(json)) {
-        return Array<string>FromJSONTyped(json, true);
-    }
-    if (instanceOfnumber(json)) {
-        return numberFromJSONTyped(json, true);
-    }
-    if (instanceOfstring(json)) {
-        return stringFromJSONTyped(json, true);
-    }
-
-    return {} as any;
+    return { ...Array<number>FromJSONTyped(json, true), ...Array<string>FromJSONTyped(json, true), ...numberFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
 }
 
-export function FilterValueToJSON(json: any): any {
-    return FilterValueToJSONTyped(json, false);
-}
-
-export function FilterValueToJSONTyped(value?: FilterValue | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function FilterValueToJSON(value?: FilterValue | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
 
     if (instanceOfArray<number>(value)) {

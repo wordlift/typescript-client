@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { AnalysesResponseItem } from './AnalysesResponseItem';
 import {
     AnalysesResponseItemFromJSON,
     AnalysesResponseItemFromJSONTyped,
     AnalysesResponseItemToJSON,
-    AnalysesResponseItemToJSONTyped,
 } from './AnalysesResponseItem';
 
 /**
@@ -38,8 +37,10 @@ export interface AnalysesResponse {
 /**
  * Check if a given object implements the AnalysesResponse interface.
  */
-export function instanceOfAnalysesResponse(value: object): value is AnalysesResponse {
-    return true;
+export function instanceOfAnalysesResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnalysesResponseFromJSON(json: any): AnalysesResponse {
@@ -47,27 +48,25 @@ export function AnalysesResponseFromJSON(json: any): AnalysesResponse {
 }
 
 export function AnalysesResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalysesResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'items': json['items'] == null ? undefined : ((json['items'] as Array<any>).map(AnalysesResponseItemFromJSON)),
+        'items': !exists(json, 'items') ? undefined : ((json['items'] as Array<any>).map(AnalysesResponseItemFromJSON)),
     };
 }
 
-export function AnalysesResponseToJSON(json: any): AnalysesResponse {
-    return AnalysesResponseToJSONTyped(json, false);
-}
-
-export function AnalysesResponseToJSONTyped(value?: AnalysesResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnalysesResponseToJSON(value?: AnalysesResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'items': value['items'] == null ? undefined : ((value['items'] as Array<any>).map(AnalysesResponseItemToJSON)),
+        'items': value.items === undefined ? undefined : ((value.items as Array<any>).map(AnalysesResponseItemToJSON)),
     };
 }
 

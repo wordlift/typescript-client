@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The Content Expansion request.
  * @export
@@ -42,11 +42,13 @@ export interface ContentExpansionRequest {
 /**
  * Check if a given object implements the ContentExpansionRequest interface.
  */
-export function instanceOfContentExpansionRequest(value: object): value is ContentExpansionRequest {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    if (!('entities' in value) || value['entities'] === undefined) return false;
-    if (!('openaiKey' in value) || value['openaiKey'] === undefined) return false;
-    return true;
+export function instanceOfContentExpansionRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+    isInstance = isInstance && "entities" in value;
+    isInstance = isInstance && "openaiKey" in value;
+
+    return isInstance;
 }
 
 export function ContentExpansionRequestFromJSON(json: any): ContentExpansionRequest {
@@ -54,31 +56,29 @@ export function ContentExpansionRequestFromJSON(json: any): ContentExpansionRequ
 }
 
 export function ContentExpansionRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContentExpansionRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'url': json['url'],
-        'entities': new Set(json['entities']),
+        'entities': json['entities'],
         'openaiKey': json['openai_key'],
     };
 }
 
-export function ContentExpansionRequestToJSON(json: any): ContentExpansionRequest {
-    return ContentExpansionRequestToJSONTyped(json, false);
-}
-
-export function ContentExpansionRequestToJSONTyped(value?: ContentExpansionRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ContentExpansionRequestToJSON(value?: ContentExpansionRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'url': value['url'],
-        'entities': Array.from(value['entities'] as Set<any>),
-        'openai_key': value['openaiKey'],
+        'url': value.url,
+        'entities': Array.from(value.entities as Set<any>),
+        'openai_key': value.openaiKey,
     };
 }
 

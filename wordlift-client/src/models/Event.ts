@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,8 +54,10 @@ export interface Event {
 /**
  * Check if a given object implements the Event interface.
  */
-export function instanceOfEvent(value: object): value is Event {
-    return true;
+export function instanceOfEvent(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function EventFromJSON(json: any): Event {
@@ -63,35 +65,33 @@ export function EventFromJSON(json: any): Event {
 }
 
 export function EventFromJSONTyped(json: any, ignoreDiscriminator: boolean): Event {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'source': json['source'] == null ? undefined : json['source'],
-        'args': json['args'] == null ? undefined : json['args'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'recordedAt': json['recorded_at'] == null ? undefined : (new Date(json['recorded_at'])),
-        'accountId': json['account_id'] == null ? undefined : json['account_id'],
+        'source': !exists(json, 'source') ? undefined : json['source'],
+        'args': !exists(json, 'args') ? undefined : json['args'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'recordedAt': !exists(json, 'recorded_at') ? undefined : (new Date(json['recorded_at'])),
+        'accountId': !exists(json, 'account_id') ? undefined : json['account_id'],
     };
 }
 
-export function EventToJSON(json: any): Event {
-    return EventToJSONTyped(json, false);
-}
-
-export function EventToJSONTyped(value?: Event | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function EventToJSON(value?: Event | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'source': value['source'],
-        'args': value['args'],
-        'url': value['url'],
-        'recorded_at': value['recordedAt'] == null ? undefined : ((value['recordedAt']).toISOString()),
-        'account_id': value['accountId'],
+        'source': value.source,
+        'args': value.args,
+        'url': value.url,
+        'recorded_at': value.recordedAt === undefined ? undefined : (value.recordedAt.toISOString()),
+        'account_id': value.accountId,
     };
 }
 

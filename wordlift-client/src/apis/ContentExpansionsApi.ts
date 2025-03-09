@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   ContentExpansionRequest,
   ContentExpansionResponse,
-} from '../models/index';
+} from '../models';
 import {
     ContentExpansionRequestFromJSON,
     ContentExpansionRequestToJSON,
     ContentExpansionResponseFromJSON,
     ContentExpansionResponseToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateContentExpansionRequest {
     contentExpansionRequest: ContentExpansionRequest;
@@ -39,11 +39,8 @@ export class ContentExpansionsApi extends runtime.BaseAPI {
      * Create
      */
     async createContentExpansionRaw(requestParameters: CreateContentExpansionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ContentExpansionResponse>> {
-        if (requestParameters['contentExpansionRequest'] == null) {
-            throw new runtime.RequiredError(
-                'contentExpansionRequest',
-                'Required parameter "contentExpansionRequest" was null or undefined when calling createContentExpansion().'
-            );
+        if (requestParameters.contentExpansionRequest === null || requestParameters.contentExpansionRequest === undefined) {
+            throw new runtime.RequiredError('contentExpansionRequest','Required parameter requestParameters.contentExpansionRequest was null or undefined when calling createContentExpansion.');
         }
 
         const queryParameters: any = {};
@@ -53,7 +50,7 @@ export class ContentExpansionsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -61,7 +58,7 @@ export class ContentExpansionsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ContentExpansionRequestToJSON(requestParameters['contentExpansionRequest']),
+            body: ContentExpansionRequestToJSON(requestParameters.contentExpansionRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ContentExpansionResponseFromJSON(jsonValue));

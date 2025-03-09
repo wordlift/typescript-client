@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -72,8 +72,10 @@ export interface AnalysesResponseItem {
 /**
  * Check if a given object implements the AnalysesResponseItem interface.
  */
-export function instanceOfAnalysesResponseItem(value: object): value is AnalysesResponseItem {
-    return true;
+export function instanceOfAnalysesResponseItem(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnalysesResponseItemFromJSON(json: any): AnalysesResponseItem {
@@ -81,41 +83,39 @@ export function AnalysesResponseItemFromJSON(json: any): AnalysesResponseItem {
 }
 
 export function AnalysesResponseItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): AnalysesResponseItem {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'text': json['text'] == null ? undefined : json['text'],
-        'confidence': json['confidence'] == null ? undefined : json['confidence'],
-        'occurrences': json['occurrences'] == null ? undefined : json['occurrences'],
-        'serpPosition': json['serp_position'] == null ? undefined : json['serp_position'],
-        'entityId': json['entity_id'] == null ? undefined : json['entity_id'],
-        'entityLabel': json['entity_label'] == null ? undefined : json['entity_label'],
-        'entityType': json['entity_type'] == null ? undefined : json['entity_type'],
-        'entityDescription': json['entity_description'] == null ? undefined : json['entity_description'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'confidence': !exists(json, 'confidence') ? undefined : json['confidence'],
+        'occurrences': !exists(json, 'occurrences') ? undefined : json['occurrences'],
+        'serpPosition': !exists(json, 'serp_position') ? undefined : json['serp_position'],
+        'entityId': !exists(json, 'entity_id') ? undefined : json['entity_id'],
+        'entityLabel': !exists(json, 'entity_label') ? undefined : json['entity_label'],
+        'entityType': !exists(json, 'entity_type') ? undefined : json['entity_type'],
+        'entityDescription': !exists(json, 'entity_description') ? undefined : json['entity_description'],
     };
 }
 
-export function AnalysesResponseItemToJSON(json: any): AnalysesResponseItem {
-    return AnalysesResponseItemToJSONTyped(json, false);
-}
-
-export function AnalysesResponseItemToJSONTyped(value?: AnalysesResponseItem | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnalysesResponseItemToJSON(value?: AnalysesResponseItem | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'text': value['text'],
-        'confidence': value['confidence'],
-        'occurrences': value['occurrences'],
-        'serp_position': value['serpPosition'],
-        'entity_id': value['entityId'],
-        'entity_label': value['entityLabel'],
-        'entity_type': value['entityType'],
-        'entity_description': value['entityDescription'],
+        'text': value.text,
+        'confidence': value.confidence,
+        'occurrences': value.occurrences,
+        'serp_position': value.serpPosition,
+        'entity_id': value.entityId,
+        'entity_label': value.entityLabel,
+        'entity_type': value.entityType,
+        'entity_description': value.entityDescription,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,8 +31,10 @@ export interface InspectResponse {
 /**
  * Check if a given object implements the InspectResponse interface.
  */
-export function instanceOfInspectResponse(value: object): value is InspectResponse {
-    return true;
+export function instanceOfInspectResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function InspectResponseFromJSON(json: any): InspectResponse {
@@ -40,29 +42,27 @@ export function InspectResponseFromJSON(json: any): InspectResponse {
 }
 
 export function InspectResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): InspectResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
             ...json,
-        'empty': json['empty'] == null ? undefined : json['empty'],
+        'empty': !exists(json, 'empty') ? undefined : json['empty'],
     };
 }
 
-export function InspectResponseToJSON(json: any): InspectResponse {
-    return InspectResponseToJSONTyped(json, false);
-}
-
-export function InspectResponseToJSONTyped(value?: InspectResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function InspectResponseToJSON(value?: InspectResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
             ...value,
-        'empty': value['empty'],
+        'empty': value.empty,
     };
 }
 

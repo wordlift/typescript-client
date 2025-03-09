@@ -24,29 +24,18 @@ export function VectorSearchQueryResponseItemFieldsValueInnerFromJSON(json: any)
 }
 
 export function VectorSearchQueryResponseItemFieldsValueInnerFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQueryResponseItemFieldsValueInner {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
-    if (instanceOfboolean(json)) {
-        return booleanFromJSONTyped(json, true);
-    }
-    if (instanceOfnumber(json)) {
-        return numberFromJSONTyped(json, true);
-    }
-    if (instanceOfstring(json)) {
-        return stringFromJSONTyped(json, true);
-    }
-
-    return {} as any;
+    return { ...booleanFromJSONTyped(json, true), ...numberFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
 }
 
-export function VectorSearchQueryResponseItemFieldsValueInnerToJSON(json: any): any {
-    return VectorSearchQueryResponseItemFieldsValueInnerToJSONTyped(json, false);
-}
-
-export function VectorSearchQueryResponseItemFieldsValueInnerToJSONTyped(value?: VectorSearchQueryResponseItemFieldsValueInner | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQueryResponseItemFieldsValueInnerToJSON(value?: VectorSearchQueryResponseItemFieldsValueInner | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
 
     if (instanceOfboolean(value)) {

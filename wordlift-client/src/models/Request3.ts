@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,10 +48,12 @@ export interface Request3 {
 /**
  * Check if a given object implements the Request3 interface.
  */
-export function instanceOfRequest3(value: object): value is Request3 {
-    if (!('hasUpvote' in value) || value['hasUpvote'] === undefined) return false;
-    if (!('isAccepted' in value) || value['isAccepted'] === undefined) return false;
-    return true;
+export function instanceOfRequest3(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "hasUpvote" in value;
+    isInstance = isInstance && "isAccepted" in value;
+
+    return isInstance;
 }
 
 export function Request3FromJSON(json: any): Request3 {
@@ -59,33 +61,31 @@ export function Request3FromJSON(json: any): Request3 {
 }
 
 export function Request3FromJSONTyped(json: any, ignoreDiscriminator: boolean): Request3 {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'completion': json['completion'] == null ? undefined : json['completion'],
+        'completion': !exists(json, 'completion') ? undefined : json['completion'],
         'hasUpvote': json['has_upvote'],
         'isAccepted': json['is_accepted'],
-        'validatedAt': json['validated_at'] == null ? undefined : (new Date(json['validated_at'])),
+        'validatedAt': !exists(json, 'validated_at') ? undefined : (new Date(json['validated_at'])),
     };
 }
 
-export function Request3ToJSON(json: any): Request3 {
-    return Request3ToJSONTyped(json, false);
-}
-
-export function Request3ToJSONTyped(value?: Request3 | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function Request3ToJSON(value?: Request3 | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'completion': value['completion'],
-        'has_upvote': value['hasUpvote'],
-        'is_accepted': value['isAccepted'],
-        'validated_at': value['validatedAt'] == null ? undefined : ((value['validatedAt']).toISOString()),
+        'completion': value.completion,
+        'has_upvote': value.hasUpvote,
+        'is_accepted': value.isAccepted,
+        'validated_at': value.validatedAt === undefined ? undefined : (value.validatedAt.toISOString()),
     };
 }
 

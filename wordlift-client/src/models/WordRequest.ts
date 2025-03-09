@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,12 @@ export interface WordRequest {
 /**
  * Check if a given object implements the WordRequest interface.
  */
-export function instanceOfWordRequest(value: object): value is WordRequest {
-    if (!('bias' in value) || value['bias'] === undefined) return false;
-    if (!('word' in value) || value['word'] === undefined) return false;
-    return true;
+export function instanceOfWordRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "bias" in value;
+    isInstance = isInstance && "word" in value;
+
+    return isInstance;
 }
 
 export function WordRequestFromJSON(json: any): WordRequest {
@@ -47,7 +49,7 @@ export function WordRequestFromJSON(json: any): WordRequest {
 }
 
 export function WordRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): WordRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function WordRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function WordRequestToJSON(json: any): WordRequest {
-    return WordRequestToJSONTyped(json, false);
-}
-
-export function WordRequestToJSONTyped(value?: WordRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WordRequestToJSON(value?: WordRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'bias': value['bias'],
-        'word': value['word'],
+        'bias': value.bias,
+        'word': value.word,
     };
 }
 

@@ -12,20 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { VectorSearchQueryResponseItemFieldsValueInner } from './VectorSearchQueryResponseItemFieldsValueInner';
 import {
     VectorSearchQueryResponseItemFieldsValueInnerFromJSON,
     VectorSearchQueryResponseItemFieldsValueInnerFromJSONTyped,
     VectorSearchQueryResponseItemFieldsValueInnerToJSON,
-    VectorSearchQueryResponseItemFieldsValueInnerToJSONTyped,
 } from './VectorSearchQueryResponseItemFieldsValueInner';
 import type { VectorSearchQueryResponseItemMetadataValue } from './VectorSearchQueryResponseItemMetadataValue';
 import {
     VectorSearchQueryResponseItemMetadataValueFromJSON,
     VectorSearchQueryResponseItemMetadataValueFromJSONTyped,
     VectorSearchQueryResponseItemMetadataValueToJSON,
-    VectorSearchQueryResponseItemMetadataValueToJSONTyped,
 } from './VectorSearchQueryResponseItemMetadataValue';
 
 /**
@@ -82,10 +80,12 @@ export interface VectorSearchQueryResponseItem {
 /**
  * Check if a given object implements the VectorSearchQueryResponseItem interface.
  */
-export function instanceOfVectorSearchQueryResponseItem(value: object): value is VectorSearchQueryResponseItem {
-    if (!('iri' in value) || value['iri'] === undefined) return false;
-    if (!('score' in value) || value['score'] === undefined) return false;
-    return true;
+export function instanceOfVectorSearchQueryResponseItem(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "iri" in value;
+    isInstance = isInstance && "score" in value;
+
+    return isInstance;
 }
 
 export function VectorSearchQueryResponseItemFromJSON(json: any): VectorSearchQueryResponseItem {
@@ -93,39 +93,37 @@ export function VectorSearchQueryResponseItemFromJSON(json: any): VectorSearchQu
 }
 
 export function VectorSearchQueryResponseItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQueryResponseItem {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'fields': json['fields'] == null ? undefined : json['fields'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'fields': !exists(json, 'fields') ? undefined : json['fields'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'iri': json['iri'],
-        'metadata': json['metadata'] == null ? undefined : (mapValues(json['metadata'], VectorSearchQueryResponseItemMetadataValueFromJSON)),
-        'nodeId': json['node_id'] == null ? undefined : json['node_id'],
+        'metadata': !exists(json, 'metadata') ? undefined : (mapValues(json['metadata'], VectorSearchQueryResponseItemMetadataValueFromJSON)),
+        'nodeId': !exists(json, 'node_id') ? undefined : json['node_id'],
         'score': json['score'],
-        'text': json['text'] == null ? undefined : json['text'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
     };
 }
 
-export function VectorSearchQueryResponseItemToJSON(json: any): VectorSearchQueryResponseItem {
-    return VectorSearchQueryResponseItemToJSONTyped(json, false);
-}
-
-export function VectorSearchQueryResponseItemToJSONTyped(value?: VectorSearchQueryResponseItem | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQueryResponseItemToJSON(value?: VectorSearchQueryResponseItem | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'fields': value['fields'],
-        'id': value['id'],
-        'iri': value['iri'],
-        'metadata': value['metadata'] == null ? undefined : (mapValues(value['metadata'], VectorSearchQueryResponseItemMetadataValueToJSON)),
-        'node_id': value['nodeId'],
-        'score': value['score'],
-        'text': value['text'],
+        'fields': value.fields,
+        'id': value.id,
+        'iri': value.iri,
+        'metadata': value.metadata === undefined ? undefined : (mapValues(value.metadata, VectorSearchQueryResponseItemMetadataValueToJSON)),
+        'node_id': value.nodeId,
+        'score': value.score,
+        'text': value.text,
     };
 }
 

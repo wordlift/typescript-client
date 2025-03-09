@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { ValidationResult } from './ValidationResult';
 import {
     ValidationResultFromJSON,
     ValidationResultFromJSONTyped,
     ValidationResultToJSON,
-    ValidationResultToJSONTyped,
 } from './ValidationResult';
 
 /**
@@ -110,10 +109,12 @@ export interface QuestionAndAnswer {
 /**
  * Check if a given object implements the QuestionAndAnswer interface.
  */
-export function instanceOfQuestionAndAnswer(value: object): value is QuestionAndAnswer {
-    if (!('iri' in value) || value['iri'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfQuestionAndAnswer(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "iri" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function QuestionAndAnswerFromJSON(json: any): QuestionAndAnswer {
@@ -121,46 +122,44 @@ export function QuestionAndAnswerFromJSON(json: any): QuestionAndAnswer {
 }
 
 export function QuestionAndAnswerFromJSONTyped(json: any, ignoreDiscriminator: boolean): QuestionAndAnswer {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'answer': json['answer'] == null ? undefined : json['answer'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'entityGaps': json['entity_gaps'] == null ? undefined : new Set(json['entity_gaps']),
-        'errors': json['errors'] == null ? undefined : ((json['errors'] as Array<any>).map(ValidationResultFromJSON)),
-        'id': json['id'] == null ? undefined : json['id'],
+        'answer': !exists(json, 'answer') ? undefined : json['answer'],
+        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
+        'entityGaps': !exists(json, 'entity_gaps') ? undefined : json['entity_gaps'],
+        'errors': !exists(json, 'errors') ? undefined : ((json['errors'] as Array<any>).map(ValidationResultFromJSON)),
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'iri': json['iri'],
-        'isDeleted': json['is_deleted'] == null ? undefined : json['is_deleted'],
-        'isPublished': json['is_published'] == null ? undefined : json['is_published'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
-        'question': json['question'] == null ? undefined : json['question'],
-        'smartContentId': json['smart_content_id'] == null ? undefined : json['smart_content_id'],
+        'isDeleted': !exists(json, 'is_deleted') ? undefined : json['is_deleted'],
+        'isPublished': !exists(json, 'is_published') ? undefined : json['is_published'],
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
+        'question': !exists(json, 'question') ? undefined : json['question'],
+        'smartContentId': !exists(json, 'smart_content_id') ? undefined : json['smart_content_id'],
         'url': json['url'],
-        'warnings': json['warnings'] == null ? undefined : ((json['warnings'] as Array<any>).map(ValidationResultFromJSON)),
+        'warnings': !exists(json, 'warnings') ? undefined : ((json['warnings'] as Array<any>).map(ValidationResultFromJSON)),
     };
 }
 
-export function QuestionAndAnswerToJSON(json: any): QuestionAndAnswer {
-    return QuestionAndAnswerToJSONTyped(json, false);
-}
-
-export function QuestionAndAnswerToJSONTyped(value?: Omit<QuestionAndAnswer, 'created_at'|'errors'|'id'|'modified_at'|'warnings'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function QuestionAndAnswerToJSON(value?: QuestionAndAnswer | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'answer': value['answer'],
-        'entity_gaps': value['entityGaps'] == null ? undefined : Array.from(value['entityGaps'] as Set<any>),
-        'iri': value['iri'],
-        'is_deleted': value['isDeleted'],
-        'is_published': value['isPublished'],
-        'question': value['question'],
-        'smart_content_id': value['smartContentId'],
-        'url': value['url'],
+        'answer': value.answer,
+        'entity_gaps': value.entityGaps === undefined ? undefined : Array.from(value.entityGaps as Set<any>),
+        'iri': value.iri,
+        'is_deleted': value.isDeleted,
+        'is_published': value.isPublished,
+        'question': value.question,
+        'smart_content_id': value.smartContentId,
+        'url': value.url,
     };
 }
 

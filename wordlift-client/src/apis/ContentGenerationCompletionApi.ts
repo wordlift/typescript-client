@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   CompletionRequest,
-} from '../models/index';
+} from '../models';
 import {
     CompletionRequestFromJSON,
     CompletionRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateCompletionRequest {
     completionRequest: CompletionRequest;
@@ -36,11 +36,8 @@ export class ContentGenerationCompletionApi extends runtime.BaseAPI {
      * Create a completion
      */
     async createCompletionRaw(requestParameters: CreateCompletionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
-        if (requestParameters['completionRequest'] == null) {
-            throw new runtime.RequiredError(
-                'completionRequest',
-                'Required parameter "completionRequest" was null or undefined when calling createCompletion().'
-            );
+        if (requestParameters.completionRequest === null || requestParameters.completionRequest === undefined) {
+            throw new runtime.RequiredError('completionRequest','Required parameter requestParameters.completionRequest was null or undefined when calling createCompletion.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class ContentGenerationCompletionApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class ContentGenerationCompletionApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CompletionRequestToJSON(requestParameters['completionRequest']),
+            body: CompletionRequestToJSON(requestParameters.completionRequest),
         }, initOverrides);
 
         if (this.isJsonMime(response.headers.get('content-type'))) {

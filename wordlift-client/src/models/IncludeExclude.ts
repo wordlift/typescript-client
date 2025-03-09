@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -59,11 +59,13 @@ export type IncludeExcludeFlagEnum = typeof IncludeExcludeFlagEnum[keyof typeof 
 /**
  * Check if a given object implements the IncludeExclude interface.
  */
-export function instanceOfIncludeExclude(value: object): value is IncludeExclude {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    if (!('flag' in value) || value['flag'] === undefined) return false;
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfIncludeExclude(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accountId" in value;
+    isInstance = isInstance && "flag" in value;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function IncludeExcludeFromJSON(json: any): IncludeExclude {
@@ -71,31 +73,29 @@ export function IncludeExcludeFromJSON(json: any): IncludeExclude {
 }
 
 export function IncludeExcludeFromJSONTyped(json: any, ignoreDiscriminator: boolean): IncludeExclude {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accountId': json['account_id'],
         'flag': json['flag'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'url': json['url'],
     };
 }
 
-export function IncludeExcludeToJSON(json: any): IncludeExclude {
-    return IncludeExcludeToJSONTyped(json, false);
-}
-
-export function IncludeExcludeToJSONTyped(value?: Omit<IncludeExclude, 'account_id'|'id'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function IncludeExcludeToJSON(value?: IncludeExclude | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'flag': value['flag'],
-        'url': value['url'],
+        'flag': value.flag,
+        'url': value.url,
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * Search Data
  * @export
@@ -66,15 +66,17 @@ export interface WebsiteSearch {
 /**
  * Check if a given object implements the WebsiteSearch interface.
  */
-export function instanceOfWebsiteSearch(value: object): value is WebsiteSearch {
-    if (!('clicks' in value) || value['clicks'] === undefined) return false;
-    if (!('ctr' in value) || value['ctr'] === undefined) return false;
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('impressions' in value) || value['impressions'] === undefined) return false;
-    if (!('keys' in value) || value['keys'] === undefined) return false;
-    if (!('position' in value) || value['position'] === undefined) return false;
-    if (!('score' in value) || value['score'] === undefined) return false;
-    return true;
+export function instanceOfWebsiteSearch(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "clicks" in value;
+    isInstance = isInstance && "ctr" in value;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "impressions" in value;
+    isInstance = isInstance && "keys" in value;
+    isInstance = isInstance && "position" in value;
+    isInstance = isInstance && "score" in value;
+
+    return isInstance;
 }
 
 export function WebsiteSearchFromJSON(json: any): WebsiteSearch {
@@ -82,7 +84,7 @@ export function WebsiteSearchFromJSON(json: any): WebsiteSearch {
 }
 
 export function WebsiteSearchFromJSONTyped(json: any, ignoreDiscriminator: boolean): WebsiteSearch {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,24 +99,22 @@ export function WebsiteSearchFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function WebsiteSearchToJSON(json: any): WebsiteSearch {
-    return WebsiteSearchToJSONTyped(json, false);
-}
-
-export function WebsiteSearchToJSONTyped(value?: WebsiteSearch | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WebsiteSearchToJSON(value?: WebsiteSearch | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'clicks': value['clicks'],
-        'ctr': value['ctr'],
-        'id': value['id'],
-        'impressions': value['impressions'],
-        'keys': value['keys'],
-        'position': value['position'],
-        'score': value['score'],
+        'clicks': value.clicks,
+        'ctr': value.ctr,
+        'id': value.id,
+        'impressions': value.impressions,
+        'keys': value.keys,
+        'position': value.position,
+        'score': value.score,
     };
 }
 

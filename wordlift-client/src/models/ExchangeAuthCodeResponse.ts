@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The response of the `buildAuthorizeUri` endpoint.
  * @export
@@ -54,8 +54,10 @@ export interface ExchangeAuthCodeResponse {
 /**
  * Check if a given object implements the ExchangeAuthCodeResponse interface.
  */
-export function instanceOfExchangeAuthCodeResponse(value: object): value is ExchangeAuthCodeResponse {
-    return true;
+export function instanceOfExchangeAuthCodeResponse(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function ExchangeAuthCodeResponseFromJSON(json: any): ExchangeAuthCodeResponse {
@@ -63,35 +65,33 @@ export function ExchangeAuthCodeResponseFromJSON(json: any): ExchangeAuthCodeRes
 }
 
 export function ExchangeAuthCodeResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExchangeAuthCodeResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accessToken': json['access_token'] == null ? undefined : json['access_token'],
-        'expiresIn': json['expires_in'] == null ? undefined : json['expires_in'],
-        'refreshToken': json['refresh_token'] == null ? undefined : json['refresh_token'],
-        'scope': json['scope'] == null ? undefined : json['scope'],
-        'tokenType': json['token_type'] == null ? undefined : json['token_type'],
+        'accessToken': !exists(json, 'access_token') ? undefined : json['access_token'],
+        'expiresIn': !exists(json, 'expires_in') ? undefined : json['expires_in'],
+        'refreshToken': !exists(json, 'refresh_token') ? undefined : json['refresh_token'],
+        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'tokenType': !exists(json, 'token_type') ? undefined : json['token_type'],
     };
 }
 
-export function ExchangeAuthCodeResponseToJSON(json: any): ExchangeAuthCodeResponse {
-    return ExchangeAuthCodeResponseToJSONTyped(json, false);
-}
-
-export function ExchangeAuthCodeResponseToJSONTyped(value?: ExchangeAuthCodeResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ExchangeAuthCodeResponseToJSON(value?: ExchangeAuthCodeResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'access_token': value['accessToken'],
-        'expires_in': value['expiresIn'],
-        'refresh_token': value['refreshToken'],
-        'scope': value['scope'],
-        'token_type': value['tokenType'],
+        'access_token': value.accessToken,
+        'expires_in': value.expiresIn,
+        'refresh_token': value.refreshToken,
+        'scope': value.scope,
+        'token_type': value.tokenType,
     };
 }
 

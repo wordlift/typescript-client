@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { EntityMatch } from './EntityMatch';
 import {
     EntityMatchFromJSON,
     EntityMatchFromJSONTyped,
     EntityMatchToJSON,
-    EntityMatchToJSONTyped,
 } from './EntityMatch';
 
 /**
@@ -62,8 +61,10 @@ export interface Annotation {
 /**
  * Check if a given object implements the Annotation interface.
  */
-export function instanceOfAnnotation(value: object): value is Annotation {
-    return true;
+export function instanceOfAnnotation(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AnnotationFromJSON(json: any): Annotation {
@@ -71,35 +72,33 @@ export function AnnotationFromJSON(json: any): Annotation {
 }
 
 export function AnnotationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Annotation {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'annotationId': json['annotationId'] == null ? undefined : json['annotationId'],
-        'start': json['start'] == null ? undefined : json['start'],
-        'end': json['end'] == null ? undefined : json['end'],
-        'text': json['text'] == null ? undefined : json['text'],
-        'entityMatches': json['entityMatches'] == null ? undefined : ((json['entityMatches'] as Array<any>).map(EntityMatchFromJSON)),
+        'annotationId': !exists(json, 'annotationId') ? undefined : json['annotationId'],
+        'start': !exists(json, 'start') ? undefined : json['start'],
+        'end': !exists(json, 'end') ? undefined : json['end'],
+        'text': !exists(json, 'text') ? undefined : json['text'],
+        'entityMatches': !exists(json, 'entityMatches') ? undefined : ((json['entityMatches'] as Array<any>).map(EntityMatchFromJSON)),
     };
 }
 
-export function AnnotationToJSON(json: any): Annotation {
-    return AnnotationToJSONTyped(json, false);
-}
-
-export function AnnotationToJSONTyped(value?: Annotation | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AnnotationToJSON(value?: Annotation | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'annotationId': value['annotationId'],
-        'start': value['start'],
-        'end': value['end'],
-        'text': value['text'],
-        'entityMatches': value['entityMatches'] == null ? undefined : ((value['entityMatches'] as Array<any>).map(EntityMatchToJSON)),
+        'annotationId': value.annotationId,
+        'start': value.start,
+        'end': value.end,
+        'text': value.text,
+        'entityMatches': value.entityMatches === undefined ? undefined : ((value.entityMatches as Array<any>).map(EntityMatchToJSON)),
     };
 }
 

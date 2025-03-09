@@ -20,7 +20,7 @@ import type {
   Rule,
   RuleRequest,
   Scope,
-} from '../models/index';
+} from '../models';
 import {
     PageRuleFromJSON,
     PageRuleToJSON,
@@ -32,7 +32,7 @@ import {
     RuleRequestToJSON,
     ScopeFromJSON,
     ScopeToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CopyRulesRequest {
     projectType: ProjectType;
@@ -76,45 +76,36 @@ export class RulesApi extends runtime.BaseAPI {
      * Copy
      */
     async copyRulesRaw(requestParameters: CopyRulesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['projectType'] == null) {
-            throw new runtime.RequiredError(
-                'projectType',
-                'Required parameter "projectType" was null or undefined when calling copyRules().'
-            );
+        if (requestParameters.projectType === null || requestParameters.projectType === undefined) {
+            throw new runtime.RequiredError('projectType','Required parameter requestParameters.projectType was null or undefined when calling copyRules.');
         }
 
-        if (requestParameters['fromProjectId'] == null) {
-            throw new runtime.RequiredError(
-                'fromProjectId',
-                'Required parameter "fromProjectId" was null or undefined when calling copyRules().'
-            );
+        if (requestParameters.fromProjectId === null || requestParameters.fromProjectId === undefined) {
+            throw new runtime.RequiredError('fromProjectId','Required parameter requestParameters.fromProjectId was null or undefined when calling copyRules.');
         }
 
-        if (requestParameters['toProjectId'] == null) {
-            throw new runtime.RequiredError(
-                'toProjectId',
-                'Required parameter "toProjectId" was null or undefined when calling copyRules().'
-            );
+        if (requestParameters.toProjectId === null || requestParameters.toProjectId === undefined) {
+            throw new runtime.RequiredError('toProjectId','Required parameter requestParameters.toProjectId was null or undefined when calling copyRules.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['projectType'] != null) {
-            queryParameters['project_type'] = requestParameters['projectType'];
+        if (requestParameters.projectType !== undefined) {
+            queryParameters['project_type'] = requestParameters.projectType;
         }
 
-        if (requestParameters['fromProjectId'] != null) {
-            queryParameters['from_project_id'] = requestParameters['fromProjectId'];
+        if (requestParameters.fromProjectId !== undefined) {
+            queryParameters['from_project_id'] = requestParameters.fromProjectId;
         }
 
-        if (requestParameters['toProjectId'] != null) {
-            queryParameters['to_project_id'] = requestParameters['toProjectId'];
+        if (requestParameters.toProjectId !== undefined) {
+            queryParameters['to_project_id'] = requestParameters.toProjectId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -138,11 +129,8 @@ export class RulesApi extends runtime.BaseAPI {
      * Create
      */
     async createRuleRaw(requestParameters: CreateRuleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Rule>> {
-        if (requestParameters['ruleRequest'] == null) {
-            throw new runtime.RequiredError(
-                'ruleRequest',
-                'Required parameter "ruleRequest" was null or undefined when calling createRule().'
-            );
+        if (requestParameters.ruleRequest === null || requestParameters.ruleRequest === undefined) {
+            throw new runtime.RequiredError('ruleRequest','Required parameter requestParameters.ruleRequest was null or undefined when calling createRule.');
         }
 
         const queryParameters: any = {};
@@ -152,7 +140,7 @@ export class RulesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -160,7 +148,7 @@ export class RulesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RuleRequestToJSON(requestParameters['ruleRequest']),
+            body: RuleRequestToJSON(requestParameters.ruleRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RuleFromJSON(jsonValue));
@@ -178,11 +166,8 @@ export class RulesApi extends runtime.BaseAPI {
      * Delete
      */
     async deleteRuleRaw(requestParameters: DeleteRuleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling deleteRule().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteRule.');
         }
 
         const queryParameters: any = {};
@@ -190,11 +175,11 @@ export class RulesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/rules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/rules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -216,30 +201,30 @@ export class RulesApi extends runtime.BaseAPI {
     async listRulesRaw(requestParameters: ListRulesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageRule>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['projectId'] != null) {
-            queryParameters['project_id'] = requestParameters['projectId'];
+        if (requestParameters.projectId !== undefined) {
+            queryParameters['project_id'] = requestParameters.projectId;
         }
 
-        if (requestParameters['projectType'] != null) {
-            queryParameters['project_type'] = requestParameters['projectType'];
+        if (requestParameters.projectType !== undefined) {
+            queryParameters['project_type'] = requestParameters.projectType;
         }
 
-        if (requestParameters['scope'] != null) {
-            queryParameters['scope'] = requestParameters['scope'];
+        if (requestParameters.scope !== undefined) {
+            queryParameters['scope'] = requestParameters.scope;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -264,18 +249,12 @@ export class RulesApi extends runtime.BaseAPI {
      * Update
      */
     async updateRuleRaw(requestParameters: UpdateRuleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Rule>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateRule().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateRule.');
         }
 
-        if (requestParameters['ruleRequest'] == null) {
-            throw new runtime.RequiredError(
-                'ruleRequest',
-                'Required parameter "ruleRequest" was null or undefined when calling updateRule().'
-            );
+        if (requestParameters.ruleRequest === null || requestParameters.ruleRequest === undefined) {
+            throw new runtime.RequiredError('ruleRequest','Required parameter requestParameters.ruleRequest was null or undefined when calling updateRule.');
         }
 
         const queryParameters: any = {};
@@ -285,15 +264,15 @@ export class RulesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/rules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/rules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: RuleRequestToJSON(requestParameters['ruleRequest']),
+            body: RuleRequestToJSON(requestParameters.ruleRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RuleFromJSON(jsonValue));
@@ -311,35 +290,26 @@ export class RulesApi extends runtime.BaseAPI {
      * Update
      */
     async updateRuleCollectionRaw(requestParameters: UpdateRuleCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Rule>>> {
-        if (requestParameters['projectId'] == null) {
-            throw new runtime.RequiredError(
-                'projectId',
-                'Required parameter "projectId" was null or undefined when calling updateRuleCollection().'
-            );
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateRuleCollection.');
         }
 
-        if (requestParameters['projectType'] == null) {
-            throw new runtime.RequiredError(
-                'projectType',
-                'Required parameter "projectType" was null or undefined when calling updateRuleCollection().'
-            );
+        if (requestParameters.projectType === null || requestParameters.projectType === undefined) {
+            throw new runtime.RequiredError('projectType','Required parameter requestParameters.projectType was null or undefined when calling updateRuleCollection.');
         }
 
-        if (requestParameters['ruleRequest'] == null) {
-            throw new runtime.RequiredError(
-                'ruleRequest',
-                'Required parameter "ruleRequest" was null or undefined when calling updateRuleCollection().'
-            );
+        if (requestParameters.ruleRequest === null || requestParameters.ruleRequest === undefined) {
+            throw new runtime.RequiredError('ruleRequest','Required parameter requestParameters.ruleRequest was null or undefined when calling updateRuleCollection.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['projectId'] != null) {
-            queryParameters['project_id'] = requestParameters['projectId'];
+        if (requestParameters.projectId !== undefined) {
+            queryParameters['project_id'] = requestParameters.projectId;
         }
 
-        if (requestParameters['projectType'] != null) {
-            queryParameters['project_type'] = requestParameters['projectType'];
+        if (requestParameters.projectType !== undefined) {
+            queryParameters['project_type'] = requestParameters.projectType;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -347,7 +317,7 @@ export class RulesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -355,7 +325,7 @@ export class RulesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters['ruleRequest']!.map(RuleRequestToJSON),
+            body: requestParameters.ruleRequest.map(RuleRequestToJSON),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RuleFromJSON));

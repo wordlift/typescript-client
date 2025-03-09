@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { ContentGeneration } from './ContentGeneration';
 import {
     ContentGenerationFromJSON,
     ContentGenerationFromJSONTyped,
     ContentGenerationToJSON,
-    ContentGenerationToJSONTyped,
 } from './ContentGeneration';
 
 /**
@@ -68,14 +67,16 @@ export interface PageContentGeneration {
 /**
  * Check if a given object implements the PageContentGeneration interface.
  */
-export function instanceOfPageContentGeneration(value: object): value is PageContentGeneration {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPageContentGeneration(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PageContentGenerationFromJSON(json: any): PageContentGeneration {
@@ -83,7 +84,7 @@ export function PageContentGenerationFromJSON(json: any): PageContentGeneration 
 }
 
 export function PageContentGenerationFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageContentGeneration {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PageContentGenerationFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function PageContentGenerationToJSON(json: any): PageContentGeneration {
-    return PageContentGenerationToJSONTyped(json, false);
-}
-
-export function PageContentGenerationToJSONTyped(value?: PageContentGeneration | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PageContentGenerationToJSON(value?: PageContentGeneration | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(ContentGenerationToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(ContentGenerationToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 

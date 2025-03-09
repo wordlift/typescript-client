@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request part of a batch.
  * @export
@@ -42,10 +42,12 @@ export interface BatchRequest {
 /**
  * Check if a given object implements the BatchRequest interface.
  */
-export function instanceOfBatchRequest(value: object): value is BatchRequest {
-    if (!('uri' in value) || value['uri'] === undefined) return false;
-    if (!('model' in value) || value['model'] === undefined) return false;
-    return true;
+export function instanceOfBatchRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "uri" in value;
+    isInstance = isInstance && "model" in value;
+
+    return isInstance;
 }
 
 export function BatchRequestFromJSON(json: any): BatchRequest {
@@ -53,31 +55,29 @@ export function BatchRequestFromJSON(json: any): BatchRequest {
 }
 
 export function BatchRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BatchRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'uri': json['uri'],
         'model': json['model'],
-        '_private': json['private'] == null ? undefined : json['private'],
+        '_private': !exists(json, 'private') ? undefined : json['private'],
     };
 }
 
-export function BatchRequestToJSON(json: any): BatchRequest {
-    return BatchRequestToJSONTyped(json, false);
-}
-
-export function BatchRequestToJSONTyped(value?: BatchRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function BatchRequestToJSON(value?: BatchRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'uri': value['uri'],
-        'model': value['model'],
-        'private': value['_private'],
+        'uri': value.uri,
+        'model': value.model,
+        'private': value._private,
     };
 }
 

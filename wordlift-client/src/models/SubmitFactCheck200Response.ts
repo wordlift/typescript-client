@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface SubmitFactCheck200Response {
 /**
  * Check if a given object implements the SubmitFactCheck200Response interface.
  */
-export function instanceOfSubmitFactCheck200Response(value: object): value is SubmitFactCheck200Response {
-    return true;
+export function instanceOfSubmitFactCheck200Response(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function SubmitFactCheck200ResponseFromJSON(json: any): SubmitFactCheck200Response {
@@ -39,27 +41,25 @@ export function SubmitFactCheck200ResponseFromJSON(json: any): SubmitFactCheck20
 }
 
 export function SubmitFactCheck200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SubmitFactCheck200Response {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'response': json['response'] == null ? undefined : json['response'],
+        'response': !exists(json, 'response') ? undefined : json['response'],
     };
 }
 
-export function SubmitFactCheck200ResponseToJSON(json: any): SubmitFactCheck200Response {
-    return SubmitFactCheck200ResponseToJSONTyped(json, false);
-}
-
-export function SubmitFactCheck200ResponseToJSONTyped(value?: SubmitFactCheck200Response | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SubmitFactCheck200ResponseToJSON(value?: SubmitFactCheck200Response | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'response': value['response'],
+        'response': value.response,
     };
 }
 

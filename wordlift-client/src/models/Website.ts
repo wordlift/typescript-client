@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A Website
  * @export
@@ -30,9 +30,11 @@ export interface Website {
 /**
  * Check if a given object implements the Website interface.
  */
-export function instanceOfWebsite(value: object): value is Website {
-    if (!('url' in value) || value['url'] === undefined) return false;
-    return true;
+export function instanceOfWebsite(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "url" in value;
+
+    return isInstance;
 }
 
 export function WebsiteFromJSON(json: any): Website {
@@ -40,7 +42,7 @@ export function WebsiteFromJSON(json: any): Website {
 }
 
 export function WebsiteFromJSONTyped(json: any, ignoreDiscriminator: boolean): Website {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -49,18 +51,16 @@ export function WebsiteFromJSONTyped(json: any, ignoreDiscriminator: boolean): W
     };
 }
 
-export function WebsiteToJSON(json: any): Website {
-    return WebsiteToJSONTyped(json, false);
-}
-
-export function WebsiteToJSONTyped(value?: Website | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function WebsiteToJSON(value?: Website | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'url': value['url'],
+        'url': value.url,
     };
 }
 

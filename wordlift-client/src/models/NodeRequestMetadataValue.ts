@@ -24,29 +24,18 @@ export function NodeRequestMetadataValueFromJSON(json: any): NodeRequestMetadata
 }
 
 export function NodeRequestMetadataValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): NodeRequestMetadataValue {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
-    if (instanceOfboolean(json)) {
-        return booleanFromJSONTyped(json, true);
-    }
-    if (instanceOfnumber(json)) {
-        return numberFromJSONTyped(json, true);
-    }
-    if (instanceOfstring(json)) {
-        return stringFromJSONTyped(json, true);
-    }
-
-    return {} as any;
+    return { ...booleanFromJSONTyped(json, true), ...numberFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
 }
 
-export function NodeRequestMetadataValueToJSON(json: any): any {
-    return NodeRequestMetadataValueToJSONTyped(json, false);
-}
-
-export function NodeRequestMetadataValueToJSONTyped(value?: NodeRequestMetadataValue | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function NodeRequestMetadataValueToJSON(value?: NodeRequestMetadataValue | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
 
     if (instanceOfboolean(value)) {

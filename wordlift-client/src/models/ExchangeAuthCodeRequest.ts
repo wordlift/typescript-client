@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * The request of the `exchangeAuthCode` endpoint.
  * @export
@@ -36,10 +36,12 @@ export interface ExchangeAuthCodeRequest {
 /**
  * Check if a given object implements the ExchangeAuthCodeRequest interface.
  */
-export function instanceOfExchangeAuthCodeRequest(value: object): value is ExchangeAuthCodeRequest {
-    if (!('code' in value) || value['code'] === undefined) return false;
-    if (!('googleSearchConsoleResourceId' in value) || value['googleSearchConsoleResourceId'] === undefined) return false;
-    return true;
+export function instanceOfExchangeAuthCodeRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "code" in value;
+    isInstance = isInstance && "googleSearchConsoleResourceId" in value;
+
+    return isInstance;
 }
 
 export function ExchangeAuthCodeRequestFromJSON(json: any): ExchangeAuthCodeRequest {
@@ -47,7 +49,7 @@ export function ExchangeAuthCodeRequestFromJSON(json: any): ExchangeAuthCodeRequ
 }
 
 export function ExchangeAuthCodeRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ExchangeAuthCodeRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -57,19 +59,17 @@ export function ExchangeAuthCodeRequestFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function ExchangeAuthCodeRequestToJSON(json: any): ExchangeAuthCodeRequest {
-    return ExchangeAuthCodeRequestToJSONTyped(json, false);
-}
-
-export function ExchangeAuthCodeRequestToJSONTyped(value?: ExchangeAuthCodeRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function ExchangeAuthCodeRequestToJSON(value?: ExchangeAuthCodeRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'code': value['code'],
-        'google_search_console_resource_id': value['googleSearchConsoleResourceId'],
+        'code': value.code,
+        'google_search_console_resource_id': value.googleSearchConsoleResourceId,
     };
 }
 

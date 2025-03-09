@@ -18,7 +18,7 @@ import type {
   Account,
   PageActiveAccount,
   UpdateAccountRequest,
-} from '../models/index';
+} from '../models';
 import {
     AccountFromJSON,
     AccountToJSON,
@@ -26,7 +26,7 @@ import {
     PageActiveAccountToJSON,
     UpdateAccountRequestFromJSON,
     UpdateAccountRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface GetAccountRequest {
     id: number;
@@ -58,11 +58,8 @@ export class AccountsApi extends runtime.BaseAPI {
      * Get an account.
      */
     async getAccountRaw(requestParameters: GetAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Account>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling getAccount().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAccount.');
         }
 
         const queryParameters: any = {};
@@ -70,11 +67,11 @@ export class AccountsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -99,42 +96,42 @@ export class AccountsApi extends runtime.BaseAPI {
     async listAccountsRaw(requestParameters: ListAccountsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageActiveAccount>> {
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
-        if (requestParameters['canContentGeneration'] != null) {
-            queryParameters['can_content_generation'] = requestParameters['canContentGeneration'];
+        if (requestParameters.canContentGeneration !== undefined) {
+            queryParameters['can_content_generation'] = requestParameters.canContentGeneration;
         }
 
-        if (requestParameters['includeEntityCount'] != null) {
-            queryParameters['include_entity_count'] = requestParameters['includeEntityCount'];
+        if (requestParameters.includeEntityCount !== undefined) {
+            queryParameters['include_entity_count'] = requestParameters.includeEntityCount;
         }
 
-        if (requestParameters['includeAllAccounts'] != null) {
-            queryParameters['include_all_accounts'] = requestParameters['includeAllAccounts'];
+        if (requestParameters.includeAllAccounts !== undefined) {
+            queryParameters['include_all_accounts'] = requestParameters.includeAllAccounts;
         }
 
-        if (requestParameters['includeSubscription'] != null) {
-            queryParameters['include_subscription'] = requestParameters['includeSubscription'];
+        if (requestParameters.includeSubscription !== undefined) {
+            queryParameters['include_subscription'] = requestParameters.includeSubscription;
         }
 
-        if (requestParameters['url'] != null) {
-            queryParameters['url'] = requestParameters['url'];
+        if (requestParameters.url !== undefined) {
+            queryParameters['url'] = requestParameters.url;
         }
 
-        if (requestParameters['ngDatasetId'] != null) {
-            queryParameters['ng_dataset_id'] = requestParameters['ngDatasetId'];
+        if (requestParameters.ngDatasetId !== undefined) {
+            queryParameters['ng_dataset_id'] = requestParameters.ngDatasetId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -161,18 +158,12 @@ export class AccountsApi extends runtime.BaseAPI {
      * Update an account.
      */
     async updateAccountRaw(requestParameters: UpdateAccountOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Account>> {
-        if (requestParameters['id'] == null) {
-            throw new runtime.RequiredError(
-                'id',
-                'Required parameter "id" was null or undefined when calling updateAccount().'
-            );
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateAccount.');
         }
 
-        if (requestParameters['updateAccountRequest'] == null) {
-            throw new runtime.RequiredError(
-                'updateAccountRequest',
-                'Required parameter "updateAccountRequest" was null or undefined when calling updateAccount().'
-            );
+        if (requestParameters.updateAccountRequest === null || requestParameters.updateAccountRequest === undefined) {
+            throw new runtime.RequiredError('updateAccountRequest','Required parameter requestParameters.updateAccountRequest was null or undefined when calling updateAccount.');
         }
 
         const queryParameters: any = {};
@@ -182,15 +173,15 @@ export class AccountsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
-            path: `/accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters['id']))),
+            path: `/accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateAccountRequestToJSON(requestParameters['updateAccountRequest']),
+            body: UpdateAccountRequestToJSON(requestParameters.updateAccountRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AccountFromJSON(jsonValue));

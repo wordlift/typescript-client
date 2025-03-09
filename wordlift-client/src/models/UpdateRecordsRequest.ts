@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * A request to update the properties of multiple records.
  * @export
@@ -30,8 +30,10 @@ export interface UpdateRecordsRequest {
 /**
  * Check if a given object implements the UpdateRecordsRequest interface.
  */
-export function instanceOfUpdateRecordsRequest(value: object): value is UpdateRecordsRequest {
-    return true;
+export function instanceOfUpdateRecordsRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function UpdateRecordsRequestFromJSON(json: any): UpdateRecordsRequest {
@@ -39,27 +41,25 @@ export function UpdateRecordsRequestFromJSON(json: any): UpdateRecordsRequest {
 }
 
 export function UpdateRecordsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateRecordsRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'validatedAt': json['validated_at'] == null ? undefined : (new Date(json['validated_at'])),
+        'validatedAt': !exists(json, 'validated_at') ? undefined : (new Date(json['validated_at'])),
     };
 }
 
-export function UpdateRecordsRequestToJSON(json: any): UpdateRecordsRequest {
-    return UpdateRecordsRequestToJSONTyped(json, false);
-}
-
-export function UpdateRecordsRequestToJSONTyped(value?: UpdateRecordsRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function UpdateRecordsRequestToJSON(value?: UpdateRecordsRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'validated_at': value['validatedAt'] == null ? undefined : ((value['validatedAt']).toISOString()),
+        'validated_at': value.validatedAt === undefined ? undefined : (value.validatedAt.toISOString()),
     };
 }
 

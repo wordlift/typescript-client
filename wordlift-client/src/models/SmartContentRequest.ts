@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { WebpageProperties } from './WebpageProperties';
-import {
-    WebpagePropertiesFromJSON,
-    WebpagePropertiesFromJSONTyped,
-    WebpagePropertiesToJSON,
-    WebpagePropertiesToJSONTyped,
-} from './WebpageProperties';
+import { exists, mapValues } from '../runtime';
 import type { RuleRequest } from './RuleRequest';
 import {
     RuleRequestFromJSON,
     RuleRequestFromJSONTyped,
     RuleRequestToJSON,
-    RuleRequestToJSONTyped,
 } from './RuleRequest';
+import type { WebpageProperties } from './WebpageProperties';
+import {
+    WebpagePropertiesFromJSON,
+    WebpagePropertiesFromJSONTyped,
+    WebpagePropertiesToJSON,
+} from './WebpageProperties';
 
 /**
  * 
@@ -63,9 +61,11 @@ export interface SmartContentRequest {
 /**
  * Check if a given object implements the SmartContentRequest interface.
  */
-export function instanceOfSmartContentRequest(value: object): value is SmartContentRequest {
-    if (!('accountId' in value) || value['accountId'] === undefined) return false;
-    return true;
+export function instanceOfSmartContentRequest(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "accountId" in value;
+
+    return isInstance;
 }
 
 export function SmartContentRequestFromJSON(json: any): SmartContentRequest {
@@ -73,33 +73,31 @@ export function SmartContentRequestFromJSON(json: any): SmartContentRequest {
 }
 
 export function SmartContentRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SmartContentRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'accountId': json['account_id'],
-        'modelId': json['model_id'] == null ? undefined : json['model_id'],
-        'rules': json['rules'] == null ? undefined : ((json['rules'] as Array<any>).map(RuleRequestFromJSON)),
-        'webpageProperties': json['webpage_properties'] == null ? undefined : ((json['webpage_properties'] as Array<any>).map(WebpagePropertiesFromJSON)),
+        'modelId': !exists(json, 'model_id') ? undefined : json['model_id'],
+        'rules': !exists(json, 'rules') ? undefined : ((json['rules'] as Array<any>).map(RuleRequestFromJSON)),
+        'webpageProperties': !exists(json, 'webpage_properties') ? undefined : ((json['webpage_properties'] as Array<any>).map(WebpagePropertiesFromJSON)),
     };
 }
 
-export function SmartContentRequestToJSON(json: any): SmartContentRequest {
-    return SmartContentRequestToJSONTyped(json, false);
-}
-
-export function SmartContentRequestToJSONTyped(value?: SmartContentRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function SmartContentRequestToJSON(value?: SmartContentRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'account_id': value['accountId'],
-        'model_id': value['modelId'],
-        'rules': value['rules'] == null ? undefined : ((value['rules'] as Array<any>).map(RuleRequestToJSON)),
-        'webpage_properties': value['webpageProperties'] == null ? undefined : ((value['webpageProperties'] as Array<any>).map(WebpagePropertiesToJSON)),
+        'account_id': value.accountId,
+        'model_id': value.modelId,
+        'rules': value.rules === undefined ? undefined : ((value.rules as Array<any>).map(RuleRequestToJSON)),
+        'webpage_properties': value.webpageProperties === undefined ? undefined : ((value.webpageProperties as Array<any>).map(WebpagePropertiesToJSON)),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,8 +36,10 @@ export interface KgEmbeddingRequest {
 /**
  * Check if a given object implements the KgEmbeddingRequest interface.
  */
-export function instanceOfKgEmbeddingRequest(value: object): value is KgEmbeddingRequest {
-    return true;
+export function instanceOfKgEmbeddingRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function KgEmbeddingRequestFromJSON(json: any): KgEmbeddingRequest {
@@ -45,29 +47,27 @@ export function KgEmbeddingRequestFromJSON(json: any): KgEmbeddingRequest {
 }
 
 export function KgEmbeddingRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): KgEmbeddingRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'graphqlQuery': json['graphql_query'] == null ? undefined : json['graphql_query'],
-        'properties': json['properties'] == null ? undefined : new Set(json['properties']),
+        'graphqlQuery': !exists(json, 'graphql_query') ? undefined : json['graphql_query'],
+        'properties': !exists(json, 'properties') ? undefined : json['properties'],
     };
 }
 
-export function KgEmbeddingRequestToJSON(json: any): KgEmbeddingRequest {
-    return KgEmbeddingRequestToJSONTyped(json, false);
-}
-
-export function KgEmbeddingRequestToJSONTyped(value?: KgEmbeddingRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function KgEmbeddingRequestToJSON(value?: KgEmbeddingRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'graphql_query': value['graphqlQuery'],
-        'properties': value['properties'] == null ? undefined : Array.from(value['properties'] as Set<any>),
+        'graphql_query': value.graphqlQuery,
+        'properties': value.properties === undefined ? undefined : Array.from(value.properties as Set<any>),
     };
 }
 

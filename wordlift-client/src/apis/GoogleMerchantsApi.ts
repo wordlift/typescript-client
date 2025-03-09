@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   PageMerchantEntry,
-} from '../models/index';
+} from '../models';
 import {
     PageMerchantEntryFromJSON,
     PageMerchantEntryToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListGoogleMerchantsRequest {
     googleAccessToken: string;
@@ -36,23 +36,20 @@ export class GoogleMerchantsApi extends runtime.BaseAPI {
      * List
      */
     async listGoogleMerchantsRaw(requestParameters: ListGoogleMerchantsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageMerchantEntry>> {
-        if (requestParameters['googleAccessToken'] == null) {
-            throw new runtime.RequiredError(
-                'googleAccessToken',
-                'Required parameter "googleAccessToken" was null or undefined when calling listGoogleMerchants().'
-            );
+        if (requestParameters.googleAccessToken === null || requestParameters.googleAccessToken === undefined) {
+            throw new runtime.RequiredError('googleAccessToken','Required parameter requestParameters.googleAccessToken was null or undefined when calling listGoogleMerchants.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['googleAccessToken'] != null) {
-            queryParameters['google_access_token'] = requestParameters['googleAccessToken'];
+        if (requestParameters.googleAccessToken !== undefined) {
+            queryParameters['google_access_token'] = requestParameters.googleAccessToken;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

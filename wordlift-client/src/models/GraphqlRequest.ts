@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,8 +30,10 @@ export interface GraphqlRequest {
 /**
  * Check if a given object implements the GraphqlRequest interface.
  */
-export function instanceOfGraphqlRequest(value: object): value is GraphqlRequest {
-    return true;
+export function instanceOfGraphqlRequest(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function GraphqlRequestFromJSON(json: any): GraphqlRequest {
@@ -39,27 +41,25 @@ export function GraphqlRequestFromJSON(json: any): GraphqlRequest {
 }
 
 export function GraphqlRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): GraphqlRequest {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'query': json['query'] == null ? undefined : json['query'],
+        'query': !exists(json, 'query') ? undefined : json['query'],
     };
 }
 
-export function GraphqlRequestToJSON(json: any): GraphqlRequest {
-    return GraphqlRequestToJSONTyped(json, false);
-}
-
-export function GraphqlRequestToJSONTyped(value?: GraphqlRequest | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function GraphqlRequestToJSON(value?: GraphqlRequest | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'query': value['query'],
+        'query': value.query,
     };
 }
 

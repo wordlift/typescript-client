@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,9 +30,11 @@ export interface AskResponse {
 /**
  * Check if a given object implements the AskResponse interface.
  */
-export function instanceOfAskResponse(value: object): value is AskResponse {
-    if (!('response' in value) || value['response'] === undefined) return false;
-    return true;
+export function instanceOfAskResponse(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "response" in value;
+
+    return isInstance;
 }
 
 export function AskResponseFromJSON(json: any): AskResponse {
@@ -40,7 +42,7 @@ export function AskResponseFromJSON(json: any): AskResponse {
 }
 
 export function AskResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AskResponse {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -49,18 +51,16 @@ export function AskResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function AskResponseToJSON(json: any): AskResponse {
-    return AskResponseToJSONTyped(json, false);
-}
-
-export function AskResponseToJSONTyped(value?: AskResponse | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AskResponseToJSON(value?: AskResponse | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'response': value['response'],
+        'response': value.response,
     };
 }
 

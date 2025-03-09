@@ -24,17 +24,6 @@ export const ProjectType = {
 export type ProjectType = typeof ProjectType[keyof typeof ProjectType];
 
 
-export function instanceOfProjectType(value: any): boolean {
-    for (const key in ProjectType) {
-        if (Object.prototype.hasOwnProperty.call(ProjectType, key)) {
-            if (ProjectType[key as keyof typeof ProjectType] === value) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 export function ProjectTypeFromJSON(json: any): ProjectType {
     return ProjectTypeFromJSONTyped(json, false);
 }
@@ -45,9 +34,5 @@ export function ProjectTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean
 
 export function ProjectTypeToJSON(value?: ProjectType | null): any {
     return value as any;
-}
-
-export function ProjectTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ProjectType {
-    return value as ProjectType;
 }
 

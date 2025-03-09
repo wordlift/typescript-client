@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -114,8 +114,10 @@ export type AutocompleteResultScopeEnum = typeof AutocompleteResultScopeEnum[key
 /**
  * Check if a given object implements the AutocompleteResult interface.
  */
-export function instanceOfAutocompleteResult(value: object): value is AutocompleteResult {
-    return true;
+export function instanceOfAutocompleteResult(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AutocompleteResultFromJSON(json: any): AutocompleteResult {
@@ -123,51 +125,49 @@ export function AutocompleteResultFromJSON(json: any): AutocompleteResult {
 }
 
 export function AutocompleteResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): AutocompleteResult {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'] == null ? undefined : json['id'],
-        'labels': json['labels'] == null ? undefined : json['labels'],
-        'descriptions': json['descriptions'] == null ? undefined : json['descriptions'],
-        'types': json['types'] == null ? undefined : json['types'],
-        'urls': json['urls'] == null ? undefined : json['urls'],
-        'images': json['images'] == null ? undefined : json['images'],
-        'sameAss': json['sameAss'] == null ? undefined : json['sameAss'],
-        'scope': json['scope'] == null ? undefined : json['scope'],
-        'description': json['description'] == null ? undefined : json['description'],
-        'mainType': json['mainType'] == null ? undefined : json['mainType'],
-        'label': json['label'] == null ? undefined : json['label'],
-        'value': json['value'] == null ? undefined : json['value'],
-        'displayTypes': json['displayTypes'] == null ? undefined : json['displayTypes'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'labels': !exists(json, 'labels') ? undefined : json['labels'],
+        'descriptions': !exists(json, 'descriptions') ? undefined : json['descriptions'],
+        'types': !exists(json, 'types') ? undefined : json['types'],
+        'urls': !exists(json, 'urls') ? undefined : json['urls'],
+        'images': !exists(json, 'images') ? undefined : json['images'],
+        'sameAss': !exists(json, 'sameAss') ? undefined : json['sameAss'],
+        'scope': !exists(json, 'scope') ? undefined : json['scope'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
+        'mainType': !exists(json, 'mainType') ? undefined : json['mainType'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'value': !exists(json, 'value') ? undefined : json['value'],
+        'displayTypes': !exists(json, 'displayTypes') ? undefined : json['displayTypes'],
     };
 }
 
-export function AutocompleteResultToJSON(json: any): AutocompleteResult {
-    return AutocompleteResultToJSONTyped(json, false);
-}
-
-export function AutocompleteResultToJSONTyped(value?: AutocompleteResult | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AutocompleteResultToJSON(value?: AutocompleteResult | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'id': value['id'],
-        'labels': value['labels'],
-        'descriptions': value['descriptions'],
-        'types': value['types'],
-        'urls': value['urls'],
-        'images': value['images'],
-        'sameAss': value['sameAss'],
-        'scope': value['scope'],
-        'description': value['description'],
-        'mainType': value['mainType'],
-        'label': value['label'],
-        'value': value['value'],
-        'displayTypes': value['displayTypes'],
+        'id': value.id,
+        'labels': value.labels,
+        'descriptions': value.descriptions,
+        'types': value.types,
+        'urls': value.urls,
+        'images': value.images,
+        'sameAss': value.sameAss,
+        'scope': value.scope,
+        'description': value.description,
+        'mainType': value.mainType,
+        'label': value.label,
+        'value': value.value,
+        'displayTypes': value.displayTypes,
     };
 }
 

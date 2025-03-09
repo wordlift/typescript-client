@@ -24,29 +24,18 @@ export function VectorSearchQueryResponseItemMetadataValueFromJSON(json: any): V
 }
 
 export function VectorSearchQueryResponseItemMetadataValueFromJSONTyped(json: any, ignoreDiscriminator: boolean): VectorSearchQueryResponseItemMetadataValue {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
-    if (instanceOfboolean(json)) {
-        return booleanFromJSONTyped(json, true);
-    }
-    if (instanceOfnumber(json)) {
-        return numberFromJSONTyped(json, true);
-    }
-    if (instanceOfstring(json)) {
-        return stringFromJSONTyped(json, true);
-    }
-
-    return {} as any;
+    return { ...booleanFromJSONTyped(json, true), ...numberFromJSONTyped(json, true), ...stringFromJSONTyped(json, true) };
 }
 
-export function VectorSearchQueryResponseItemMetadataValueToJSON(json: any): any {
-    return VectorSearchQueryResponseItemMetadataValueToJSONTyped(json, false);
-}
-
-export function VectorSearchQueryResponseItemMetadataValueToJSONTyped(value?: VectorSearchQueryResponseItemMetadataValue | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function VectorSearchQueryResponseItemMetadataValueToJSON(value?: VectorSearchQueryResponseItemMetadataValue | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
     }
 
     if (instanceOfboolean(value)) {

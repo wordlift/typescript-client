@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { PlatformLimit } from './PlatformLimit';
 import {
     PlatformLimitFromJSON,
     PlatformLimitFromJSONTyped,
     PlatformLimitToJSON,
-    PlatformLimitToJSONTyped,
 } from './PlatformLimit';
 
 /**
@@ -68,14 +67,16 @@ export interface PagePlatformLimit {
 /**
  * Check if a given object implements the PagePlatformLimit interface.
  */
-export function instanceOfPagePlatformLimit(value: object): value is PagePlatformLimit {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPagePlatformLimit(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PagePlatformLimitFromJSON(json: any): PagePlatformLimit {
@@ -83,7 +84,7 @@ export function PagePlatformLimitFromJSON(json: any): PagePlatformLimit {
 }
 
 export function PagePlatformLimitFromJSONTyped(json: any, ignoreDiscriminator: boolean): PagePlatformLimit {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PagePlatformLimitFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function PagePlatformLimitToJSON(json: any): PagePlatformLimit {
-    return PagePlatformLimitToJSONTyped(json, false);
-}
-
-export function PagePlatformLimitToJSONTyped(value?: PagePlatformLimit | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PagePlatformLimitToJSON(value?: PagePlatformLimit | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(PlatformLimitToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(PlatformLimitToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 

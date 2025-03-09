@@ -12,21 +12,19 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { WordRepetitionData } from './WordRepetitionData';
-import {
-    WordRepetitionDataFromJSON,
-    WordRepetitionDataFromJSONTyped,
-    WordRepetitionDataToJSON,
-    WordRepetitionDataToJSONTyped,
-} from './WordRepetitionData';
+import { exists, mapValues } from '../runtime';
 import type { ValidationResult } from './ValidationResult';
 import {
     ValidationResultFromJSON,
     ValidationResultFromJSONTyped,
     ValidationResultToJSON,
-    ValidationResultToJSONTyped,
 } from './ValidationResult';
+import type { WordRepetitionData } from './WordRepetitionData';
+import {
+    WordRepetitionDataFromJSON,
+    WordRepetitionDataFromJSONTyped,
+    WordRepetitionDataToJSON,
+} from './WordRepetitionData';
 
 /**
  * 
@@ -136,12 +134,14 @@ export type RecordStatusEnum = typeof RecordStatusEnum[keyof typeof RecordStatus
 /**
  * Check if a given object implements the Record interface.
  */
-export function instanceOfRecord(value: object): value is Record {
-    if (!('contentGenerationId' in value) || value['contentGenerationId'] === undefined) return false;
-    if (!('hasUpvote' in value) || value['hasUpvote'] === undefined) return false;
-    if (!('isAccepted' in value) || value['isAccepted'] === undefined) return false;
-    if (!('prompt' in value) || value['prompt'] === undefined) return false;
-    return true;
+export function instanceOfRecord(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "contentGenerationId" in value;
+    isInstance = isInstance && "hasUpvote" in value;
+    isInstance = isInstance && "isAccepted" in value;
+    isInstance = isInstance && "prompt" in value;
+
+    return isInstance;
 }
 
 export function RecordFromJSON(json: any): Record {
@@ -149,44 +149,42 @@ export function RecordFromJSON(json: any): Record {
 }
 
 export function RecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): Record {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'completion': json['completion'] == null ? undefined : json['completion'],
+        'completion': !exists(json, 'completion') ? undefined : json['completion'],
         'contentGenerationId': json['content_generation_id'],
-        'data': json['data'] == null ? undefined : json['data'],
-        'errors': json['errors'] == null ? undefined : ((json['errors'] as Array<any>).map(ValidationResultFromJSON)),
+        'data': !exists(json, 'data') ? undefined : json['data'],
+        'errors': !exists(json, 'errors') ? undefined : ((json['errors'] as Array<any>).map(ValidationResultFromJSON)),
         'hasUpvote': json['has_upvote'],
-        'id': json['id'] == null ? undefined : json['id'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'isAccepted': json['is_accepted'],
-        'modifiedAt': json['modified_at'] == null ? undefined : (new Date(json['modified_at'])),
-        'notInPromptWords': json['not_in_prompt_words'] == null ? undefined : new Set(json['not_in_prompt_words']),
+        'modifiedAt': !exists(json, 'modified_at') ? undefined : (new Date(json['modified_at'])),
+        'notInPromptWords': !exists(json, 'not_in_prompt_words') ? undefined : json['not_in_prompt_words'],
         'prompt': json['prompt'],
-        'repeatedWords': json['repeated_words'] == null ? undefined : (mapValues(json['repeated_words'], WordRepetitionDataFromJSON)),
-        'status': json['status'] == null ? undefined : json['status'],
-        'validatedAt': json['validated_at'] == null ? undefined : (new Date(json['validated_at'])),
-        'warnings': json['warnings'] == null ? undefined : ((json['warnings'] as Array<any>).map(ValidationResultFromJSON)),
+        'repeatedWords': !exists(json, 'repeated_words') ? undefined : (mapValues(json['repeated_words'], WordRepetitionDataFromJSON)),
+        'status': !exists(json, 'status') ? undefined : json['status'],
+        'validatedAt': !exists(json, 'validated_at') ? undefined : (new Date(json['validated_at'])),
+        'warnings': !exists(json, 'warnings') ? undefined : ((json['warnings'] as Array<any>).map(ValidationResultFromJSON)),
     };
 }
 
-export function RecordToJSON(json: any): Record {
-    return RecordToJSONTyped(json, false);
-}
-
-export function RecordToJSONTyped(value?: Omit<Record, 'content_generation_id'|'data'|'errors'|'modified_at'|'not_in_prompt_words'|'repeated_words'|'status'|'validated_at'|'warnings'> | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function RecordToJSON(value?: Record | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'completion': value['completion'],
-        'has_upvote': value['hasUpvote'],
-        'id': value['id'],
-        'is_accepted': value['isAccepted'],
-        'prompt': value['prompt'],
+        'completion': value.completion,
+        'has_upvote': value.hasUpvote,
+        'id': value.id,
+        'is_accepted': value.isAccepted,
+        'prompt': value.prompt,
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   PageWebsiteSearch,
-} from '../models/index';
+} from '../models';
 import {
     PageWebsiteSearchFromJSON,
     PageWebsiteSearchToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface ListWebsiteSearch1Request {
     since: string;
@@ -41,57 +41,48 @@ export class GoogleSearchConsoleSearchesApi extends runtime.BaseAPI {
      * List Website Search data
      */
     async listWebsiteSearch1Raw(requestParameters: ListWebsiteSearch1Request, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PageWebsiteSearch>> {
-        if (requestParameters['since'] == null) {
-            throw new runtime.RequiredError(
-                'since',
-                'Required parameter "since" was null or undefined when calling listWebsiteSearch1().'
-            );
+        if (requestParameters.since === null || requestParameters.since === undefined) {
+            throw new runtime.RequiredError('since','Required parameter requestParameters.since was null or undefined when calling listWebsiteSearch1.');
         }
 
-        if (requestParameters['until'] == null) {
-            throw new runtime.RequiredError(
-                'until',
-                'Required parameter "until" was null or undefined when calling listWebsiteSearch1().'
-            );
+        if (requestParameters.until === null || requestParameters.until === undefined) {
+            throw new runtime.RequiredError('until','Required parameter requestParameters.until was null or undefined when calling listWebsiteSearch1.');
         }
 
-        if (requestParameters['dimensions'] == null) {
-            throw new runtime.RequiredError(
-                'dimensions',
-                'Required parameter "dimensions" was null or undefined when calling listWebsiteSearch1().'
-            );
+        if (requestParameters.dimensions === null || requestParameters.dimensions === undefined) {
+            throw new runtime.RequiredError('dimensions','Required parameter requestParameters.dimensions was null or undefined when calling listWebsiteSearch1.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters['cursor'] != null) {
-            queryParameters['cursor'] = requestParameters['cursor'];
+        if (requestParameters.cursor !== undefined) {
+            queryParameters['cursor'] = requestParameters.cursor;
         }
 
-        if (requestParameters['since'] != null) {
-            queryParameters['since'] = requestParameters['since'];
+        if (requestParameters.since !== undefined) {
+            queryParameters['since'] = requestParameters.since;
         }
 
-        if (requestParameters['until'] != null) {
-            queryParameters['until'] = requestParameters['until'];
+        if (requestParameters.until !== undefined) {
+            queryParameters['until'] = requestParameters.until;
         }
 
-        if (requestParameters['dimensions'] != null) {
-            queryParameters['dimensions'] = requestParameters['dimensions'];
+        if (requestParameters.dimensions) {
+            queryParameters['dimensions'] = requestParameters.dimensions;
         }
 
-        if (requestParameters['dataState'] != null) {
-            queryParameters['data_state'] = requestParameters['dataState'];
+        if (requestParameters.dataState !== undefined) {
+            queryParameters['data_state'] = requestParameters.dataState;
         }
 
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({

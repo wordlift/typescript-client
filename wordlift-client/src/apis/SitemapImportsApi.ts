@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   SitemapImportRequest,
-} from '../models/index';
+} from '../models';
 import {
     SitemapImportRequestFromJSON,
     SitemapImportRequestToJSON,
-} from '../models/index';
+} from '../models';
 
 export interface CreateSitemapImportRequest {
     sitemapImportRequest: SitemapImportRequest;
@@ -36,11 +36,8 @@ export class SitemapImportsApi extends runtime.BaseAPI {
      * Create
      */
     async createSitemapImportRaw(requestParameters: CreateSitemapImportRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
-        if (requestParameters['sitemapImportRequest'] == null) {
-            throw new runtime.RequiredError(
-                'sitemapImportRequest',
-                'Required parameter "sitemapImportRequest" was null or undefined when calling createSitemapImport().'
-            );
+        if (requestParameters.sitemapImportRequest === null || requestParameters.sitemapImportRequest === undefined) {
+            throw new runtime.RequiredError('sitemapImportRequest','Required parameter requestParameters.sitemapImportRequest was null or undefined when calling createSitemapImport.');
         }
 
         const queryParameters: any = {};
@@ -50,7 +47,7 @@ export class SitemapImportsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // ApiKey authentication
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // ApiKey authentication
         }
 
         const response = await this.request({
@@ -58,7 +55,7 @@ export class SitemapImportsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SitemapImportRequestToJSON(requestParameters['sitemapImportRequest']),
+            body: SitemapImportRequestToJSON(requestParameters.sitemapImportRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);

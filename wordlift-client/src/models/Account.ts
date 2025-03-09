@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -163,8 +163,10 @@ export interface Account {
 /**
  * Check if a given object implements the Account interface.
  */
-export function instanceOfAccount(value: object): value is Account {
-    return true;
+export function instanceOfAccount(value: object): boolean {
+    let isInstance = true;
+
+    return isInstance;
 }
 
 export function AccountFromJSON(json: any): Account {
@@ -172,71 +174,69 @@ export function AccountFromJSON(json: any): Account {
 }
 
 export function AccountFromJSONTyped(json: any, ignoreDiscriminator: boolean): Account {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'analyticsClientFactory': json['analytics_client_factory'] == null ? undefined : json['analytics_client_factory'],
-        'analyzerId': json['analyzerId'] == null ? undefined : json['analyzerId'],
-        'botifyProject': json['botify_project'] == null ? undefined : json['botify_project'],
-        'botifyToken': json['botify_token'] == null ? undefined : json['botify_token'],
-        'botifyUsername': json['botify_username'] == null ? undefined : json['botify_username'],
-        'collection': json['collection'] == null ? undefined : json['collection'],
-        'country': json['country'] == null ? undefined : json['country'],
-        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
-        'datasetUri': json['datasetUri'] == null ? undefined : json['datasetUri'],
-        'domainUri': json['domainUri'] == null ? undefined : json['domainUri'],
-        'googleSearchConsoleSiteUrl': json['google_search_console_site_url'] == null ? undefined : json['google_search_console_site_url'],
-        'id': json['id'] == null ? undefined : json['id'],
-        'indexed': json['indexed'] == null ? undefined : json['indexed'],
-        'isWordpress': json['is_wordpress'] == null ? undefined : json['is_wordpress'],
-        'key': json['key'] == null ? undefined : json['key'],
-        'language': json['language'] == null ? undefined : json['language'],
-        'ngDatasetId': json['ngDatasetId'] == null ? undefined : json['ngDatasetId'],
-        'resolvedUrl': json['resolvedUrl'] == null ? undefined : json['resolvedUrl'],
-        'subscriptionId': json['subscriptionId'] == null ? undefined : json['subscriptionId'],
-        'url': json['url'] == null ? undefined : json['url'],
-        'wpAdmin': json['wpAdmin'] == null ? undefined : json['wpAdmin'],
-        'wpJson': json['wpJson'] == null ? undefined : json['wpJson'],
-        'wpIncludeExcludeDefault': json['wp_include_exclude_default'] == null ? undefined : json['wp_include_exclude_default'],
+        'analyticsClientFactory': !exists(json, 'analytics_client_factory') ? undefined : json['analytics_client_factory'],
+        'analyzerId': !exists(json, 'analyzerId') ? undefined : json['analyzerId'],
+        'botifyProject': !exists(json, 'botify_project') ? undefined : json['botify_project'],
+        'botifyToken': !exists(json, 'botify_token') ? undefined : json['botify_token'],
+        'botifyUsername': !exists(json, 'botify_username') ? undefined : json['botify_username'],
+        'collection': !exists(json, 'collection') ? undefined : json['collection'],
+        'country': !exists(json, 'country') ? undefined : json['country'],
+        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
+        'datasetUri': !exists(json, 'datasetUri') ? undefined : json['datasetUri'],
+        'domainUri': !exists(json, 'domainUri') ? undefined : json['domainUri'],
+        'googleSearchConsoleSiteUrl': !exists(json, 'google_search_console_site_url') ? undefined : json['google_search_console_site_url'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'indexed': !exists(json, 'indexed') ? undefined : json['indexed'],
+        'isWordpress': !exists(json, 'is_wordpress') ? undefined : json['is_wordpress'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
+        'language': !exists(json, 'language') ? undefined : json['language'],
+        'ngDatasetId': !exists(json, 'ngDatasetId') ? undefined : json['ngDatasetId'],
+        'resolvedUrl': !exists(json, 'resolvedUrl') ? undefined : json['resolvedUrl'],
+        'subscriptionId': !exists(json, 'subscriptionId') ? undefined : json['subscriptionId'],
+        'url': !exists(json, 'url') ? undefined : json['url'],
+        'wpAdmin': !exists(json, 'wpAdmin') ? undefined : json['wpAdmin'],
+        'wpJson': !exists(json, 'wpJson') ? undefined : json['wpJson'],
+        'wpIncludeExcludeDefault': !exists(json, 'wp_include_exclude_default') ? undefined : json['wp_include_exclude_default'],
     };
 }
 
-export function AccountToJSON(json: any): Account {
-    return AccountToJSONTyped(json, false);
-}
-
-export function AccountToJSONTyped(value?: Account | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function AccountToJSON(value?: Account | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'analytics_client_factory': value['analyticsClientFactory'],
-        'analyzerId': value['analyzerId'],
-        'botify_project': value['botifyProject'],
-        'botify_token': value['botifyToken'],
-        'botify_username': value['botifyUsername'],
-        'collection': value['collection'],
-        'country': value['country'],
-        'datasetId': value['datasetId'],
-        'datasetUri': value['datasetUri'],
-        'domainUri': value['domainUri'],
-        'google_search_console_site_url': value['googleSearchConsoleSiteUrl'],
-        'id': value['id'],
-        'indexed': value['indexed'],
-        'is_wordpress': value['isWordpress'],
-        'key': value['key'],
-        'language': value['language'],
-        'ngDatasetId': value['ngDatasetId'],
-        'resolvedUrl': value['resolvedUrl'],
-        'subscriptionId': value['subscriptionId'],
-        'url': value['url'],
-        'wpAdmin': value['wpAdmin'],
-        'wpJson': value['wpJson'],
-        'wp_include_exclude_default': value['wpIncludeExcludeDefault'],
+        'analytics_client_factory': value.analyticsClientFactory,
+        'analyzerId': value.analyzerId,
+        'botify_project': value.botifyProject,
+        'botify_token': value.botifyToken,
+        'botify_username': value.botifyUsername,
+        'collection': value.collection,
+        'country': value.country,
+        'datasetId': value.datasetId,
+        'datasetUri': value.datasetUri,
+        'domainUri': value.domainUri,
+        'google_search_console_site_url': value.googleSearchConsoleSiteUrl,
+        'id': value.id,
+        'indexed': value.indexed,
+        'is_wordpress': value.isWordpress,
+        'key': value.key,
+        'language': value.language,
+        'ngDatasetId': value.ngDatasetId,
+        'resolvedUrl': value.resolvedUrl,
+        'subscriptionId': value.subscriptionId,
+        'url': value.url,
+        'wpAdmin': value.wpAdmin,
+        'wpJson': value.wpJson,
+        'wp_include_exclude_default': value.wpIncludeExcludeDefault,
     };
 }
 

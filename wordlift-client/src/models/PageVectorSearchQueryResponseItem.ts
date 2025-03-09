@@ -12,13 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
+import { exists, mapValues } from '../runtime';
 import type { VectorSearchQueryResponseItem } from './VectorSearchQueryResponseItem';
 import {
     VectorSearchQueryResponseItemFromJSON,
     VectorSearchQueryResponseItemFromJSONTyped,
     VectorSearchQueryResponseItemToJSON,
-    VectorSearchQueryResponseItemToJSONTyped,
 } from './VectorSearchQueryResponseItem';
 
 /**
@@ -68,14 +67,16 @@ export interface PageVectorSearchQueryResponseItem {
 /**
  * Check if a given object implements the PageVectorSearchQueryResponseItem interface.
  */
-export function instanceOfPageVectorSearchQueryResponseItem(value: object): value is PageVectorSearchQueryResponseItem {
-    if (!('first' in value) || value['first'] === undefined) return false;
-    if (!('items' in value) || value['items'] === undefined) return false;
-    if (!('last' in value) || value['last'] === undefined) return false;
-    if (!('next' in value) || value['next'] === undefined) return false;
-    if (!('prev' in value) || value['prev'] === undefined) return false;
-    if (!('self' in value) || value['self'] === undefined) return false;
-    return true;
+export function instanceOfPageVectorSearchQueryResponseItem(value: object): boolean {
+    let isInstance = true;
+    isInstance = isInstance && "first" in value;
+    isInstance = isInstance && "items" in value;
+    isInstance = isInstance && "last" in value;
+    isInstance = isInstance && "next" in value;
+    isInstance = isInstance && "prev" in value;
+    isInstance = isInstance && "self" in value;
+
+    return isInstance;
 }
 
 export function PageVectorSearchQueryResponseItemFromJSON(json: any): PageVectorSearchQueryResponseItem {
@@ -83,7 +84,7 @@ export function PageVectorSearchQueryResponseItemFromJSON(json: any): PageVector
 }
 
 export function PageVectorSearchQueryResponseItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): PageVectorSearchQueryResponseItem {
-    if (json == null) {
+    if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
@@ -97,23 +98,21 @@ export function PageVectorSearchQueryResponseItemFromJSONTyped(json: any, ignore
     };
 }
 
-export function PageVectorSearchQueryResponseItemToJSON(json: any): PageVectorSearchQueryResponseItem {
-    return PageVectorSearchQueryResponseItemToJSONTyped(json, false);
-}
-
-export function PageVectorSearchQueryResponseItemToJSONTyped(value?: PageVectorSearchQueryResponseItem | null, ignoreDiscriminator: boolean = false): any {
-    if (value == null) {
-        return value;
+export function PageVectorSearchQueryResponseItemToJSON(value?: PageVectorSearchQueryResponseItem | null): any {
+    if (value === undefined) {
+        return undefined;
     }
-
+    if (value === null) {
+        return null;
+    }
     return {
         
-        'first': value['first'],
-        'items': ((value['items'] as Array<any>).map(VectorSearchQueryResponseItemToJSON)),
-        'last': value['last'],
-        'next': value['next'],
-        'prev': value['prev'],
-        'self': value['self'],
+        'first': value.first,
+        'items': ((value.items as Array<any>).map(VectorSearchQueryResponseItemToJSON)),
+        'last': value.last,
+        'next': value.next,
+        'prev': value.prev,
+        'self': value.self,
     };
 }
 
